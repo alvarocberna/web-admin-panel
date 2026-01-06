@@ -71,4 +71,9 @@ export class ArticulosService{
         //realizamos la peticion
         return await apiFetch<any>(`articulo/editar/${id_articulo}`, 'PUT', dataArticulo)
     }
-}
+
+    //elimina un articulo por id
+    public static async deleteArticulo(id_articulo: string): Promise<void>{
+        return await apiFetch<any>(`articulo/delete/${id_articulo}`, 'DELETE')
+    }
+} 

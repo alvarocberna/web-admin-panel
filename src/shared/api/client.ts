@@ -57,6 +57,16 @@ export async function apiFetch<T>(
         return undefined as T;
     }
 
+    //verificamos si el cuerpo está vacío
+    const contentLength = res.headers.get('content-length');
+    if (contentLength === '0' || res.status === 200) {
+        const text = await res.text();
+        if (!text) {
+            return undefined as T;
+        }
+        return JSON.parse(text) as Promise<T>;
+    }
+
     //todo todo sale bien, devolvemos res como json
     return res.json() as Promise<T>;
 
