@@ -25,7 +25,9 @@ export class ArticulosService{
                 "nro_seccion": index,
                 "titulo_sec": dataSec.titulo_sec,
                 "contenido_sec": dataSec.contenido_sec,
-                "image": '/',
+                "image_url": "/",
+                "image_alt": "test",
+                "image_position": "test",
             }
         })
         //construimos el articulo completo
@@ -37,6 +39,9 @@ export class ArticulosService{
                 "fecha_actualizacion": new Date(),
                 "status": "test",
                 "slug": "test",
+                "image_url": "/",
+                "image_alt": "test",
+                "image_position": "test",
                 "autor_id": user.id,
                 "sec_articulo": sec_articulo
         }
@@ -53,7 +58,9 @@ export class ArticulosService{
                 "nro_seccion": index,
                 "titulo_sec": dataSec.titulo_sec,
                 "contenido_sec": dataSec.contenido_sec,
-                "image": '/',
+                "image_url": "/",
+                "image_alt": "test",
+                "image_position": "test",
             }
         })
         //construimos el articulo completo
@@ -65,6 +72,9 @@ export class ArticulosService{
             "fecha_actualizacion": new Date(),
             "status": "test",
             "slug": "test",
+            "image_url": "/",
+            "image_alt": "test",
+            "image_position": "test",
             "autor_id": user.id,
             "sec_articulo": sec_articulo
         }

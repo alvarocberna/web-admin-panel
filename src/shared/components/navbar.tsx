@@ -19,7 +19,7 @@ export function NavbarAdmin() {
   const navInfo = [
     { nombre: "Home", ruta: "/dashboard", icon: faHome },
     { nombre: "Articulos", ruta: "/articulos", icon: faNewspaper },
-    { nombre: "Usuarios", ruta: "/usuarios", icon: faUser },
+    { nombre: "Historial", ruta: "/actividad", icon: faUser },
   ];
 
   // Lista de Items del Manú
