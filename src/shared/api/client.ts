@@ -72,3 +72,62 @@ export async function apiFetch<T>(
 
 }
 
+export async function apiFetchFormData<T>(
+    endpoint: string,
+    formData: FormData,
+    method: string = 'POST',
+    credentials: RequestCredentials = 'include',
+    isRetry = false
+): Promise<T>{
+    
+    const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+    //realizamos el fetch con FormData (sin Content-Type, el browser lo pone automáticamente)
+    const res = await fetch(`${url}/${endpoint}`, { 
+        method: method,
+        credentials: credentials,
+        body: formData,
+    })
+
+    //capturamos res 401 (access token expirado) y reintentamos refresh token
+    if (res.status === 401 && !isRetry) {
+        console.log("Status 401: Se reintentará refresh el token")
+        const refreshed = await refreshSession(url!);
+        if (refreshed) {
+            console.log("Token refreshed, se reintentará hacer la consulta al endpoint")
+            return apiFetchFormData<T>(endpoint, formData, method, credentials, true);
+        }
+        console.log("Token no fue refreshed")
+        throw new Error('Sesión expirada');
+    }
+
+    //si recibimos res status 400 o 500, lanzamos error
+    if (!res.ok) {
+        let errorData;
+        try {
+            errorData = await res.json();
+        } catch (error) {
+            errorData = { message: `Error HTTP ${res.status}: ${res.statusText}` };
+        }
+        throw new Error(errorData?.message || errorData?.error || `Error HTTP ${res.status}`);
+    }
+
+    //si recibimos res status 204 No Content, no hay cuerpo para parsear
+    if (res.status === 204) {
+        return undefined as T;
+    }
+
+    //verificamos si el cuerpo está vacío
+    const contentLength = res.headers.get('content-length');
+    if (contentLength === '0' || res.status === 200) {
+        const text = await res.text();
+        if (!text) {
+            return undefined as T;
+        }
+        return JSON.parse(text) as Promise<T>;
+    }
+
+    //todo todo sale bien, devolvemos res como json
+    return res.json() as Promise<T>;
+}
+

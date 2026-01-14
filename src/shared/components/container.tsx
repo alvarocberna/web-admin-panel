@@ -9,9 +9,9 @@ export function ContenedorAdmin(
         {/* Navbar de 280px */}
         <NavbarAdmin/>
         {/* Sec Principal */}
-        <div className="h-full md:ml-[280px] pb-10 flex bg-quaternary">
+        <div className="min-h-screen md:ml-70 pb-10 flex bg-zinc-100">
             <div className='w-[90%] sm:w-[80% md:w-[90%] lg:w-[80%] h-full mt-25 md:mt-8 mb-10 mx-auto'>
-                {children}
+              {children}
             </div>
         </div>
     </div>

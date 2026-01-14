@@ -32,10 +32,6 @@ export function InicioSesionForm() {
 
   return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 w-full">
-          {/* <div>
-            <Input  label="Dominio" name="dominio" type="text" register={register} rules={{ required: true }}/>
-            {errors.dominio && <span className="text-sm text-red-400">Campo requerido</span>}
-          </div> */}
           <div>
             <Input  label="Email" name="email" type="email" register={register} rules={{ required: true }}/>
             {errors.email && <span className="text-sm text-red-400">Campo requerido</span>}
@@ -44,8 +40,8 @@ export function InicioSesionForm() {
             <Input  label="Contraseña" name="password" type="password" register={register} rules={{ required: true }}/>
             {errors.password && <span className="text-sm text-red-400">Campo requerido</span>}
           </div>
-          <div className='w-1/3 h-[40px] flex m-auto mb-10'>
-             <button disabled={isSubmitting} className='w-full h-full m-auto bg-cyan-600 rounded hover-btn' type="submit">Entrar</button> 
+          <div className='w-1/2 h-[40px] flex m-auto mt-10 mb-10'>
+             <button disabled={isSubmitting} className='w-full h-full m-auto bg-black rounded-3xl' type="submit">Entrar</button> 
           </div>
         </form>
   );

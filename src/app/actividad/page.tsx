@@ -1,11 +1,11 @@
 "use client"
 //react
 import { useEffect, useState } from "react";
-import Link from "next/link";
 //shared
-import { ContenedorAdmin, TitleSec, ContSubSec } from "@/shared";
+import { ContenedorAdmin, TitleSec } from "@/shared";
 //features
 import { ActividadService, ActividadEntity } from "@/features";
+
 
 export default function ActividadPage() {
 	const [actividades, setActividades] = useState<ActividadEntity[]>([]);
@@ -46,14 +46,12 @@ export default function ActividadPage() {
 	return (
 		<ContenedorAdmin>
 			<TitleSec title="Actividad" />
-			{/* <ContSubSec> */}
 				<div className="flex flex-col justify-start pt-5 pb-10">
 					{listaActividad}
 					{actividades.length === 0 && (
 						<div className="px-2 text-gray-600">No hay actividad registrada.</div>
 					)}
 				</div>
-			{/* </ContSubSec> */}
 		</ContenedorAdmin>
 	);
 }

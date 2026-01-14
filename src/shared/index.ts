@@ -11,4 +11,5 @@ export * from './components/body-sub-sec';
 export * from './components/footer-sub-sec';
 export * from './components/input';
 export * from './components/input-art';
+export * from './components/input-file';
 export * from './components/textarea';
