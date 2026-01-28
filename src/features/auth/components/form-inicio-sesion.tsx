@@ -41,7 +41,7 @@ export function InicioSesionForm() {
             {errors.password && <span className="text-sm text-red-400">Campo requerido</span>}
           </div>
           <div className='w-1/2 h-[40px] flex m-auto mt-10 mb-10'>
-             <button disabled={isSubmitting} className='w-full h-full m-auto bg-black rounded-3xl' type="submit">Entrar</button> 
+             <button disabled={isSubmitting} className='w-full h-full m-auto bg-black rounded-3xl' name="submit" type="submit">Entrar</button> 
           </div>
         </form>
   );
