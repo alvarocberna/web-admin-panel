@@ -5,14 +5,22 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faNewspaper, faUser, faSignOutAlt, faHome } from '@fortawesome/free-solid-svg-icons'
 import Link from "next/link";
 import { AuthService } from "@/features/auth/services/auth.service";
+import { toast } from 'react-toastify';
 
 export function NavbarAdmin() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const logout = async () => {
-      AuthService.logout(); 
-      router.push('/')
+    try {
+      await AuthService.logout();
+      toast.success('Sesión cerrada exitosamente');
+      router.push('/');
+    } catch (error: any) {
+      toast.error(error.message || 'Error al cerrar sesión');
+      // Redirigir de todas formas si falla el logout
+      router.push('/');
+    }
   }
 
   // categorías del menú
@@ -108,7 +116,18 @@ export function NavbarAdmin() {
           </button>
         </div>
         <nav className="p-6">
-          <ul className="space-y-4 px-0">{navList}</ul>
+          <ul className="space-y-4 px-0">
+            {navList}
+            {/* logout móvil */}
+            <div onClick={() => logout()}
+                className="flex items-center py-3 px-4 text-zinc-700 hover:text-sky-600 transition-colors duration-300 cursor-pointer"
+            >
+                <FontAwesomeIcon icon={faSignOutAlt} className="me-2" style={{width: '16px', height: '16px'}}/>
+                <p className="mb-0">
+                  Logout
+                </p>
+            </div>
+          </ul>
         </nav>
       </div>
     </div>

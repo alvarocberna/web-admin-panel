@@ -11,6 +11,7 @@ export * from './articulos/types/articulo.types';
 //AUTH
 export * from './auth/components/form-inicio-sesion';
 export * from './auth/services/auth.service';
+export * from './auth/hooks/useAuth';
 //PROYECTOS
 export * from './proyectos/entities/proyecto.entity';
 //USUARIOS
