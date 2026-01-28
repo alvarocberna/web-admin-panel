@@ -4,6 +4,15 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Bloquear directory browsing - denegar acceso a rutas que terminan en /
+  // excepto la raíz y rutas de páginas válidas
+  if (pathname.endsWith('/') && pathname !== '/') {
+    // Verificar si es una ruta de directorio estático de Next.js
+    if (pathname.startsWith('/_next/')) {
+      return new NextResponse('Not Found', { status: 404 });
+    }
+  }
+
   // Rutas públicas que NO requieren autenticación
   const publicRoutes = ['/'];
   
