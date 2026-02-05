@@ -7,25 +7,30 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   
   images: {
-    remotePatterns: [
+    remotePatterns: [ //de donde se puede aceptar imagenes
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '3000',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'web-core-storage.s3.us-east-1.amazonaws.com',
+      },
     ],
   },
   async headers() {
     const isProd = process.env.NODE_ENV === 'production';
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
+    const s3Bucket = 'https://web-core-storage.s3.us-east-1.amazonaws.com';
 
     const csp = (isProd
       ? [
           "default-src 'self'",
           "script-src 'self'",
           "style-src 'self'",
-          `img-src 'self' data: blob: ${backendUrl}`,
+          `img-src 'self' data: blob: ${backendUrl} ${s3Bucket}`,
           "font-src 'self'",
           `connect-src 'self' ${backendUrl}`,
           "object-src 'none'",
@@ -38,7 +43,7 @@ const nextConfig: NextConfig = {
           "default-src 'self'",
           "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
           "style-src 'self' 'unsafe-inline'",
-          `img-src 'self' data: blob: ${backendUrl}`,
+          `img-src 'self' data: blob: ${backendUrl} ${s3Bucket}`,
           "font-src 'self'",
           `connect-src 'self' ${backendUrl}`,
         ]
