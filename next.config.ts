@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '3000',
+        port: '3001',
         pathname: '/uploads/**',
       },
       {
@@ -22,14 +22,14 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     const isProd = process.env.NODE_ENV === 'production';
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
     const s3Bucket = 'https://web-core-storage.s3.us-east-1.amazonaws.com';
 
     const csp = (isProd
       ? [
           "default-src 'self'",
-          "script-src 'self'",
-          "style-src 'self'",
+          "script-src 'self' 'unsafe-inline'",
+          "style-src 'self' 'unsafe-inline'",
           `img-src 'self' data: blob: ${backendUrl} ${s3Bucket}`,
           "font-src 'self'",
           `connect-src 'self' ${backendUrl}`,
