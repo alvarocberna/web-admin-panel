@@ -19,6 +19,8 @@ export async function apiFetch<T>(
     
     const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+    console.log('backend url: ' + url);
+
     //realizamos el fetch 
     const res = await fetch(`${url}/${endpoint}`, { 
         method: method,
