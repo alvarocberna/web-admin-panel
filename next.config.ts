@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
     const isProd = process.env.NODE_ENV === 'production';
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
     const s3Bucket = 'https://web-core-storage.s3.us-east-1.amazonaws.com';
-
+    console.log(backendUrl);
     const csp = (isProd
       ? [
           "default-src 'self'",
