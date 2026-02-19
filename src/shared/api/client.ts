@@ -30,18 +30,18 @@ export async function apiFetch<T>(
     })
 
     //capturamos res 401 (access token expirado) y reintentamos refresh token
-    if (res.status === 401 && !isRetry) {
-        console.log("Status 401: Se reintentará refresh el token")
-        const refreshed = await refreshSession(url!);
-        if (refreshed) {
-        //reintenta la request original
-            console.log("Token refreshed, se reintentará hacer la consulta al endpoint")
-            return apiFetch<T>(endpoint, method, data, credentials, true); //???
-        }
-        //refresh falló -> logout
-        console.log("Token no fue refreshed")
-        throw new Error('Sesión expirada');
-    }
+    // if (res.status === 401 && !isRetry) {
+    //     console.log("Status 401: Se reintentará refresh el token")
+    //     const refreshed = await refreshSession(url!);
+    //     if (refreshed) {
+    //     //reintenta la request original
+    //         console.log("Token refreshed, se reintentará hacer la consulta al endpoint")
+    //         return apiFetch<T>(endpoint, method, data, credentials, true); //???
+    //     }
+    //     //refresh falló -> logout
+    //     console.log("Token no fue refreshed")
+    //     throw new Error('Sesión expirada');
+    // }
 
     //si recibimos res status 400 o 500, lanzamos error
     if (!res.ok) {
