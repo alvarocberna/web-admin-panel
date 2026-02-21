@@ -1,135 +1,139 @@
+const getBaseUrl = () => {
+  // En el browser → usa rewrite de Next
+  if (typeof window !== 'undefined') {
+    return '/api';
+  }
 
-async function refreshSession(url: string): Promise<boolean> {
-  const res = await fetch(`${url}/auth/refresh`, {
+  // En el servidor (SSR / server actions)
+  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+};
+
+async function refreshSession(): Promise<boolean> {
+  const baseUrl = getBaseUrl();
+
+  const res = await fetch(`${baseUrl}/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
   });
-  console.log("res: " + res)
+
   return res.ok;
 }
 
 export async function apiFetch<T>(
-    endpoint: string,
-    method?: string,
-    data?: any,
-    credentials: RequestCredentials = 'include',
-    isRetry = false //evita loop infinito
-): Promise<T>{
-    
-    const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+  endpoint: string,
+  method: string = 'GET',
+  data?: any,
+  credentials: RequestCredentials = 'include',
+  isRetry = false // evita loop infinito
+): Promise<T> {
+  const baseUrl = getBaseUrl();
 
-    console.log('backend url: ' + url);
+  const res = await fetch(`${baseUrl}/${endpoint}`, {
+    method,
+    credentials,
+    headers: { 'Content-Type': 'application/json' },
+    body: data ? JSON.stringify(data) : undefined,
+  });
 
-    //realizamos el fetch 
-    const res = await fetch(`${url}/${endpoint}`, { 
-        method: method,
-        credentials: credentials,
-        headers: {'Content-Type': 'application/json'},
-        body: data ? JSON.stringify(data) : undefined,
-    })
+  // 🔁 Manejo de access token expirado
+  if (res.status === 401 && !isRetry) {
+    const refreshed = await refreshSession();
 
-    //capturamos res 401 (access token expirado) y reintentamos refresh token
-    // if (res.status === 401 && !isRetry) {
-    //     console.log("Status 401: Se reintentará refresh el token")
-    //     const refreshed = await refreshSession(url!);
-    //     if (refreshed) {
-    //     //reintenta la request original
-    //         console.log("Token refreshed, se reintentará hacer la consulta al endpoint")
-    //         return apiFetch<T>(endpoint, method, data, credentials, true); //???
-    //     }
-    //     //refresh falló -> logout
-    //     console.log("Token no fue refreshed")
-    //     throw new Error('Sesión expirada');
-    // }
-
-    //si recibimos res status 400 o 500, lanzamos error
-    if (!res.ok) {
-        let errorData;
-        try {
-            errorData = await res.json(); //parsear el cuerpo como JSON
-        } catch (error) {
-            errorData = { message: `Error HTTP ${res.status}: ${res.statusText}` };
-        }
-        throw new Error(errorData?.message || errorData?.error || `Error HTTP ${res.status}`);
+    if (refreshed) {
+      return apiFetch<T>(endpoint, method, data, credentials, true);
     }
 
-    //si recibismo res status 204 No Content, no hay cuerpo para parsear
-    if (res.status === 204) {
-        return undefined as T;
+    throw new Error('Sesión expirada');
+  }
+
+  // ❌ errores HTTP
+  if (!res.ok) {
+    let errorData: any;
+
+    try {
+      errorData = await res.json();
+    } catch {
+      errorData = { message: `Error HTTP ${res.status}: ${res.statusText}` };
     }
 
-    //verificamos si el cuerpo está vacío
-    const contentLength = res.headers.get('content-length');
-    if (contentLength === '0' || res.status === 200) {
-        const text = await res.text();
-        if (!text) {
-            return undefined as T;
-        }
-        return JSON.parse(text) as Promise<T>;
-    }
+    throw new Error(
+      errorData?.message ||
+        errorData?.error ||
+        `Error HTTP ${res.status}`
+    );
+  }
 
-    //todo todo sale bien, devolvemos res como json
-    return res.json() as Promise<T>;
+  // ✅ 204 No Content
+  if (res.status === 204) {
+    return undefined as T;
+  }
 
+  // ✅ cuerpo vacío
+  const text = await res.text();
+  if (!text) {
+    return undefined as T;
+  }
+
+  return JSON.parse(text) as T;
 }
 
 export async function apiFetchFormData<T>(
-    endpoint: string,
-    formData: FormData,
-    method: string = 'POST',
-    credentials: RequestCredentials = 'include',
-    isRetry = false
-): Promise<T>{
-    
-    const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+  endpoint: string,
+  formData: FormData,
+  method: string = 'POST',
+  credentials: RequestCredentials = 'include',
+  isRetry = false
+): Promise<T> {
+  const baseUrl = getBaseUrl();
 
-    //realizamos el fetch con FormData (sin Content-Type, el browser lo pone automáticamente)
-    const res = await fetch(`${url}/${endpoint}`, { 
-        method: method,
-        credentials: credentials,
-        body: formData,
-    })
+  const res = await fetch(`${baseUrl}/${endpoint}`, {
+    method,
+    credentials,
+    body: formData,
+  });
 
-    //capturamos res 401 (access token expirado) y reintentamos refresh token
-    if (res.status === 401 && !isRetry) {
-        console.log("Status 401: Se reintentará refresh el token")
-        const refreshed = await refreshSession(url!);
-        if (refreshed) {
-            console.log("Token refreshed, se reintentará hacer la consulta al endpoint")
-            return apiFetchFormData<T>(endpoint, formData, method, credentials, true);
-        }
-        console.log("Token no fue refreshed")
-        throw new Error('Sesión expirada');
+  // 🔁 refresh si 401
+  if (res.status === 401 && !isRetry) {
+    const refreshed = await refreshSession();
+
+    if (refreshed) {
+      return apiFetchFormData<T>(
+        endpoint,
+        formData,
+        method,
+        credentials,
+        true
+      );
     }
 
-    //si recibimos res status 400 o 500, lanzamos error
-    if (!res.ok) {
-        let errorData;
-        try {
-            errorData = await res.json();
-        } catch (error) {
-            errorData = { message: `Error HTTP ${res.status}: ${res.statusText}` };
-        }
-        throw new Error(errorData?.message || errorData?.error || `Error HTTP ${res.status}`);
+    throw new Error('Sesión expirada');
+  }
+
+  if (!res.ok) {
+    let errorData: any;
+
+    try {
+      errorData = await res.json();
+    } catch {
+      errorData = { message: `Error HTTP ${res.status}: ${res.statusText}` };
     }
 
-    //si recibimos res status 204 No Content, no hay cuerpo para parsear
-    if (res.status === 204) {
-        return undefined as T;
-    }
+    throw new Error(
+      errorData?.message ||
+        errorData?.error ||
+        `Error HTTP ${res.status}`
+    );
+  }
 
-    //verificamos si el cuerpo está vacío
-    const contentLength = res.headers.get('content-length');
-    if (contentLength === '0' || res.status === 200) {
-        const text = await res.text();
-        if (!text) {
-            return undefined as T;
-        }
-        return JSON.parse(text) as Promise<T>;
-    }
+  if (res.status === 204) {
+    return undefined as T;
+  }
 
-    //todo todo sale bien, devolvemos res como json
-    return res.json() as Promise<T>;
+  const text = await res.text();
+  if (!text) {
+    return undefined as T;
+  }
+
+  return JSON.parse(text) as T;
 }
-
