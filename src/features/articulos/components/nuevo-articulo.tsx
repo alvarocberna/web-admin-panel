@@ -62,7 +62,7 @@ export function NuevoArticulo(){
                 name="titulo" 
                 type="text" 
                 register={register} 
-                rules={{ required: true, minLength: {value: 1, message: 'Titulo demasiado corto'}, maxLength: {value: 50, message: 'Titulo demasiado largo'} }} 
+                rules={{ required: true, minLength: {value: 1, message: 'Titulo demasiado corto'}, maxLength: {value: 200, message: 'Titulo demasiado largo'} }} 
                 textSize="lg"/>
                 {errors.titulo && <span className="text-red-700 text-sm">{errors.titulo.message}</span>}
                 <InputArt 
