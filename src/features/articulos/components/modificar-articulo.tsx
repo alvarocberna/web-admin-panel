@@ -81,7 +81,7 @@ export function ModificarArticulo(props: {id_articulo: string}){
         <form onSubmit={handleSubmit(onSubmit)} className="w-full m-auto">
             {/* Cabecera articulo */}
             <div className="bg-white border border-gray-200 rounded-xl px-2 pt-1 pb-3">
-            <InputArt label="Titulo" name="titulo" type="text" register={register} rules={{ required: true, minLength: {value: 1, message: 'Titulo demasiado corto'}, maxLength: {value: 50, message: 'Titulo demasiado largo'} }} textSize="lg"/>
+            <InputArt label="Titulo" name="titulo" type="text" register={register} rules={{ required: true, minLength: {value: 1, message: 'Titulo demasiado corto'}, maxLength: {value: 200, message: 'Titulo demasiado largo'} }} textSize="lg"/>
             {errors.titulo && <span className="text-red-700 text-sm">{errors.titulo.message}</span>}
             <InputArt label="Subtitulo" name="subtitulo" type="text" register={register} rules={{ required: false, minLength: {value: 1, message: 'Subtitulo demasiado corto'}, maxLength: {value: 200, message: 'Subtitulo demasiado largo'} }} textSize="md"/>
             {errors.subtitulo && <span className="text-red-700 text-sm">{errors.subtitulo.message}</span>}
