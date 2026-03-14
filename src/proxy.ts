@@ -10,6 +10,22 @@ const proxyLog = (msg: string) => {
   console.log(`[proxy] ${time} — ${msg}`);
 };
 
+/** Adjunta un token CSRF (Double Submit Cookie) a la respuesta si aún no existe. */
+function withCsrfCookie(response: NextResponse, request: NextRequest): NextResponse {
+  const existing = request.cookies.get('csrf_token');
+  if (!existing) {
+    const token = crypto.randomUUID();
+    response.cookies.set('csrf_token', token, {
+      httpOnly: false,                                         // debe ser legible por JS
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+    });
+    proxyLog(`csrf_token generado → ${token.slice(0, 8)}…`);
+  }
+  return response;
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -61,7 +77,7 @@ export function proxy(request: NextRequest) {
   }
 
   proxyLog(`ruta protegida con sesión → permitido`);
-  return NextResponse.next();
+  return withCsrfCookie(NextResponse.next(), request);
 }
 
 // Configurar para qué rutas se ejecuta el middleware

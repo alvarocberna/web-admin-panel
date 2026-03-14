@@ -1,3 +1,12 @@
+const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
+/** Lee el token CSRF del cookie no-httpOnly establecido por el proxy. */
+function getCsrfToken(): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 const getBaseUrl = () => {
   // En el browser → usa rewrite de Next
   if (typeof window !== 'undefined') {
@@ -23,10 +32,14 @@ async function refreshSession(): Promise<boolean> {
 
   tokenLog('iniciando refresh de sesión');
 
+  const refreshHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+  const csrfForRefresh = getCsrfToken();
+  if (csrfForRefresh) refreshHeaders['X-CSRF-Token'] = csrfForRefresh;
+
   refreshPromise = fetch(`${getBaseUrl()}/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
+    headers: refreshHeaders,
   })
     .then(res => {
       tokenLog(res.ok ? 'refresh exitoso — nueva sesión activa' : `refresh fallido — status ${res.status}`);
@@ -46,10 +59,16 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const baseUrl = getBaseUrl();
 
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (MUTATING_METHODS.has(method.toUpperCase())) {
+    const csrf = getCsrfToken();
+    if (csrf) headers['X-CSRF-Token'] = csrf;
+  }
+
   const res = await fetch(`${baseUrl}/${endpoint}`, {
     method,
     credentials,
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: data ? JSON.stringify(data) : undefined,
   });
 
@@ -104,9 +123,16 @@ export async function apiFetchFormData<T>(
 ): Promise<T> {
   const baseUrl = getBaseUrl();
 
+  const headers: Record<string, string> = {};
+  if (MUTATING_METHODS.has(method.toUpperCase())) {
+    const csrf = getCsrfToken();
+    if (csrf) headers['X-CSRF-Token'] = csrf;
+  }
+
   const res = await fetch(`${baseUrl}/${endpoint}`, {
     method,
     credentials,
+    headers: Object.keys(headers).length ? headers : undefined,
     body: formData,
   });
 
