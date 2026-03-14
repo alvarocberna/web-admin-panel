@@ -1,13 +1,12 @@
 
 interface Props {
   title: string
-  width?: string
 }
 
-export function TitleSubSec({ title, width = '100%' }: Props){
+export function TitleSubSec({ title }: Props){
     return(
-        <div className={`w-[${width}] my-auto mx-auto`}>
-            <h1 className={`w-[full] text-xl font-bold text-[#414141]`}>{title}</h1>
+        <div className="my-auto">
+            <h2 className="text-base font-semibold text-zinc-900">{title}</h2>
         </div>
     )
 }

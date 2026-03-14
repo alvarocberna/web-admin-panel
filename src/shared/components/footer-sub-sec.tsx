@@ -1,13 +1,13 @@
 
 interface Props {
     children?: React.ReactNode
-    height?: string //
+    height?: string
 }
 
-export function FooterSubSec({children, height = '25px' }: Props){
+export function FooterSubSec({ children, height = '24px' }: Props){
     return(
-        <div className={`h-[${height}] w-full text-white`}>
-            {children ? children : '-'} 
+        <div className="w-full" style={{ height }}>
+            {children}
         </div>
     )
 }

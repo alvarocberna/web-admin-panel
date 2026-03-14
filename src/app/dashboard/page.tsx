@@ -1,34 +1,35 @@
 'use client'
-//react
 import { useState, useEffect } from 'react';
-//shared
-import {ContenedorAdmin} from '@/shared';
-//features
+import { ContenedorAdmin } from '@/shared';
 import { UsuarioEntity } from '@/features';
 import { UsuarioService } from '@/features/usuarios/services/usuario.service';
 
 export default function Dashboard(){
-    //inicializar estados
     const [usuario, setUsuario] = useState<UsuarioEntity>()
 
-    //traemos los articulos al cargar el componente
     useEffect(() => {
         const fetchUsuario = async () => {
-            try{
+            try {
                 const data = await UsuarioService.getUsuario()
                 setUsuario(data);
-            }catch(error){
+            } catch(error) {
                 console.log("error: " + error)
             }
         }
         fetchUsuario();
     }, [])
-    
-    return(
+
+    return (
         <ContenedorAdmin>
-            <p className='text-black'>
-                Welcome {usuario?.email}
-            </p>
+            <div className="card px-6 py-7 max-w-lg">
+                <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mb-1">Bienvenido</p>
+                <h2 className="text-xl font-semibold text-zinc-900">
+                    {usuario?.nombre ? `${usuario.nombre} ${usuario.apellido ?? ''}` : usuario?.email ?? '—'}
+                </h2>
+                {usuario?.email && usuario?.nombre && (
+                    <p className="text-sm text-zinc-500 mt-0.5">{usuario.email}</p>
+                )}
+            </div>
         </ContenedorAdmin>
     )
 }

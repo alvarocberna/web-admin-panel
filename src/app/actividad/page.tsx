@@ -1,11 +1,7 @@
 "use client"
-//react
 import { useEffect, useState } from "react";
-//shared
 import { ContenedorAdmin, TitleSec } from "@/shared";
-//features
 import { ActividadService, ActividadEntity } from "@/features";
-
 
 export default function ActividadPage() {
 	const [actividades, setActividades] = useState<ActividadEntity[]>([]);
@@ -22,36 +18,45 @@ export default function ActividadPage() {
 		fetchActividad();
 	}, []);
 
-	const listaActividad = actividades.map((actividad) => {
-		const fecha = new Date(actividad.fecha);
-		const anno = fecha.getFullYear();
-		const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-		const dia = fecha.getDate().toString().padStart(2, "0");
-
-		return (
-			<div className="w-full mb-1" key={actividad.id}>
-				<div className="w-full flex border-b border-b-gray-400 text-gray-800 px-2 pb-1">
-                    <p className="me-10">
-                        {dia}/{mes}/{anno}
-                    </p>
-                    <p>
-                        Articulo "{actividad.titulo_articulo}" {actividad.accion} por {actividad.usuario.nombre} {actividad.usuario.apellido}.
-                    </p>
-	
-				</div>
-			</div>
-		);
-	});
+	const formatFecha = (fechaStr: string) => {
+		const fecha = new Date(fechaStr);
+		return fecha.toLocaleDateString('es-ES', {
+			day: '2-digit',
+			month: 'short',
+			year: 'numeric',
+		});
+	};
 
 	return (
 		<ContenedorAdmin>
-			<TitleSec title="Actividad" />
-				<div className="flex flex-col justify-start pt-5 pb-10">
-					{listaActividad}
-					{actividades.length === 0 && (
-						<div className="px-2 text-gray-600">No hay actividad registrada.</div>
-					)}
-				</div>
+			<TitleSec title="Historial de actividad" />
+			<div className="card overflow-hidden">
+				{actividades.length === 0 ? (
+					<div className="px-6 py-12 text-center text-zinc-400 text-sm">
+						No hay actividad registrada.
+					</div>
+				) : (
+					<div className="divide-y divide-zinc-100">
+						{actividades.map((actividad) => (
+							<div key={actividad.id} className="flex items-start gap-4 px-5 py-3.5 hover:bg-zinc-50 transition-colors duration-100">
+								<span className="text-xs text-zinc-400 font-mono pt-0.5 flex-shrink-0 w-28">
+									{formatFecha(actividad.fecha)}
+								</span>
+								<p className="text-sm text-zinc-700 leading-snug">
+									Artículo{' '}
+									<span className="font-medium text-zinc-900">
+										&ldquo;{actividad.titulo_articulo}&rdquo;
+									</span>{' '}
+									{actividad.accion} por{' '}
+									<span className="font-medium text-zinc-800">
+										{actividad.usuario.nombre} {actividad.usuario.apellido}
+									</span>
+								</p>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
 		</ContenedorAdmin>
 	);
 }

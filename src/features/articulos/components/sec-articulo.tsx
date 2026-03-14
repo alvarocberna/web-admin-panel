@@ -20,7 +20,7 @@ export function SecArticulo<T extends FieldValues = FieldValues>({ field, index,
   const imgHidden = imagePosition === 'none' ? 'hidden' : '';
   
   return (
-    <div key={field.id} className={`${flex} justify-between my-5 bg-white border border-gray-200 rounded-xl pt-1 pb-3`}>
+    <div key={field.id} className={`${flex} justify-between card pt-2 pb-4`}>
             <div className={`w-${textW} ${textHidden} px-2`} >
                 <InputArt
                     label={`Título Sub Sección ${index + 1}`}

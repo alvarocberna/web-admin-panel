@@ -1,16 +1,23 @@
 'use client'
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faNewspaper, faUser, faSignOutAlt, faHome } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse } from '@fortawesome/free-solid-svg-icons'
 import Link from "next/link";
 import { AuthService } from "@/features/auth/services/auth.service";
 import { toast } from 'react-toastify';
+
+const navItems = [
+  { nombre: "Inicio",    ruta: "/dashboard",  icon: faHouse,        match: (p: string) => p === '/dashboard' },
+  { nombre: "Artículos", ruta: "/articulos",  icon: faNewspaper,    match: (p: string) => p.startsWith('/articulos') },
+  { nombre: "Historial", ruta: "/actividad",  icon: faClockRotateLeft, match: (p: string) => p === '/actividad' },
+];
 
 export function NavbarAdmin() {
   const [open, setOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const logout = async () => {
     if (isLoggingOut) return;
@@ -27,112 +34,119 @@ export function NavbarAdmin() {
     }
   }
 
-  // categorías del menú
-  const navInfo = [
-    { nombre: "Home", ruta: "/dashboard", icon: faHome },
-    { nombre: "Articulos", ruta: "/articulos", icon: faNewspaper },
-    { nombre: "Historial", ruta: "/actividad", icon: faUser },
-  ];
-
-  // Componente con la lista de opciones del menú
-  const navList = navInfo.map((info, index) => (
-    <li key={index} className="w-full">
-      <Link
-        href={info.ruta}
-        className="flex items-center py-3 px-4 text-zinc-700 hover:text-sky-600 transition-colors duration-300"
-        onClick={() => setOpen(false)}
-      >
-        <FontAwesomeIcon icon={info.icon} className="me-2" style={{width: '16px', height: '16px'}}/>
-        <p className=" mb-0">
+  const NavLink = ({ info, onClick }: { info: typeof navItems[0], onClick?: () => void }) => {
+    const isActive = info.match(pathname);
+    return (
+      <li className="w-full list-none">
+        <Link
+          href={info.ruta}
+          onClick={onClick}
+          className={`
+            flex items-center py-2.5 px-3 rounded-lg text-sm font-medium transition-colors duration-150
+            ${isActive
+              ? 'bg-zinc-100 text-zinc-900'
+              : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'
+            }
+          `}
+        >
+          {isActive && (
+            <span className="absolute left-0 w-0.5 h-6 bg-zinc-800 rounded-r-full" />
+          )}
+          <FontAwesomeIcon icon={info.icon} className="me-2.5 flex-shrink-0" style={{ width: '15px', height: '15px' }} />
           {info.nombre}
-        </p>
-      </Link>
-    </li>
-  ));
+        </Link>
+      </li>
+    );
+  };
+
+  const LogoutItem = ({ onClick }: { onClick?: () => void }) => (
+    <div
+      onClick={() => { onClick?.(); logout(); }}
+      className={`
+        flex items-center py-2.5 px-3 rounded-lg text-sm font-medium transition-colors duration-150
+        ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'}
+      `}
+    >
+      <FontAwesomeIcon icon={faSignOutAlt} className="me-2.5 flex-shrink-0" style={{ width: '15px', height: '15px' }} />
+      {isLoggingOut ? 'Cerrando...' : 'Cerrar sesión'}
+    </div>
+  );
 
   return (
-    <div className="">
-      {/* Menu Escritorio */}
-      <div className="hidden md:flex flex-col w-[280px] h-screen bg-white border-r border-gray-300 fixed left-0 top-0 z-20">
-        {/* Logo */}
-        <div className="p-6 border-b border-gray-300">
-          <Link href="/pacientes" style={{textDecoration: 'none'}}>
-            <p className="font-bold text-zinc-700">
-              Admin
-            </p>
+    <div>
+      {/* ── Sidebar Escritorio ─────────────────────────── */}
+      <aside className="hidden md:flex flex-col w-[280px] h-screen bg-white border-r border-zinc-200 fixed left-0 top-0 z-20">
+        <div className="px-5 py-5 border-b border-zinc-100">
+          <Link href="/dashboard" className="block">
+            <span className="text-sm font-semibold text-zinc-900 tracking-tight">Panel Admin</span>
           </Link>
         </div>
-        {/* Opciones menú */}
-        <nav className="p-6 flex-1">
-          <ul className="space-y-4 px-0">
-            {/* lista de opciones */}
-            {navList}
-            {/* logout */}
-            <div onClick={logout}
-                className={`flex items-center py-3 px-4 text-zinc-700 hover:text-sky-600 transition-colors duration-300 ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-            >
-                <FontAwesomeIcon icon={faSignOutAlt} className="me-2" style={{width: '16px', height: '16px'}}/>
-                <p className="mb-0">
-                  {isLoggingOut ? 'Cerrando...' : 'Logout'}
-                </p>
-            </div>
+        <nav className="flex-1 px-3 py-4 overflow-y-auto">
+          <ul className="space-y-0.5 relative">
+            {navItems.map((item) => (
+              <NavLink key={item.ruta} info={item} />
+            ))}
           </ul>
         </nav>
-      </div>
+        <div className="px-3 py-4 border-t border-zinc-100">
+          <LogoutItem />
+        </div>
+      </aside>
 
-      {/* Menu Movil - cerrado*/}
-      <div className="flex md:hidden items-center justify-between bg-white border-b border-gray-300 px-4 py-3 fixed top-0 left-0 right-0 z-30">
-        <Link href="/pacientes">
-          <h1 className="text-xl font-bold text-zinc-700">Admin</h1>
+      {/* ── Topbar Móvil (cerrado) ─────────────────────── */}
+      <div className="flex md:hidden items-center justify-between bg-white border-b border-zinc-200 px-4 py-3 fixed top-0 left-0 right-0 z-30">
+        <Link href="/dashboard">
+          <span className="text-sm font-semibold text-zinc-900">Panel Admin</span>
         </Link>
         <button
-          className="p-2 rounded focus:outline-none focus:ring-2 text-zinc-700 focus:ring-zinc-500"
+          className="p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-300"
           onClick={() => setOpen((o) => !o)}
           aria-label="Abrir menú"
         >
-          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
 
+      {/* Overlay */}
       {open && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 z-40" onClick={() => setOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black/25 backdrop-blur-[2px] z-40 md:hidden"
+          onClick={() => setOpen(false)}
+        />
       )}
 
-      {/*Menu Movil - Abierto*/}
+      {/* ── Drawer Móvil (abierto) ─────────────────────── */}
       <div
-        className={`fixed top-0 left-0 h-full w-[75vw] max-w-xs bg-white border-r border-gray-300 z-50 transform transition-transform duration-200 ease-in-out md:hidden ${open ? "translate-x-0" : "-translate-x-full"}`}
-        style={{ boxShadow: open ? "2px 0 8px rgba(0,0,0,0.08)" : undefined }}
+        className={`
+          fixed top-0 left-0 h-full w-[72vw] max-w-xs bg-white border-r border-zinc-200 z-50
+          transform transition-transform duration-200 ease-out md:hidden
+          ${open ? 'translate-x-0' : '-translate-x-full'}
+        `}
       >
-        <div className="p-6 border-b border-gray-300 flex items-center justify-between">
-          <Link href="/pacientes">
-            <h1 className="text-xl font-bold text-zinc-700">Admin</h1>
-          </Link>
+        <div className="px-5 py-4 border-b border-zinc-100 flex items-center justify-between">
+          <span className="text-sm font-semibold text-zinc-900">Panel Admin</span>
           <button
-            className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-zinc-500"
+            className="p-1.5 rounded-lg text-zinc-500 hover:bg-zinc-100 transition-colors focus:outline-none"
             onClick={() => setOpen(false)}
             aria-label="Cerrar menú"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        <nav className="p-6">
-          <ul className="space-y-4 px-0">
-            {navList}
-            {/* logout móvil */}
-            <div onClick={logout}
-                className={`flex items-center py-3 px-4 text-zinc-700 hover:text-sky-600 transition-colors duration-300 ${isLoggingOut ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-            >
-                <FontAwesomeIcon icon={faSignOutAlt} className="me-2" style={{width: '16px', height: '16px'}}/>
-                <p className="mb-0">
-                  {isLoggingOut ? 'Cerrando...' : 'Logout'}
-                </p>
-            </div>
+        <nav className="px-3 py-4 relative">
+          <ul className="space-y-0.5">
+            {navItems.map((item) => (
+              <NavLink key={item.ruta} info={item} onClick={() => setOpen(false)} />
+            ))}
           </ul>
         </nav>
+        <div className="px-3 py-4 border-t border-zinc-100 absolute bottom-0 left-0 right-0">
+          <LogoutItem onClick={() => setOpen(false)} />
+        </div>
       </div>
     </div>
   );

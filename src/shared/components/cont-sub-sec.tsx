@@ -1,15 +1,18 @@
 
 interface Props {
   children: React.ReactNode
-  width?: string 
+  width?: string
   widthInner?: string
   height?: string
 }
 
-export function ContSubSec({ children, width = '100%', widthInner = '90%', height = '100%' }: Props){
+export function ContSubSec({ children, width = '100%', widthInner = '90%', height = 'auto' }: Props){
     return(
-        <div className={`w-[${width}] h-[${height}] flex mx-auto bg-white rounded-[12px] mb-5 shadow`} >
-            <div className={`w-[${widthInner}] m-auto flex flex-col`}>
+        <div
+          className="flex mx-auto bg-white rounded-xl mb-5 shadow-sm border border-zinc-100"
+          style={{ width, height: height === 'auto' ? undefined : height }}
+        >
+            <div className="m-auto flex flex-col" style={{ width: widthInner }}>
                 {children}
             </div>
         </div>
