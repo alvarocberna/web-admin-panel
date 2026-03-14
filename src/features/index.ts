@@ -17,6 +17,8 @@ export * from './proyectos/entities/proyecto.entity';
 //USUARIOS
 export * from './usuarios/entities/usuario.entity';
 export * from './usuarios/services/usuario.service';
+export * from './usuarios/dtos/usuario.dto';
+export * from './usuarios/components/perfil-usuario';
 //ACTIVIDAD
 export * from './actividad/entities/actividad.entity';
 export * from './actividad/services/actividad.service';

@@ -2,7 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse } from '@fortawesome/free-solid-svg-icons'
+import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse, faUser } from '@fortawesome/free-solid-svg-icons'
 import Link from "next/link";
 import { AuthService } from "@/features/auth/services/auth.service";
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ const navItems = [
   { nombre: "Inicio",    ruta: "/dashboard",  icon: faHouse,        match: (p: string) => p === '/dashboard' },
   { nombre: "Artículos", ruta: "/articulos",  icon: faNewspaper,    match: (p: string) => p.startsWith('/articulos') },
   { nombre: "Historial", ruta: "/actividad",  icon: faClockRotateLeft, match: (p: string) => p === '/actividad' },
+  { nombre: "Usuario", ruta: "/usuario",  icon: faUser, match: (p: string) => p === '/usuario' },
 ];
 
 export function NavbarAdmin() {
