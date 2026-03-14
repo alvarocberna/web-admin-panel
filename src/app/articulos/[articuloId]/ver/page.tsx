@@ -27,7 +27,7 @@ export default function VerArticulo(){
     const fecha = new Date(articulo?.fecha_publicacion);
     const anno = fecha.getFullYear();
     const mes = (fecha.getMonth()+1).toString().padStart(2, "0");
-    const dia = fecha.getDay().toString().padStart(2, "0");
+    const dia = fecha.getDate().toString().padStart(2, "0");
 
     return(
         <ContenedorAdmin>

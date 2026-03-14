@@ -18,32 +18,39 @@ export class ArticulosService{
     public static async createArticulo(data: CreateArticuloForm): Promise<void>{
         const user = await UsuarioService.getUsuario();
         const formData = new FormData();
-        
+
         // 1. Agregar imagen principal si existe
         if (data.image_file && data.image_file.length > 0) {
-            formData.append('image_file', data.image_file[0]);
+            const file = data.image_file[0];
+            if (!file.type.startsWith('image/')) throw new Error('El archivo principal debe ser una imagen.');
+            if (file.size > 5 * 1024 * 1024) throw new Error('La imagen principal no puede superar 5MB.');
+            formData.append('image_file', file);
         }
-        
+
         // 2. Agregar imágenes de secciones
         // Mantener el orden/índices: si una sección no tiene imagen, añadir un placeholder vacío
         data.sec_articulo.forEach((sec, idx) => {
             if (sec.image_file && sec.image_file.length > 0) {
-                formData.append('sec_images', sec.image_file[0]);
+                const file = sec.image_file[0];
+                if (!file.type.startsWith('image/')) throw new Error(`La imagen de la sección ${idx + 1} debe ser una imagen.`);
+                if (file.size > 5 * 1024 * 1024) throw new Error(`La imagen de la sección ${idx + 1} no puede superar 5MB.`);
+                formData.append('sec_images', file);
             } else {
                 // Agrega un archivo vacío como placeholder para preservar la posición
                 formData.append('sec_images', new File([], `empty-${idx}`));
             }
         });
-        
+
         // 3. Crear objeto con TODOS los datos del artículo
+        const slug = data.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         const articuloData = {
             titulo: data.titulo,
             subtitulo: data.subtitulo,
             autor: user.nombre + ' ' + user.apellido,
             fecha_publicacion: new Date(),
             fecha_actualizacion: new Date(),
-            status: 'test',
-            slug: 'test',
+            status: 'draft',
+            slug,
             image_url: null,
             image_alt: data.image_alt || '',
             image_position: null,
@@ -67,32 +74,39 @@ export class ArticulosService{
     public static async updateArticulo(id_articulo: string, data: UpdateArticuloForm): Promise<void>{
         const user = await UsuarioService.getUsuario();
         const formData = new FormData();
-        
+
         // 1. Agregar imagen principal si existe
         if (data.image_file && data.image_file.length > 0) {
-            formData.append('image_file', data.image_file[0]);
+            const file = data.image_file[0];
+            if (!file.type.startsWith('image/')) throw new Error('El archivo principal debe ser una imagen.');
+            if (file.size > 5 * 1024 * 1024) throw new Error('La imagen principal no puede superar 5MB.');
+            formData.append('image_file', file);
         }
-        
+
         // 2. Agregar imágenes de secciones
         // Mantener el orden/índices: si una sección no tiene imagen, añadir un placeholder vacío
         data.sec_articulo.forEach((sec, idx) => {
             if (sec.image_file && sec.image_file.length > 0) {
-                formData.append('sec_images', sec.image_file[0]);
+                const file = sec.image_file[0];
+                if (!file.type.startsWith('image/')) throw new Error(`La imagen de la sección ${idx + 1} debe ser una imagen.`);
+                if (file.size > 5 * 1024 * 1024) throw new Error(`La imagen de la sección ${idx + 1} no puede superar 5MB.`);
+                formData.append('sec_images', file);
             } else {
                 // Agrega un archivo vacío como placeholder para preservar la posición
                 formData.append('sec_images', new File([], `empty-${idx}`));
             }
         });
-        
+
         // 3. Crear objeto con TODOS los datos del artículo
+        const slug = data.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         const articuloData = {
             titulo: data.titulo,
             subtitulo: data.subtitulo || '',
             autor: user.nombre + ' ' + user.apellido,
             fecha_publicacion: new Date(),
             fecha_actualizacion: new Date(),
-            status: 'test',
-            slug: 'test',
+            status: 'draft',
+            slug,
             image_url: null,
             image_alt: data.image_alt || '',
             image_position: null,

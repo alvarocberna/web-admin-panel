@@ -13,8 +13,6 @@ export class AuthService {
   public static async login(
     dataForm: FormInputInterface
   ): Promise<LoginResponse> {
-    console.log("AuthService login data:", dataForm);
-
     return apiFetch<LoginResponse>(
       "auth/login",
       "POST",

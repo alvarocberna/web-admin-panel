@@ -29,7 +29,7 @@ export default function Articulos(){
             }
         }
         fetchArticulos();
-    }, [articulos.length]);
+    }, []);
 
     //abre el modal de confirmación
     const openModal = (id: string) => {
@@ -58,13 +58,13 @@ export default function Articulos(){
     }
 
     //componente con todos los articulos
-    const listaArticulos = articulos.map((articulo: ArticuloEntity, index: number) => {
+    const listaArticulos = articulos.map((articulo: ArticuloEntity) => {
         const fecha = new Date(articulo.fecha_publicacion);
         const anno = fecha.getFullYear();
         const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
         const dia = fecha.getDate().toString().padStart(2, '0');
         return(
-            <div className='w-full sm:w-1/2 lg:w-1/3 px-2 mb-4' key={index}>
+            <div className='w-full sm:w-1/2 lg:w-1/3 px-2 mb-4' key={articulo.id}>
                 <div className='w-full flex flex-col bg-white border border-gray-200 rounded-xl text-black px-5 py-5'>
                     <h4 className='mb-2 font-bold text-lg'>{articulo.titulo}</h4>
                     <p className='mb-2'>Por: {articulo.autor}</p>

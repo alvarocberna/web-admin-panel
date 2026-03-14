@@ -1,13 +1,10 @@
 'use client'
 //react
-import {useState, useEffect} from 'react';
 import { useParams } from 'next/navigation';
-import { useForm, FormProvider } from "react-hook-form" 
 //shared
 import {ContenedorAdmin, TitleSec} from '@/shared';
 //features
 import {ModificarArticulo} from '@/features';
-import {ArticulosService, ArticuloEntity} from '@/features';
 
 
 export default function ModificarArticuloPage(){
