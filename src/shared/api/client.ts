@@ -8,16 +8,33 @@ const getBaseUrl = () => {
   return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 };
 
-async function refreshSession(): Promise<boolean> {
-  const baseUrl = getBaseUrl();
+const tokenLog = (msg: string) => {
+  const time = new Date().toLocaleTimeString('es-CL', { hour12: false });
+  console.log(`[auth] ${time} — ${msg}`);
+};
 
-  const res = await fetch(`${baseUrl}/auth/refresh`, {
+let refreshPromise: Promise<boolean> | null = null;
+
+async function refreshSession(): Promise<boolean> {
+  if (refreshPromise) {
+    tokenLog('refresh ya en curso, esperando resultado...');
+    return refreshPromise;
+  }
+
+  tokenLog('iniciando refresh de sesión');
+
+  refreshPromise = fetch(`${getBaseUrl()}/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-  });
+  })
+    .then(res => {
+      tokenLog(res.ok ? 'refresh exitoso — nueva sesión activa' : `refresh fallido — status ${res.status}`);
+      return res.ok;
+    })
+    .finally(() => { refreshPromise = null; });
 
-  return res.ok;
+  return refreshPromise;
 }
 
 export async function apiFetch<T>(
