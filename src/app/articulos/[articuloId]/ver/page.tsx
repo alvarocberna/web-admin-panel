@@ -55,17 +55,17 @@ interface SecArticuloInterface {
 function SecArticulo({data}: SecArticuloInterface){
     const imagePosition = data.image_position;
     const flex = imagePosition === 'left' ? 'flex flex-row-reverse' : 'flex';
-    const textW = (imagePosition === 'left' || imagePosition === 'right') ? '[60%]' : 'full';
-    const imgW = (imagePosition === 'left' || imagePosition === 'right') ? '[40%]' : 'full';
+    const textW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[60%]' : 'w-full';
+    const imgW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[40%]' : 'w-full';
     const textHidden = imagePosition === 'all' ? 'hidden' : '';
     const imgHidden = imagePosition === 'none' ? 'hidden' : '';
     return(
         <div className={`${flex} justify-between mb-10`}>
-            <div className={`w-${textW} ${textHidden} px-2`} >
+            <div className={`${textW} ${textHidden} px-2`} >
                 <h4 className="text-2xl">{data.titulo_sec}</h4>
                 <p className="text-md">{data.contenido_sec}</p> 
             </div>
-            <div className={`w-${imgW} h-75  ${imgHidden} relative `}>
+            <div className={`${imgW} h-75 ${imgHidden} relative`}>
                 <Image 
                     src={data.image_url || ''} 
                     alt={data.image_alt || ''} 

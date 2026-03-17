@@ -54,7 +54,6 @@ export class ArticulosService{
             image_url: null,
             image_alt: data.image_alt || '',
             image_position: null,
-            autor_id: user.id,
             sec_articulo: data.sec_articulo.map((dataSec, index) => ({
                 nro_seccion: index,
                 titulo_sec: dataSec.titulo_sec,
@@ -110,7 +109,6 @@ export class ArticulosService{
             image_url: null,
             image_alt: data.image_alt || '',
             image_position: null,
-            autor_id: user.id,
             sec_articulo: data.sec_articulo.map((dataSec, index) => ({
                 id: dataSec.id_sec,
                 nro_seccion: index,
