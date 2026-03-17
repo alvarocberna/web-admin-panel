@@ -11,7 +11,9 @@ const navItems = [
   { nombre: "Inicio",    ruta: "/dashboard",  icon: faHouse,        match: (p: string) => p === '/dashboard' },
   { nombre: "Artículos", ruta: "/articulos",  icon: faNewspaper,    match: (p: string) => p.startsWith('/articulos') },
   { nombre: "Historial", ruta: "/actividad",  icon: faClockRotateLeft, match: (p: string) => p === '/actividad' },
+  { nombre: "Testimonios", ruta: "/testimonios",  icon: faUser, match: (p: string) => p === '/testimonios' },
   { nombre: "Usuario", ruta: "/usuario",  icon: faUser, match: (p: string) => p === '/usuario' },
+  { nombre: "Project", ruta: "/project",  icon: faUser, match: (p: string) => p === '/project' },
 ];
 
 export function NavbarAdmin() {
