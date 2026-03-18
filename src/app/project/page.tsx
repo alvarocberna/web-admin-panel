@@ -1,4 +1,4 @@
-import { Articulos, ListaTestimonios, ProyectoEquipo } from '@/features/project';
+import { Articulos, ListaTestimonios, ProyectoEquipo, ProyectoServicios } from '@/features/project';
 
 export default function Project(){
     return(
@@ -6,6 +6,7 @@ export default function Project(){
             <Articulos/>
             <ListaTestimonios/>
             <ProyectoEquipo/>
+            <ProyectoServicios/>
         </div>
     )
 }

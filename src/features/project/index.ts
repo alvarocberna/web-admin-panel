@@ -15,3 +15,7 @@ export * from './testimonios/components/lista-testimonios';
 export * from './testimonios/entities/testimonio.entity';
 export * from './testimonios/entities/testimonios.entity';
 export * from './testimonios/services/testimonios.service';
+//SERVICIOS
+export * from './servicios/entities/servicios.entity';
+export * from './servicios/services/servicios.service';
+export * from './servicios/components/servicios.component';

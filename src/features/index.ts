@@ -38,3 +38,11 @@ export * from './testimonios/services/testimonios.service';
 export * from './testimonios/services/testimonio.service';
 export * from './testimonios/components/form-testimonios';
 export * from './testimonios/components/lista-testimonios';
+//SERVICIOS
+export * from './servicios/entities/servicios.entity';
+export * from './servicios/entities/servicio.entity';
+export * from './servicios/dtos/servicios.dto';
+export * from './servicios/dtos/servicio.dto';
+export * from './servicios/services/servicios.service';
+export * from './servicios/components/form-servicios';
+export * from './servicios/components/lista-servicios';
