@@ -6,6 +6,10 @@ export * from './articulos/dtos/sec-articulo.dto';
 export * from './articulos/entities/articulo.entity';
 export * from './articulos/entities/sec-articulo.entity';
 export * from './articulos/services/articulos.service';
+//EQUIPO
+export * from './equipo/entities/equipo.entity';
+export * from './equipo/services/equipo.service';
+export * from './equipo/components/equipo.component';
 //TESTIMONIOS
 export * from './testimonios/components/lista-testimonios';
 export * from './testimonios/entities/testimonio.entity';

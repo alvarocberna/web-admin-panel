@@ -22,6 +22,13 @@ export * from './usuarios/components/perfil-usuario';
 //ACTIVIDAD
 export * from './actividad/entities/actividad.entity';
 export * from './actividad/services/actividad.service';
+//EQUIPO
+export * from './equipo/dtos/equipo.dto';
+export * from './equipo/entities/equipo.entity';
+export * from './equipo/entities/empleado.entity';
+export * from './equipo/services/equipo.service';
+export * from './equipo/components/equipo-form';
+export * from './equipo/components/empleados';
 //TESTIMONIOS
 export * from './testimonios/entities/testimonios.entity';
 export * from './testimonios/entities/testimonio.entity';

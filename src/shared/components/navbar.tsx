@@ -2,7 +2,8 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse, faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
+import { faMessage, faFile, faUser } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { AuthService } from "@/features/auth/services/auth.service";
 import { toast } from 'react-toastify';
@@ -10,10 +11,11 @@ import { toast } from 'react-toastify';
 const navItems = [
   { nombre: "Inicio",    ruta: "/dashboard",  icon: faHouse,        match: (p: string) => p === '/dashboard' },
   { nombre: "Artículos", ruta: "/articulos",  icon: faNewspaper,    match: (p: string) => p.startsWith('/articulos') },
+  { nombre: "Testimonios", ruta: "/testimonios",  icon: faMessage, match: (p: string) => p === '/testimonios' },
   { nombre: "Historial", ruta: "/actividad",  icon: faClockRotateLeft, match: (p: string) => p === '/actividad' },
-  { nombre: "Testimonios", ruta: "/testimonios",  icon: faUser, match: (p: string) => p === '/testimonios' },
   { nombre: "Usuario", ruta: "/usuario",  icon: faUser, match: (p: string) => p === '/usuario' },
-  { nombre: "Project", ruta: "/project",  icon: faUser, match: (p: string) => p === '/project' },
+  { nombre: "Equipo", ruta: "/equipo",  icon: faPeopleGroup, match: (p: string) => p.startsWith('/equipo') },
+  { nombre: "Project", ruta: "/project",  icon: faFile, match: (p: string) => p === '/project' },
 ];
 
 export function NavbarAdmin() {
