@@ -1,4 +1,4 @@
-import { SecArticuloEntity } from "@/features/project";
+import { SecArticuloEntity } from "./sec-articulo.entity";
 
 export class ArticuloEntity{
     constructor(

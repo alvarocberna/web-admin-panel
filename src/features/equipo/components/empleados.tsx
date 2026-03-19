@@ -24,12 +24,11 @@ interface EmpleadoForm {
 }
 
 interface Props {
-    equipoId: string;
     empleados: EmpleadoEntity[];
     onUpdated: (empleados: EmpleadoEntity[]) => void;
 }
 
-export function Empleados({ equipoId, empleados, onUpdated }: Props) {
+export function Empleados({ empleados, onUpdated }: Props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [editingEmpleado, setEditingEmpleado] = useState<EmpleadoEntity | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -162,7 +161,7 @@ export function Empleados({ equipoId, empleados, onUpdated }: Props) {
     return (
         <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-zinc-700">Miembros del equipo</h3>
+                <h3 className="text-md font-semibold text-zinc-900">Miembros del equipo</h3>
                 <button type="button" onClick={openCreate} className="btn btn-primary h-8 text-xs px-3 flex items-center gap-1.5">
                     <FontAwesomeIcon icon={faPlus} style={{ width: '11px', height: '11px' }} />
                     Nuevo empleado

@@ -3,11 +3,14 @@ export * from './articulos/components/nuevo-articulo';
 export * from './articulos/components/modificar-articulo';
 export * from './articulos/dtos/articulo.dto';
 export * from './articulos/dtos/sec-articulo.dto';
+export * from './articulos/dtos/articulos.dto';
 export * from './articulos/entities/articulo.entity';
 export * from './articulos/entities/sec-articulo.entity';
+export * from './articulos/entities/articulos.entity';
 export * from './articulos/services/articulos.service';
 export * from './articulos/interfaces/articulo.interface';
 export * from './articulos/types/articulo.types';
+export * from './articulos/components/articulos-form';
 //AUTH
 export * from './auth/components/form-inicio-sesion';
 export * from './auth/services/auth.service';

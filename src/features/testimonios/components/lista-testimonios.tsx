@@ -43,7 +43,7 @@ export function ListaTestimonios() {
 
     return (
         <div className="mt-8">
-            <h3 className="text-sm font-semibold text-zinc-700 mb-4">Testimonios recibidos</h3>
+            <h3 className="text-md font-semibold text-zinc-900 mb-4">Testimonios recibidos</h3>
 
             {testimonios.length === 0 ? (
                 <div className="card py-14 text-center text-zinc-400 text-sm">

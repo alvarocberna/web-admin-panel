@@ -3,21 +3,20 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Input, TextAreaArt } from '@/shared';
-import { TestimoniosService } from '../services/testimonios.service';
-import { TestimoniosEntity } from '../entities/testimonios.entity';
+import { ArticulosService, ArticulosEntity } from '@/features';
 
-interface TestimoniosForm {
+interface ArticulosForm {
     titulo: string;
     descripcion: string;
     activo: boolean;
 }
 
 interface Props {
-    testimonios: TestimoniosEntity | null;
-    onSaved: (t: TestimoniosEntity) => void;
+    articulos: ArticulosEntity | null;
+    onSaved: (e: ArticulosEntity) => void;
 }
 
-export function FormTestimonios({ testimonios, onSaved }: Props) {
+export function ArticulosForm({ articulos, onSaved }: Props) {
     const {
         register,
         handleSubmit,
@@ -25,47 +24,57 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
         watch,
         setValue,
         formState: { errors, isSubmitting },
-    } = useForm<TestimoniosForm>({
+    } = useForm<ArticulosForm>({
         defaultValues: { titulo: '', descripcion: '', activo: true },
     });
 
     const activo = watch('activo');
 
     useEffect(() => {
-        if (testimonios) {
+        if (articulos) {
             reset({
-                titulo: testimonios.titulo,
-                descripcion: testimonios.descripcion,
-                activo: testimonios.activo,
+                titulo: articulos.titulo,
+                descripcion: articulos.descripcion ?? '',
+                activo: articulos.activo,
             });
         }
-    }, [testimonios, reset]);
+    }, [articulos, reset]);
 
-    const onSubmit = async (data: TestimoniosForm) => {
+    const onSubmit = async (data: ArticulosForm) => {
         try {
-            let resultado: TestimoniosEntity;
-            if (testimonios) {
-                resultado = await TestimoniosService.updateTestimonios(data);
-                toast.success('Sección de testimonios actualizada correctamente');
+            let resultado: ArticulosEntity;
+            if (articulos) {
+                resultado = await ArticulosService.updateArticulos({
+                    titulo: data.titulo,
+                    descripcion: data.descripcion,
+                    activo: data.activo,
+                    aprobar: true,
+                });
+                toast.success('Equipo actualizado correctamente');
             } else {
-                resultado = await TestimoniosService.createTestimonios(data);
-                toast.success('Sección de testimonios creada correctamente');
+                resultado = await ArticulosService.createArticulos({
+                    titulo: data.titulo,
+                    descripcion: data.descripcion,
+                    activo: data.activo,
+                    aprobar: true
+                });
+                toast.success('Equipo creado correctamente');
             }
             onSaved(resultado);
         } catch (error: any) {
-            toast.error(error?.message || 'Error al guardar la sección de testimonios');
+            toast.error(error?.message || 'Error al guardar el articulos');
         }
     };
 
     return (
         <div className="card px-6 py-6 max-w-lg">
-            <h2 className="text-md font-semibold text-zinc-900 mb-1">
-                {testimonios ? 'Editar sección de testimonios' : 'Crear sección de testimonios'}
+            <h2 className=" text-md font-semibold text-zinc-900 mb-1">
+                {articulos ? 'Editar articulos' : 'Crear articulos'}
             </h2>
             <p className="text-sm text-zinc-500 mb-5">
-                {testimonios
-                    ? 'Actualiza el título y descripción de la sección.'
-                    : 'Configura la sección de testimonios de tu proyecto.'}
+                {articulos
+                    ? 'Actualiza el título y descripción del articulos.'
+                    : 'Configura la sección de articulos de tu proyecto.'}
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -83,13 +92,9 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                     label="Descripción"
                     name="descripcion"
                     register={register}
-                    rules={{ required: 'La descripción es requerida' }}
+                    rules={{ required: false }}
                 />
-                {errors.descripcion && (
-                    <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>
-                )}
 
-                {/* Toggle activo */}
                 <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">
                     <div>
                         <p className="text-sm font-medium text-zinc-800">Sección activa</p>
@@ -109,7 +114,7 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
 
                 <div className="mt-5 flex justify-end">
                     <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                        {isSubmitting ? 'Guardando...' : testimonios ? 'Guardar cambios' : 'Crear sección'}
+                        {isSubmitting ? 'Guardando...' : articulos ? 'Guardar cambios' : 'Crear articulos'}
                     </button>
                 </div>
             </form>

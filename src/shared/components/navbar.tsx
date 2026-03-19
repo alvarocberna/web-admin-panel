@@ -10,12 +10,12 @@ import { toast } from 'react-toastify';
 
 const navItems = [
   { nombre: "Inicio",    ruta: "/dashboard",  icon: faHouse,        match: (p: string) => p === '/dashboard' },
+  { nombre: "Equipo", ruta: "/equipo",  icon: faPeopleGroup, match: (p: string) => p.startsWith('/equipo') },
+  { nombre: "Servicios", ruta: "/servicios",  icon: faGear, match: (p: string) => p.startsWith('/servicios') },
   { nombre: "Artículos", ruta: "/articulos",  icon: faNewspaper,    match: (p: string) => p.startsWith('/articulos') },
   { nombre: "Testimonios", ruta: "/testimonios",  icon: faMessage, match: (p: string) => p === '/testimonios' },
   { nombre: "Historial", ruta: "/actividad",  icon: faClockRotateLeft, match: (p: string) => p === '/actividad' },
-  { nombre: "Usuario", ruta: "/usuario",  icon: faUser, match: (p: string) => p === '/usuario' },
-  { nombre: "Equipo", ruta: "/equipo",  icon: faPeopleGroup, match: (p: string) => p.startsWith('/equipo') },
-  { nombre: "Servicios", ruta: "/servicios",  icon: faGear, match: (p: string) => p.startsWith('/servicios') },
+  { nombre: "Perfil", ruta: "/usuario",  icon: faUser, match: (p: string) => p === '/usuario' },
   { nombre: "Project", ruta: "/project",  icon: faFile, match: (p: string) => p === '/project' },
 ];
 

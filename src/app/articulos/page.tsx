@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ContenedorAdmin, TitleSec, HeadSubSec } from '@/shared';
-import { ArticulosService, ArticuloEntity } from '@/features';
+import { ArticulosService, ArticuloEntity, ArticulosEntity } from '@/features';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faPencil, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 export default function Articulos(){
-    const [articulos, setArticulos] = useState<any>([])
+    const [articulos, setArticulos] = useState<ArticuloEntity[]>([])
     const [modalOpen, setModalOpen] = useState(false)
     const [articleToDelete, setArticleToDelete] = useState<string | null>(null)
     const router = useRouter();
@@ -16,8 +16,9 @@ export default function Articulos(){
     useEffect(() => {
         const fetchArticulos = async () => {
             try {
-                const data = await ArticulosService.getArticulos();
-                setArticulos(data);
+                const res: ArticulosEntity | null = await ArticulosService.getArticulos();
+                const data = res?.articulo;
+                setArticulos(data?? []);
             } catch(error) {
                 console.log("error: " + error)
             }

@@ -22,9 +22,12 @@ export function ProyectoServicios() {
     if (!servicios) return null;
 
     return (
+        <div>
+            {
+                servicios.activo ?
         <ContenedorSec>
             <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-zinc-800">{servicios.titulo}</h2>
+                <h2 className="text-2xl font-semibold text-zinc-800">{servicios.activo}</h2>
                 {servicios.descripcion && (
                     <p className="text-sm text-zinc-500 mt-1">{servicios.descripcion}</p>
                 )}
@@ -71,5 +74,9 @@ export function ProyectoServicios() {
                 </div>
             )}
         </ContenedorSec>
+        :
+        <div></div>
+        }
+        </div>
     );
 }

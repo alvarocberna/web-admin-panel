@@ -42,7 +42,6 @@ export default function EquipoPage() {
 
                     {equipo && (
                         <Empleados
-                            equipoId={equipo.id}
                             empleados={equipo.empleado ?? []}
                             onUpdated={handleEmpleadosUpdated}
                         />

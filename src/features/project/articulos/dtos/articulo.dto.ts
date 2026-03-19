@@ -1,5 +1,5 @@
 
-import {CreateSecArticuloDto, UpdateSecArticuloDto} from '@/features/project';
+import {CreateSecArticuloDto, UpdateSecArticuloDto} from './sec-articulo.dto';
 
 export abstract class CreateArticuloFullDto {
         abstract articulo: CreateArticuloDto;
@@ -13,11 +13,11 @@ export abstract class CreateArticuloDto{
         abstract fecha_publicacion: Date;
         abstract fecha_actualizacion: Date | null;
         abstract status: string;
+        abstract activo: boolean;
         abstract slug: string;
         abstract image_url: string | null;
         abstract image_alt: string | null;
         abstract image_position: string | null;
-        abstract autor_id: string;
         abstract sec_articulo: CreateSecArticuloDto[] 
 }
 
@@ -28,10 +28,10 @@ export abstract class UpdateArticuloDto{
         abstract fecha_publicacion: Date;
         abstract fecha_actualizacion: Date | null;
         abstract status: string;
+        abstract activo: boolean;
         abstract slug: string;  
         abstract image_url: string | null;
         abstract image_alt: string | null;
         abstract image_position: string | null;
-        abstract autor_id: string;
         abstract sec_articulo: UpdateSecArticuloDto[] 
 }

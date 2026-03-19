@@ -158,7 +158,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
     return (
         <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-zinc-700">Servicios ofrecidos</h3>
+                <h3 className="text-md font-semibold text-zinc-900">Servicios ofrecidos</h3>
                 <button type="button" onClick={openCreate} className="btn btn-primary h-8 text-xs px-3 flex items-center gap-1.5">
                     <FontAwesomeIcon icon={faPlus} style={{ width: '11px', height: '11px' }} />
                     Nuevo servicio

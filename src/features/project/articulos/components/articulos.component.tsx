@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 //features
-import {ArticulosService, ArticuloEntity} from '@/features/project';
+import {ArticulosService, ArticuloEntity, ArticulosEntity} from '@/features/project';
 import {ContenedorSec} from '@/shared/project'
 
 export function Articulos(){
@@ -16,7 +16,8 @@ export function Articulos(){
     useEffect(() => {
         const fetchArticulos = async () => {
             try{
-                const data = await ArticulosService.getArticulos();
+                const res: ArticulosEntity = await ArticulosService.getArticulos();
+                const data: ArticuloEntity[] = res.articulo;
                 setArticulos(data);
             }catch(error){
                 console.log("error: " + error)

@@ -22,6 +22,9 @@ export function ProyectoEquipo() {
     if (!equipo) return null;
 
     return (
+        <div>
+            {
+                equipo.activo ?
         <ContenedorSec>
             <div className="mb-6">
                 <h2 className="text-2xl font-semibold text-zinc-800">{equipo.titulo}</h2>
@@ -65,5 +68,9 @@ export function ProyectoEquipo() {
                 </div>
             )}
         </ContenedorSec>
+        :
+        <div></div>
+                  }
+        </div>
     );
 }

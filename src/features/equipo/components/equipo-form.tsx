@@ -67,7 +67,7 @@ export function EquipoForm({ equipo, onSaved }: Props) {
 
     return (
         <div className="card px-6 py-6 max-w-lg">
-            <h2 className="text-base font-semibold text-zinc-900 mb-1">
+            <h2 className=" text-md font-semibold text-zinc-900 mb-1">
                 {equipo ? 'Editar equipo' : 'Crear equipo'}
             </h2>
             <p className="text-sm text-zinc-500 mb-5">

@@ -2,8 +2,10 @@
 export * from './articulos/components/sec-articulo.component';
 export * from './articulos/components/articulos.component';
 export * from './articulos/dtos/articulo.dto';
+export * from './articulos/dtos/articulos.dto';
 export * from './articulos/dtos/sec-articulo.dto';
 export * from './articulos/entities/articulo.entity';
+export * from './articulos/entities/articulos.entity';
 export * from './articulos/entities/sec-articulo.entity';
 export * from './articulos/services/articulos.service';
 //EQUIPO
