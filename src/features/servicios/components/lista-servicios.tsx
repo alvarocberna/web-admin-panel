@@ -15,11 +15,9 @@ interface ServicioForm {
     nombre_promocion: string;
     porcentaje_descuento: string;
     destacado: string;
-    icono: string;
-    orden: string;
-    activo: string;
-    img_url: string;
-    img_alt: string;
+    activo: boolean;
+    // img_url: string;
+    // img_alt: string;
 }
 
 interface Props {
@@ -49,11 +47,9 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
             nombre_promocion: '',
             porcentaje_descuento: '',
             destacado: 'false',
-            icono: '',
-            orden: '',
-            activo: 'true',
-            img_url: '',
-            img_alt: '',
+            activo: true,
+            // img_url: '',
+            // img_alt: '',
         },
     });
 
@@ -69,11 +65,9 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
             nombre_promocion: '',
             porcentaje_descuento: '',
             destacado: 'false',
-            icono: '',
-            orden: '',
-            activo: 'true',
-            img_url: '',
-            img_alt: '',
+            activo: true,
+            // img_url: '',
+            // img_alt: '',
         });
         setModalOpen(true);
     };
@@ -87,11 +81,9 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
             nombre_promocion: servicio.nombre_promocion ?? '',
             porcentaje_descuento: servicio.porcentaje_descuento ?? '',
             destacado: servicio.destacado ? 'true' : 'false',
-            icono: servicio.icono ?? '',
-            orden: servicio.orden ?? '',
             activo: servicio.activo,
-            img_url: servicio.img_url,
-            img_alt: servicio.img_alt,
+            // img_url: servicio.img_url,
+            // img_alt: servicio.img_alt,
         });
         setModalOpen(true);
     };
@@ -110,11 +102,11 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                 nombre_promocion: data.nombre_promocion || null,
                 porcentaje_descuento: data.porcentaje_descuento || null,
                 destacado: data.destacado === 'true',
-                icono: data.icono || null,
-                orden: data.orden || null,
+                icono: null,
+                orden:  null,
                 activo: data.activo,
-                img_url: data.img_url,
-                img_alt: data.img_alt,
+                img_url: "",
+                img_alt: "",
             };
 
             if (editingServicio) {
@@ -186,8 +178,8 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                             </span>
                                         )}
                                     </div>
-                                    <span className={`ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${srv.activo === 'true' ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
-                                        {srv.activo === 'true' ? 'Activo' : 'Inactivo'}
+                                    <span className={`ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${srv.activo === true ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
+                                        {srv.activo === true ? 'Activo' : 'Inactivo'}
                                     </span>
                                 </div>
 
@@ -272,23 +264,23 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                         rules={{ required: false }}
                                     />
                                 </div>
-                                <div>
+                                {/* <div>
                                     <Input
                                         label="Icono"
                                         name="icono"
                                         register={register}
                                         rules={{ required: false }}
                                     />
-                                </div>
-                                <div>
+                                </div> */}
+                                {/* <div>
                                     <Input
                                         label="Orden"
                                         name="orden"
                                         register={register}
                                         rules={{ required: false }}
                                     />
-                                </div>
-                                <div>
+                                </div> */}
+                                {/* <div>
                                     <Input
                                         label="URL de imagen"
                                         name="img_url"
@@ -298,8 +290,8 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                     {errors.img_url && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_url.message}</p>
                                     )}
-                                </div>
-                                <div>
+                                </div> */}
+                                {/* <div>
                                     <Input
                                         label="Texto alternativo (alt)"
                                         name="img_alt"
@@ -309,7 +301,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                     {errors.img_alt && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_alt.message}</p>
                                     )}
-                                </div>
+                                </div> */}
                             </div>
 
                             <TextAreaArt
@@ -343,12 +335,12 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                 </div>
                                 <button
                                     type="button"
-                                    onClick={() => setValue('activo', activo === 'true' ? 'false' : 'true')}
-                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo === 'true' ? 'bg-blue-600' : 'bg-zinc-300'}`}
+                                    onClick={() => setValue('activo', activo === true ? false : true)}
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo === true ? 'bg-blue-600' : 'bg-zinc-300'}`}
                                     aria-label="Activar o desactivar servicio"
                                 >
                                     <span
-                                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo === 'true' ? 'translate-x-6' : 'translate-x-1'}`}
+                                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo === true ? 'translate-x-6' : 'translate-x-1'}`}
                                     />
                                 </button>
                             </div>

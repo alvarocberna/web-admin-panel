@@ -3,19 +3,20 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { TestimoniosService } from '@/features/project';
-import { TestimonioEntity } from '@/features/project';
+import { TestimonioEntity, TestimoniosEntity } from '@/features/project';
 import { ContenedorSec } from '@/shared/project';
 
 export function ListaTestimonios() {
-    const [testimonios, setTestimonios] = useState<TestimonioEntity[]>([]);
+    const [testimonios, setTestimonios] = useState<TestimoniosEntity>();
 
     useEffect(() => {
         const fetchTestimonios = async () => {
             try {
-                const res = await TestimoniosService.getTestimonios();
-                const data = res?.testimonio;
-                console.log('getTestimonios response:', res);
-                setTestimonios(data ?? []);
+                const data = await TestimoniosService.getTestimonios();
+                if(!data){
+                    return "data no encontrada"
+                }
+                setTestimonios(data);
             } catch (error) {
                 console.error('Error obteniendo testimonios:', error);
             }
@@ -24,18 +25,27 @@ export function ListaTestimonios() {
     }, []);
 
     return (
+        <div>
+            {
+                testimonios?.activo &&
         <ContenedorSec>
-            <h3 className="text-2xl font-semibold text-zinc-700 mb-4">
-                Testimonios recibidos
+            <h3 className="text-2xl font-semibold text-zinc-900 mb-4">
+                {testimonios?.titulo}
             </h3>
+            {
+                testimonios.descripcion &&
+                <p className='text-md text-zinc-700 mb-4'>
+                    {testimonios?.descripcion}
+                </p>
+            }
 
-            {testimonios.length === 0 ? (
+            {testimonios?.testimonio.length === 0 ? (
                 <div className="card py-14 text-center text-zinc-400 text-sm">
                     No hay testimonios registrados.
                 </div>
             ) : (
                 <div className="flex flex-wrap -mx-2">
-                    {testimonios.map(t => {
+                    {testimonios?.testimonio.map(t => {
                         const fecha = new Date(t.fecha_creacion);
                         return (
                             <div key={t.id} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
@@ -76,5 +86,7 @@ export function ListaTestimonios() {
             )}
 
         </ContenedorSec>
+                   }
+        </div>
     );
 }

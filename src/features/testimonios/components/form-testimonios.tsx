@@ -43,12 +43,18 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
 
     const onSubmit = async (data: TestimoniosForm) => {
         try {
+            const payload = {
+                titulo: data.titulo,
+                descripcion: data.descripcion,
+                activo: data.activo,
+                aprobar: false,
+            };
             let resultado: TestimoniosEntity;
             if (testimonios) {
-                resultado = await TestimoniosService.updateTestimonios(data);
+                resultado = await TestimoniosService.updateTestimonios(payload);
                 toast.success('Sección de testimonios actualizada correctamente');
             } else {
-                resultado = await TestimoniosService.createTestimonios(data);
+                resultado = await TestimoniosService.createTestimonios(payload);
                 toast.success('Sección de testimonios creada correctamente');
             }
             onSaved(resultado);
@@ -83,11 +89,8 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                     label="Descripción"
                     name="descripcion"
                     register={register}
-                    rules={{ required: 'La descripción es requerida' }}
+                    rules={{ required: false }}
                 />
-                {errors.descripcion && (
-                    <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>
-                )}
 
                 {/* Toggle activo */}
                 <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">

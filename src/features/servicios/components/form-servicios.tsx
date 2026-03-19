@@ -10,7 +10,7 @@ interface ServiciosForm {
     titulo: string;
     descripcion: string;
     icono: string;
-    activo: string;
+    activo: boolean;
 }
 
 interface Props {
@@ -27,7 +27,7 @@ export function FormServicios({ servicios, onSaved }: Props) {
         setValue,
         formState: { errors, isSubmitting },
     } = useForm<ServiciosForm>({
-        defaultValues: { titulo: '', descripcion: '', icono: '', activo: 'true' },
+        defaultValues: { titulo: '', descripcion: '', icono: '', activo: true },
     });
 
     const activo = watch('activo');
@@ -37,7 +37,7 @@ export function FormServicios({ servicios, onSaved }: Props) {
             reset({
                 titulo: servicios.titulo,
                 descripcion: servicios.descripcion ?? '',
-                icono: servicios.icono ?? '',
+                // icono: servicios.icono ?? '',
                 activo: servicios.activo,
             });
         }
@@ -48,7 +48,7 @@ export function FormServicios({ servicios, onSaved }: Props) {
             const payload = {
                 titulo: data.titulo,
                 descripcion: data.descripcion || null,
-                icono: data.icono || null,
+                icono: null,
                 activo: data.activo,
             };
             let resultado: ServiciosEntity;
@@ -94,12 +94,12 @@ export function FormServicios({ servicios, onSaved }: Props) {
                     rules={{ required: false }}
                 />
 
-                <Input
+                {/* <Input
                     label="Icono"
                     name="icono"
                     register={register}
                     rules={{ required: false }}
-                />
+                /> */}
 
                 <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">
                     <div>
@@ -108,12 +108,12 @@ export function FormServicios({ servicios, onSaved }: Props) {
                     </div>
                     <button
                         type="button"
-                        onClick={() => setValue('activo', activo === 'true' ? 'false' : 'true')}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo === 'true' ? 'bg-blue-600' : 'bg-zinc-300'}`}
+                        onClick={() => setValue('activo', activo === true ? false : true)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo === true ? 'bg-blue-600' : 'bg-zinc-300'}`}
                         aria-label="Activar o desactivar sección"
                     >
                         <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo === 'true' ? 'translate-x-6' : 'translate-x-1'}`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo === true ? 'translate-x-6' : 'translate-x-1'}`}
                         />
                     </button>
                 </div>

@@ -9,7 +9,7 @@ export class ProyectoServicioEntity {
         public destacado: boolean | null,
         public icono: string | null,
         public orden: string | null,
-        public activo: string,
+        public activo: boolean,
         public img_url: string,
         public img_alt: string,
         public servicios_id: string,
@@ -22,7 +22,7 @@ export class ProyectoServiciosEntity {
         public titulo: string,
         public descripcion: string | null,
         public icono: string | null,
-        public activo: string,
+        public activo: boolean,
         public proyecto_id: string,
         public servicio: ProyectoServicioEntity[],
     ) {}

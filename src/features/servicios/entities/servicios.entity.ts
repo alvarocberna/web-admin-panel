@@ -6,7 +6,7 @@ export class ServiciosEntity {
         public titulo: string,
         public descripcion: string | null,
         public icono: string | null,
-        public activo: string,
+        public activo: boolean,
         public proyecto_id: string,
         public servicio: ServicioEntity[],
     ) {}

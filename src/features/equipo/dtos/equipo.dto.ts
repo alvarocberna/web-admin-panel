@@ -19,7 +19,7 @@ export abstract class CreateEmpleadoDto {
     abstract especialidad: string | null;
     abstract descripcion: string | null;
     abstract orden: string | null;
-    abstract activo: string;
+    abstract activo: boolean;
     abstract img_url: string;
     abstract img_alt: string;
     abstract slug: string | null;
@@ -34,7 +34,7 @@ export abstract class UpdateEmpleadoDto {
     abstract especialidad: string | null;
     abstract descripcion: string | null;
     abstract orden: string | null;
-    abstract activo: string;
+    abstract activo: boolean;
     abstract img_url: string;
     abstract img_alt: string;
     abstract slug: string | null;

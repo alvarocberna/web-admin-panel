@@ -9,7 +9,7 @@ export class ProyectoEmpleadoEntity {
         public especialidad: string | null,
         public descripcion: string | null,
         public orden: string | null,
-        public activo: string,
+        public activo: boolean,
         public img_url: string,
         public img_alt: string,
         public slug: string | null,

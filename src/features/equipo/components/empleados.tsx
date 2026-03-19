@@ -7,6 +7,7 @@ import { faPencil, faTrash, faPlus, faXmark } from '@fortawesome/free-solid-svg-
 import { Input, TextAreaArt } from '@/shared';
 import { EquipoService } from '../services/equipo.service';
 import { EmpleadoEntity } from '../entities/empleado.entity';
+import { CreateEmpleadoDto } from '../dtos/equipo.dto';
 
 interface EmpleadoForm {
     nombre_primero: string;
@@ -16,11 +17,9 @@ interface EmpleadoForm {
     profesion: string;
     especialidad: string;
     descripcion: string;
-    orden: string;
-    activo: string;
-    img_url: string;
-    img_alt: string;
-    slug: string;
+    activo: boolean;
+    // img_url: string;
+    // img_alt: string;
 }
 
 interface Props {
@@ -50,11 +49,9 @@ export function Empleados({ empleados, onUpdated }: Props) {
             profesion: '',
             especialidad: '',
             descripcion: '',
-            orden: '',
-            activo: 'true',
-            img_url: '',
-            img_alt: '',
-            slug: '',
+            activo: true,
+            // img_url: '',
+            // img_alt: '',
         },
     });
 
@@ -70,11 +67,9 @@ export function Empleados({ empleados, onUpdated }: Props) {
             profesion: '',
             especialidad: '',
             descripcion: '',
-            orden: '',
-            activo: 'true',
-            img_url: '',
-            img_alt: '',
-            slug: '',
+            activo: true,
+            // img_url: '',
+            // img_alt: '',
         });
         setModalOpen(true);
     };
@@ -89,11 +84,11 @@ export function Empleados({ empleados, onUpdated }: Props) {
             profesion: empleado.profesion,
             especialidad: empleado.especialidad ?? '',
             descripcion: empleado.descripcion ?? '',
-            orden: empleado.orden ?? '',
+            // orden: empleado.orden ?? '',
             activo: empleado.activo,
-            img_url: empleado.img_url,
-            img_alt: empleado.img_alt,
-            slug: empleado.slug ?? '',
+            // img_url: empleado.img_url,
+            // img_alt: empleado.img_alt,
+            // slug: empleado.slug ?? '',
         });
         setModalOpen(true);
     };
@@ -105,7 +100,7 @@ export function Empleados({ empleados, onUpdated }: Props) {
 
     const onSubmit = async (data: EmpleadoForm) => {
         try {
-            const payload = {
+            const payload: CreateEmpleadoDto = {
                 nombre_primero: data.nombre_primero,
                 nombre_segundo: data.nombre_segundo || null,
                 apellido_paterno: data.apellido_paterno,
@@ -113,11 +108,11 @@ export function Empleados({ empleados, onUpdated }: Props) {
                 profesion: data.profesion,
                 especialidad: data.especialidad || null,
                 descripcion: data.descripcion || null,
-                orden: data.orden || null,
+                orden: "",
                 activo: data.activo,
-                img_url: data.img_url,
-                img_alt: data.img_alt,
-                slug: data.slug || null,
+                img_url: "",
+                img_alt: "",
+                slug: "",
             };
 
             if (editingEmpleado) {
@@ -187,8 +182,8 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                             <p className="text-xs text-zinc-400 truncate">{emp.especialidad}</p>
                                         )}
                                     </div>
-                                    <span className={`ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${emp.activo === 'true' ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
-                                        {emp.activo === 'true' ? 'Activo' : 'Inactivo'}
+                                    <span className={`ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${emp.activo === true ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
+                                        {emp.activo === true ? 'Activo' : 'Inactivo'}
                                     </span>
                                 </div>
 
@@ -295,7 +290,7 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         rules={{ required: false }}
                                     />
                                 </div>
-                                <div>
+                                {/* <div>
                                     <Input
                                         label="URL de imagen"
                                         name="img_url"
@@ -305,8 +300,8 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                     {errors.img_url && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_url.message}</p>
                                     )}
-                                </div>
-                                <div>
+                                </div> */}
+                                {/* <div>
                                     <Input
                                         label="Texto alternativo (alt)"
                                         name="img_alt"
@@ -316,23 +311,23 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                     {errors.img_alt && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_alt.message}</p>
                                     )}
-                                </div>
-                                <div>
+                                </div> */}
+                                {/* <div>
                                     <Input
                                         label="Orden"
                                         name="orden"
                                         register={register}
                                         rules={{ required: false }}
                                     />
-                                </div>
-                                <div>
+                                </div> */}
+                                {/* <div>
                                     <Input
                                         label="Slug"
                                         name="slug"
                                         register={register}
                                         rules={{ required: false }}
                                     />
-                                </div>
+                                </div> */}
                             </div>
 
                             <TextAreaArt
@@ -349,12 +344,12 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                 </div>
                                 <button
                                     type="button"
-                                    onClick={() => setValue('activo', activo === 'true' ? 'false' : 'true')}
-                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo === 'true' ? 'bg-blue-600' : 'bg-zinc-300'}`}
+                                    onClick={() => setValue('activo', activo === true ? false : true)}
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo === true ? 'bg-blue-600' : 'bg-zinc-300'}`}
                                     aria-label="Activar o desactivar empleado"
                                 >
                                     <span
-                                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo === 'true' ? 'translate-x-6' : 'translate-x-1'}`}
+                                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo === true ? 'translate-x-6' : 'translate-x-1'}`}
                                     />
                                 </button>
                             </div>

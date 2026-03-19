@@ -11,6 +11,7 @@ export * from './articulos/services/articulos.service';
 export * from './articulos/interfaces/articulo.interface';
 export * from './articulos/types/articulo.types';
 export * from './articulos/components/articulos-form';
+export * from './articulos/components/lista-articulos';
 //AUTH
 export * from './auth/components/form-inicio-sesion';
 export * from './auth/services/auth.service';
