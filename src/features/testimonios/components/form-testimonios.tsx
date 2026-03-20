@@ -10,6 +10,7 @@ interface TestimoniosForm {
     titulo: string;
     descripcion: string;
     activo: boolean;
+    aprobar: boolean;
 }
 
 interface Props {
@@ -26,10 +27,11 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
         setValue,
         formState: { errors, isSubmitting },
     } = useForm<TestimoniosForm>({
-        defaultValues: { titulo: '', descripcion: '', activo: true },
+        defaultValues: { titulo: '', descripcion: '', activo: true, aprobar: false },
     });
 
     const activo = watch('activo');
+    const aprobar = watch('aprobar');
 
     useEffect(() => {
         if (testimonios) {
@@ -37,6 +39,7 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                 titulo: testimonios.titulo,
                 descripcion: testimonios.descripcion,
                 activo: testimonios.activo,
+                aprobar: testimonios.aprobar,
             });
         }
     }, [testimonios, reset]);
@@ -47,7 +50,7 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                 titulo: data.titulo,
                 descripcion: data.descripcion,
                 activo: data.activo,
-                aprobar: false,
+                aprobar: data.aprobar,
             };
             let resultado: TestimoniosEntity;
             if (testimonios) {
@@ -106,6 +109,24 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                     >
                         <span
                             className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo ? 'translate-x-6' : 'translate-x-1'}`}
+                        />
+                    </button>
+                </div>
+
+                {/* Toggle aprobar */}
+                <div className="flex items-center justify-between py-3 border-t border-zinc-100">
+                    <div>
+                        <p className="text-sm font-medium text-zinc-800">Aprobar</p>
+                        <p className="text-xs text-zinc-400">Testimonios escritos por otros usuarios requieren aprobación.</p>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setValue('aprobar', !aprobar)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${aprobar ? 'bg-green-600' : 'bg-zinc-300'}`}
+                        aria-label="Aprobar o desaprobar testimonio"
+                    >
+                        <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${aprobar ? 'translate-x-6' : 'translate-x-1'}`}
                         />
                     </button>
                 </div>
