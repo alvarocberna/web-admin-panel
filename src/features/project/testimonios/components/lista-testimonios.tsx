@@ -45,7 +45,7 @@ export function ListaTestimonios() {
                 </div>
             ) : (
                 <div className="flex flex-wrap -mx-2">
-                    {testimonios?.testimonio.map(t => {
+                    {testimonios?.testimonio.filter(tes => tes.status === 'approved').map(t => {
                         const fecha = new Date(t.fecha_creacion);
                         return (
                             <div key={t.id} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
@@ -55,9 +55,7 @@ export function ListaTestimonios() {
                                             <p className="text-md font-semibold text-zinc-900">{t.nombre} {t.apellido}</p>
                                             <p className="text-xs text-zinc-400">{t.correo}</p>
                                         </div>
-                                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${t.aprobado ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
-                                            {t.aprobado ? 'Aprobado' : 'Pendiente'}
-                                        </span>
+                
                                     </div>
 
                                     <div className="flex gap-0.5 mb-3">

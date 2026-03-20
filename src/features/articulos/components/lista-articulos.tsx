@@ -69,7 +69,10 @@ export function ListaArticulos({ articulos, onUpdated }: Props) {
                                         {articulo.titulo}
                                     </h4>
                                     <p className="mb-1 text-sm text-zinc-500">Por: {articulo.autor}</p>
-                                    <p className="mb-5 text-xs text-zinc-400">{dia}/{mes}/{anno}</p>
+                                    <p className="mb-3 text-xs text-zinc-400">{dia}/{mes}/{anno}</p>
+                                    <span className={`mb-5 self-start text-xs font-medium px-2 py-0.5 rounded-full ${articulo.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                                        {articulo.status === 'approved' ? 'Aprobado' : 'Pendiente'}
+                                    </span>
                                     <div className="flex gap-2 mt-auto">
                                         <Link
                                             href={`/articulos/${articulo.id}/ver`}

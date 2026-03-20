@@ -1,29 +1,13 @@
-export class ProyectoEmpleadoEntity {
-    constructor(
-        public id: string,
-        public nombre_primero: string,
-        public nombre_segundo: string | null,
-        public apellido_paterno: string,
-        public apellido_materno: string | null,
-        public profesion: string,
-        public especialidad: string | null,
-        public descripcion: string | null,
-        public orden: string | null,
-        public activo: boolean,
-        public img_url: string,
-        public img_alt: string,
-        public slug: string | null,
-        public equipo_id: string,
-    ) {}
-}
+import { EmpleadoEntity } from './empleado.entity';
 
-export class ProyectoEquipoEntity {
+export class EquipoEntity {
     constructor(
         public id: string,
         public titulo: string,
         public descripcion: string | null,
         public activo: boolean,
+        public notificacion: boolean,
         public proyecto_id: string,
-        public empleado: ProyectoEmpleadoEntity[],
+        public empleado: EmpleadoEntity[],
     ) {}
 }

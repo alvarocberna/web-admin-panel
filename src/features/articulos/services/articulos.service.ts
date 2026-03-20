@@ -45,6 +45,8 @@ export class ArticulosService{
         });
 
         // 3. Crear objeto con TODOS los datos del artículo
+        const articulos = await ArticulosService.getArticulos();
+        const status = articulos?.aprobar ? 'pending' : 'approved';
         const slug = data.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         const articuloData: CreateArticuloDto = {
             titulo: data.titulo,
@@ -52,7 +54,7 @@ export class ArticulosService{
             autor: user.nombre + ' ' + user.apellido,
             fecha_publicacion: new Date(),
             fecha_actualizacion: new Date(),
-            status: 'draft',
+            status: status,
             activo: true,
             slug: slug,
             image_url: null,
@@ -105,6 +107,8 @@ export class ArticulosService{
         });
 
         // 3. Crear objeto con TODOS los datos del artículo
+        const articulos = await ArticulosService.getArticulos();
+        const status = articulos?.aprobar ? 'pending' : 'approved';
         const slug = data.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         const articuloData: UpdateArticuloDto = {
             titulo: data.titulo,
@@ -112,7 +116,7 @@ export class ArticulosService{
             autor: user.nombre + ' ' + user.apellido,
             fecha_publicacion: new Date(),
             fecha_actualizacion: new Date(),
-            status: 'draft',
+            status: status,
             activo: true,
             slug: slug,
             image_url: null,

@@ -9,6 +9,7 @@ export * from './articulos/entities/articulos.entity';
 export * from './articulos/entities/sec-articulo.entity';
 export * from './articulos/services/articulos.service';
 //EQUIPO
+export * from './equipo/entities/empleado.entity';
 export * from './equipo/entities/equipo.entity';
 export * from './equipo/services/equipo.service';
 export * from './equipo/components/equipo.component';
@@ -18,6 +19,7 @@ export * from './testimonios/entities/testimonio.entity';
 export * from './testimonios/entities/testimonios.entity';
 export * from './testimonios/services/testimonios.service';
 //SERVICIOS
+export * from './servicios/entities/servicio.entity';
 export * from './servicios/entities/servicios.entity';
 export * from './servicios/services/servicios.service';
 export * from './servicios/components/servicios.component';

@@ -52,6 +52,7 @@ export function ArticulosForm({ articulos, onSaved }: Props) {
                     descripcion: data.descripcion,
                     activo: data.activo,
                     aprobar: data.aprobar,
+                    notificacion: false,
                 });
                 toast.success('Equipo actualizado correctamente');
             } else {
@@ -60,6 +61,7 @@ export function ArticulosForm({ articulos, onSaved }: Props) {
                     descripcion: data.descripcion,
                     activo: data.activo,
                     aprobar: data.aprobar,
+                    notificacion: false,
                 });
                 toast.success('Equipo creado correctamente');
             }

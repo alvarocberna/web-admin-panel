@@ -3,6 +3,7 @@ export abstract class CreateTestimoniosDto {
     abstract descripcion: string;
     abstract activo: boolean;
     abstract aprobar: boolean;
+    abstract notificacion: boolean;
 }
 
 export abstract class UpdateTestimoniosDto {
@@ -10,4 +11,5 @@ export abstract class UpdateTestimoniosDto {
     abstract descripcion: string;
     abstract activo: boolean;
     abstract aprobar: boolean;
+    abstract notificacion: boolean;
 }
