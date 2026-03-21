@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faPencil, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faPencil, faTrash, faPlus, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ArticulosService } from '../services/articulos.service';
 import { ArticuloEntity } from '../entities/articulo.entity';
 import { toast } from 'react-toastify';
@@ -15,6 +15,9 @@ interface Props {
 export function ListaArticulos({ articulos, onUpdated }: Props) {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
+
+    const pending = articulos.filter(a => a.status === 'pending');
+    const approved = articulos.filter(a => a.status === 'approved');
 
     const openDeleteModal = (id: string) => {
         setArticleToDelete(id);
@@ -39,9 +42,82 @@ export function ListaArticulos({ articulos, onUpdated }: Props) {
         }
     };
 
+    const handleAprobar = async (id: string) => {
+        try {
+            await ArticulosService.approveArticulo(id);
+            onUpdated(articulos.map(a => a.id === id ? { ...a, status: 'approved' } as ArticuloEntity : a));
+            toast.success('Artículo aprobado');
+        } catch (error: any) {
+            toast.error(error?.message || 'Error al aprobar el artículo');
+        }
+    };
+
+    const renderCard = (articulo: ArticuloEntity, showAcciones: boolean) => {
+        const fecha = new Date(articulo.fecha_publicacion);
+        const anno = fecha.getFullYear();
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        return (
+            <div className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4" key={articulo.id}>
+                <div className="card flex flex-col px-5 py-5 h-full hover-btn">
+                    <h4 className="mb-1.5 font-semibold text-zinc-900 text-base leading-snug line-clamp-2">
+                        {articulo.titulo}
+                    </h4>
+                    <p className="mb-1 text-sm text-zinc-500">Por: {articulo.autor}</p>
+                    <p className="mb-4 text-xs text-zinc-400">{dia}/{mes}/{anno}</p>
+
+                    {showAcciones && (
+                        <div className="flex gap-2 mb-4">
+                            <button
+                                onClick={() => handleAprobar(articulo.id)}
+                                className="btn btn-primary flex-1 h-9 text-xs flex items-center justify-center gap-1.5"
+                                title="Aceptar artículo"
+                            >
+                                <FontAwesomeIcon icon={faCheck} style={{ width: '12px', height: '12px' }} />
+                                Aceptar
+                            </button>
+                            <button
+                                onClick={() => openDeleteModal(articulo.id)}
+                                className="btn btn-destructive flex-1 h-9 text-xs flex items-center justify-center gap-1.5"
+                                title="Rechazar artículo"
+                            >
+                                <FontAwesomeIcon icon={faXmark} style={{ width: '12px', height: '12px' }} />
+                                Rechazar
+                            </button>
+                        </div>
+                    )}
+
+                    <div className="flex gap-2 mt-auto">
+                        <Link
+                            href={`/articulos/${articulo.id}/ver`}
+                            className="btn btn-ghost flex-1 h-9 text-xs"
+                            title="Ver artículo"
+                        >
+                            <FontAwesomeIcon icon={faEye} style={{ width: '14px', height: '14px' }} />
+                        </Link>
+                        <Link
+                            href={`/articulos/${articulo.id}/modificar`}
+                            className="btn btn-ghost flex-1 h-9 text-xs"
+                            title="Editar artículo"
+                        >
+                            <FontAwesomeIcon icon={faPencil} style={{ width: '14px', height: '14px' }} />
+                        </Link>
+                        <button
+                            onClick={() => openDeleteModal(articulo.id)}
+                            className="btn btn-ghost-destructive flex-1 h-9 text-xs"
+                            title="Eliminar artículo"
+                        >
+                            <FontAwesomeIcon icon={faTrash} style={{ width: '14px', height: '14px' }} />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div className="mt-8">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-6">
                 <h3 className="text-md font-semibold text-zinc-900">Artículos</h3>
                 <Link href="/articulos/crear">
                     <button type="button" className="btn btn-primary h-8 text-xs px-3 flex items-center gap-1.5">
@@ -51,59 +127,35 @@ export function ListaArticulos({ articulos, onUpdated }: Props) {
                 </Link>
             </div>
 
-            {articulos.length === 0 ? (
-                <div className="card py-14 text-center text-zinc-400 text-sm">
-                    No hay artículos publicados.
-                </div>
-            ) : (
-                <div className="flex flex-wrap -mx-2 pb-10">
-                    {articulos.map((articulo) => {
-                        const fecha = new Date(articulo.fecha_publicacion);
-                        const anno = fecha.getFullYear();
-                        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-                        const dia = fecha.getDate().toString().padStart(2, '0');
-                        return (
-                            <div className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4" key={articulo.id}>
-                                <div className="card flex flex-col px-5 py-5 h-full hover-btn">
-                                    <h4 className="mb-1.5 font-semibold text-zinc-900 text-base leading-snug line-clamp-2">
-                                        {articulo.titulo}
-                                    </h4>
-                                    <p className="mb-1 text-sm text-zinc-500">Por: {articulo.autor}</p>
-                                    <p className="mb-3 text-xs text-zinc-400">{dia}/{mes}/{anno}</p>
-                                    <span className={`mb-5 self-start text-xs font-medium px-2 py-0.5 rounded-full ${articulo.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                                        {articulo.status === 'approved' ? 'Aprobado' : 'Pendiente'}
-                                    </span>
-                                    <div className="flex gap-2 mt-auto">
-                                        <Link
-                                            href={`/articulos/${articulo.id}/ver`}
-                                            className="btn btn-ghost flex-1 h-9 text-xs"
-                                            title="Ver artículo"
-                                        >
-                                            <FontAwesomeIcon icon={faEye} style={{ width: '14px', height: '14px' }} />
-                                        </Link>
-                                        <Link
-                                            href={`/articulos/${articulo.id}/modificar`}
-                                            className="btn btn-ghost flex-1 h-9 text-xs"
-                                            title="Editar artículo"
-                                        >
-                                            <FontAwesomeIcon icon={faPencil} style={{ width: '14px', height: '14px' }} />
-                                        </Link>
-                                        <button
-                                            onClick={() => openDeleteModal(articulo.id)}
-                                            className="btn btn-ghost-destructive flex-1 h-9 text-xs"
-                                            title="Eliminar artículo"
-                                        >
-                                            <FontAwesomeIcon icon={faTrash} style={{ width: '14px', height: '14px' }} />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
+            {/* Pendientes */}
+            <div className="mb-8">
+                <h4 className="text-sm font-medium text-zinc-500 mb-3">Pendientes de aprobación</h4>
+                {pending.length === 0 ? (
+                    <div className="card py-10 text-center text-zinc-400 text-sm">
+                        No hay artículos pendientes.
+                    </div>
+                ) : (
+                    <div className="flex flex-wrap -mx-2">
+                        {pending.map(a => renderCard(a, true))}
+                    </div>
+                )}
+            </div>
 
-            {/* Modal confirmación eliminar */}
+            {/* Aprobados */}
+            <div>
+                <h4 className="text-sm font-medium text-zinc-500 mb-3">Aprobados</h4>
+                {approved.length === 0 ? (
+                    <div className="card py-10 text-center text-zinc-400 text-sm">
+                        No hay artículos aprobados.
+                    </div>
+                ) : (
+                    <div className="flex flex-wrap -mx-2 pb-10">
+                        {approved.map(a => renderCard(a, false))}
+                    </div>
+                )}
+            </div>
+
+            {/* Modal confirmación eliminar/rechazar */}
             {deleteModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeDeleteModal} />

@@ -14,5 +14,9 @@ export class TestimonioService {
     public static async deleteTestimonio(id_testimonio: string): Promise<void> {
         return await apiFetch<void>(`testimonios/testimonio/eliminar/${id_testimonio}`, 'DELETE');
     }
-    
+
+    public static async approveTestimonio(id_testimonio: string): Promise<void> {
+        return await apiFetch<void>(`testimonios/testimonio/editar/${id_testimonio}`, 'PATCH', { status: 'approved' });
+    }
+
 }

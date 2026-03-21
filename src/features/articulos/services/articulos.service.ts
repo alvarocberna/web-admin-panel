@@ -143,4 +143,9 @@ export class ArticulosService{
     public static async deleteArticulo(id_articulo: string): Promise<void>{
         return await apiFetch<any>(`articulos/articulo/delete/${id_articulo}`, 'DELETE')
     }
+
+    //aprueba un articulo actualizando su status a 'approved'
+    public static async approveArticulo(id_articulo: string): Promise<void>{
+        return await apiFetch<any>(`articulos/articulo/editar/${id_articulo}`, 'PATCH', { status: 'approved' })
+    }
 } 
