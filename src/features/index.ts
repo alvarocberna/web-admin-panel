@@ -18,6 +18,7 @@ export * from './auth/services/auth.service';
 export * from './auth/hooks/useAuth';
 //PROYECTOS
 export * from './proyectos/entities/proyecto.entity';
+export * from './proyectos/services/proyecto.service';
 //USUARIOS
 export * from './usuarios/entities/usuario.entity';
 export * from './usuarios/services/usuario.service';
