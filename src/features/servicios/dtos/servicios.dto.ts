@@ -4,6 +4,7 @@ export abstract class CreateServiciosDto {
     abstract icono: string | null;
     abstract activo: boolean;
     abstract notificacion: boolean;
+    abstract habilitado: boolean;
 }
 
 export abstract class UpdateServiciosDto {
@@ -12,4 +13,5 @@ export abstract class UpdateServiciosDto {
     abstract icono: string | null;
     abstract activo: boolean;
     abstract notificacion: boolean;
+    abstract habilitado: boolean;
 }
