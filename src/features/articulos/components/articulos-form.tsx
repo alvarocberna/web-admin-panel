@@ -15,9 +15,11 @@ interface ArticulosForm {
 interface Props {
     articulos: ArticulosEntity | null;
     onSaved: (e: ArticulosEntity) => void;
+    rol?: string;
 }
 
-export function ArticulosForm({ articulos, onSaved }: Props) {
+export function ArticulosForm({ articulos, onSaved, rol }: Props) {
+    if (rol !== 'ADMIN' && rol !== 'SUPERADMIN') return null;
     const {
         register,
         handleSubmit,
@@ -53,6 +55,7 @@ export function ArticulosForm({ articulos, onSaved }: Props) {
                     activo: data.activo,
                     aprobar: data.aprobar,
                     notificacion: false,
+                    habilitado: true,
                 });
                 toast.success('Equipo actualizado correctamente');
             } else {
@@ -62,6 +65,7 @@ export function ArticulosForm({ articulos, onSaved }: Props) {
                     activo: data.activo,
                     aprobar: data.aprobar,
                     notificacion: false,
+                    habilitado: true,
                 });
                 toast.success('Equipo creado correctamente');
             }

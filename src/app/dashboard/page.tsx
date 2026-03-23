@@ -104,12 +104,14 @@ export default function Dashboard() {
                         <p className="text-sm text-zinc-600">
                             {totalArticulos} {totalArticulos === 1 ? 'artículo' : 'artículos'}
                         </p>
-                        <Link
-                            href="/articulos"
-                            className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-xs font-medium text-amber-700 hover:bg-amber-100 transition-colors"
-                        >
-                            {pendientesArticulos} pendiente{pendientesArticulos !== 1 ? 's' : ''} de aprobación →
-                        </Link>
+                        {(usuario?.rol === 'ADMIN' || usuario?.rol === 'SUPERADMIN') && (
+                            <Link
+                                href="/articulos"
+                                className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-xs font-medium text-amber-700 hover:bg-amber-100 transition-colors"
+                            >
+                                {pendientesArticulos} pendiente{pendientesArticulos !== 1 ? 's' : ''} de aprobación →
+                            </Link>
+                        )}
                     </div>
 
                     {/* Testimonios */}
@@ -118,12 +120,14 @@ export default function Dashboard() {
                         <p className="text-sm text-zinc-600">
                             {totalTestimonios} {totalTestimonios === 1 ? 'testimonio' : 'testimonios'}
                         </p>
-                        <Link
-                            href="/testimonios"
-                            className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-xs font-medium text-amber-700 hover:bg-amber-100 transition-colors"
-                        >
-                            {pendientesTestimonios} pendiente{pendientesTestimonios !== 1 ? 's' : ''} de aprobación →
-                        </Link>
+                        {(usuario?.rol === 'ADMIN' || usuario?.rol === 'SUPERADMIN') && (
+                            <Link
+                                href="/testimonios"
+                                className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-xs font-medium text-amber-700 hover:bg-amber-100 transition-colors"
+                            >
+                                {pendientesTestimonios} pendiente{pendientesTestimonios !== 1 ? 's' : ''} de aprobación →
+                            </Link>
+                        )}
                     </div>
 
                 </div>

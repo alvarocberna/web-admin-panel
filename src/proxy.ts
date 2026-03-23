@@ -1,6 +1,21 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+/** Decodifica el payload de un JWT sin verificar firma (solo lectura de claims). */
+function decodeJwtPayload(token: string): Record<string, unknown> | null {
+  try {
+    const [, payload] = token.split('.');
+    return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+  } catch {
+    return null;
+  }
+}
+
+/** Rutas que requieren rol ADMIN o SUPERADMIN (solo UX, la seguridad real está en el backend). */
+const superadminRoutes = ['/superadmin', '/project'];
+const adminRoutes = ['/equipo', '/servicios', '/usuarios', '/historial'];
+// const userRoutes = ['/usuarios']
+
 // export function proxy(request: NextRequest) {
 //     return NextResponse.next();
 // }
@@ -74,6 +89,29 @@ export function proxy(request: NextRequest) {
   // client.ts recibirá un 401 y ejecutará el refresh automáticamente
   if (!accessToken && refreshToken) {
     proxyLog(`access_token ausente pero refresh_token presente → permitido para que client.ts refresque`);
+    return withCsrfCookie(NextResponse.next(), request);
+  }
+
+  // Verificar restricción por rol (solo UX, la seguridad real está en el backend)
+  const isSuperadminRoute = superadminRoutes.some(route => pathname.startsWith(route));
+  if (isSuperadminRoute && accessToken) {
+    const payload = decodeJwtPayload(accessToken.value);
+    const rol = payload?.rol as string | undefined;
+    if (rol === 'USER' || rol === 'ADMIN') {
+      proxyLog(`ruta superadmin con rol USER o ADMIN → redirect /dashboard`);
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+  }
+
+  // Verificar restricción por rol (solo UX, la seguridad real está en el backend)
+  const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
+  if (isAdminRoute && accessToken) {
+    const payload = decodeJwtPayload(accessToken.value);
+    const rol = payload?.rol as string | undefined;
+    if (rol === 'USER') {
+      proxyLog(`ruta admin con rol USER → redirect /dashboard`);
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
   }
 
   proxyLog(`ruta protegida con sesión → permitido`);

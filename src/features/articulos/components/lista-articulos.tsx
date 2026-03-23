@@ -10,9 +10,10 @@ import { toast } from 'react-toastify';
 interface Props {
     articulos: ArticuloEntity[];
     onUpdated: (articulos: ArticuloEntity[]) => void;
+    rol?: string;
 }
 
-export function ListaArticulos({ articulos, onUpdated }: Props) {
+export function ListaArticulos({ articulos, onUpdated, rol }: Props) {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
 
@@ -128,18 +129,20 @@ export function ListaArticulos({ articulos, onUpdated }: Props) {
             </div>
 
             {/* Pendientes */}
-            <div className="mb-8">
-                <h4 className="text-sm font-medium text-zinc-500 mb-3">Pendientes de aprobación</h4>
-                {pending.length === 0 ? (
-                    <div className="card py-10 text-center text-zinc-400 text-sm">
-                        No hay artículos pendientes.
-                    </div>
-                ) : (
-                    <div className="flex flex-wrap -mx-2">
-                        {pending.map(a => renderCard(a, true))}
-                    </div>
-                )}
-            </div>
+            {(rol === 'ADMIN' || rol === 'SUPERADMIN') && (
+                <div className="mb-8">
+                    <h4 className="text-sm font-medium text-zinc-500 mb-3">Pendientes de aprobación</h4>
+                    {pending.length === 0 ? (
+                        <div className="card py-10 text-center text-zinc-400 text-sm">
+                            No hay artículos pendientes.
+                        </div>
+                    ) : (
+                        <div className="flex flex-wrap -mx-2">
+                            {pending.map(a => renderCard(a, true))}
+                        </div>
+                    )}
+                </div>
+            )}
 
             {/* Aprobados */}
             <div>

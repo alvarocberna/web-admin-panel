@@ -7,18 +7,19 @@ import { faMessage, faFile, faUser } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { AuthService } from "@/features/auth/services/auth.service";
 import { toast } from 'react-toastify';
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 const navItems = [
-  { nombre: "Inicio",    ruta: "/dashboard",  icon: faHouse,        match: (p: string) => p === '/dashboard' },
-  { nombre: "Equipo", ruta: "/equipo",  icon: faPeopleGroup, match: (p: string) => p.startsWith('/equipo') },
-  { nombre: "Servicios", ruta: "/servicios",  icon: faGear, match: (p: string) => p.startsWith('/servicios') },
-  { nombre: "Artículos", ruta: "/articulos",  icon: faNewspaper,    match: (p: string) => p.startsWith('/articulos') },
-  { nombre: "Testimonios", ruta: "/testimonios",  icon: faMessage, match: (p: string) => p === '/testimonios' },
-  { nombre: "Usuarios", ruta: "/usuarios",  icon: faUsers, match: (p: string) => p.startsWith('/usuarios') },
-  { nombre: "Historial", ruta: "/actividad",  icon: faClockRotateLeft, match: (p: string) => p === '/actividad' },
-  { nombre: "Perfil", ruta: "/usuario",  icon: faUser, match: (p: string) => p === '/usuario' },
-  { nombre: "Project", ruta: "/project",  icon: faFile, match: (p: string) => p === '/project' },
-  { nombre: "Superadmin", ruta: "/superadmin", icon: faLayerGroup, match: (p: string) => p.startsWith('/superadmin') },
+  { nombre: "Inicio",      ruta: "/dashboard",  icon: faHouse,           match: (p: string) => p === '/dashboard',         roles: ['USER', 'ADMIN', 'SUPERADMIN'] },
+  { nombre: "Equipo",      ruta: "/equipo",      icon: faPeopleGroup,     match: (p: string) => p.startsWith('/equipo'),     roles: ['ADMIN', 'SUPERADMIN'] },
+  { nombre: "Servicios",   ruta: "/servicios",   icon: faGear,            match: (p: string) => p.startsWith('/servicios'),  roles: ['ADMIN', 'SUPERADMIN'] },
+  { nombre: "Artículos",   ruta: "/articulos",   icon: faNewspaper,       match: (p: string) => p.startsWith('/articulos'), roles: ['USER', 'ADMIN', 'SUPERADMIN'] },
+  { nombre: "Testimonios", ruta: "/testimonios", icon: faMessage,         match: (p: string) => p === '/testimonios',        roles: ['ADMIN', 'SUPERADMIN'] },
+  { nombre: "Usuarios",    ruta: "/usuarios",    icon: faUsers,           match: (p: string) => p.startsWith('/usuarios'),   roles: ['ADMIN', 'SUPERADMIN'] },
+  { nombre: "Historial",   ruta: "/actividad",   icon: faClockRotateLeft, match: (p: string) => p === '/actividad',          roles: ['ADMIN', 'SUPERADMIN'] },
+  { nombre: "Perfil",      ruta: "/usuario",     icon: faUser,            match: (p: string) => p === '/usuario',            roles: ['USER', 'ADMIN', 'SUPERADMIN'] },
+  { nombre: "Project",     ruta: "/project",     icon: faFile,            match: (p: string) => p === '/project',            roles: ['SUPERADMIN'] },
+  { nombre: "Superadmin",  ruta: "/superadmin",  icon: faLayerGroup,      match: (p: string) => p.startsWith('/superadmin'), roles: ['SUPERADMIN'] },
 ];
 
 export function NavbarAdmin() {
@@ -26,6 +27,11 @@ export function NavbarAdmin() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const visibleItems = navItems.filter(item =>
+    user?.rol ? item.roles.includes(user.rol) : false
+  );
 
   const logout = async () => {
     if (isLoggingOut) return;
@@ -91,7 +97,7 @@ export function NavbarAdmin() {
         </div>
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
           <ul className="space-y-0.5 relative">
-            {navItems.map((item) => (
+            {visibleItems.map((item) => (
               <NavLink key={item.ruta} info={item} />
             ))}
           </ul>
@@ -147,7 +153,7 @@ export function NavbarAdmin() {
         </div>
         <nav className="px-3 py-4 relative">
           <ul className="space-y-0.5">
-            {navItems.map((item) => (
+            {visibleItems.map((item) => (
               <NavLink key={item.ruta} info={item} onClick={() => setOpen(false)} />
             ))}
           </ul>
