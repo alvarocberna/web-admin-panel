@@ -6,16 +6,19 @@ import { CreateServicioDto, UpdateServicioDto } from '../dtos/servicio.dto';
 
 export class ServiciosService {
 
-    public static async createServicios(data: CreateServiciosDto): Promise<ServiciosEntity> {
-        return await apiFetch<ServiciosEntity>('servicios/crear', 'POST', data);
+    public static async createServicios(data: CreateServiciosDto, proyecto_id?: string): Promise<ServiciosEntity> {
+        const url = proyecto_id ? `servicios/crear?proyecto_id=${proyecto_id}` : 'servicios/crear';
+        return await apiFetch<ServiciosEntity>(url, 'POST', data);
     }
 
-    public static async getServicios(): Promise<ServiciosEntity | null> {
-        return await apiFetch<ServiciosEntity>('servicios/ver-todo', 'GET');
+    public static async getServicios(proyecto_id?: string): Promise<ServiciosEntity | null> {
+        const url = proyecto_id ? `servicios/ver-todo?proyecto_id=${proyecto_id}` : 'servicios/ver-todo';
+        return await apiFetch<ServiciosEntity>(url, 'GET');
     }
 
-    public static async updateServicios(data: UpdateServiciosDto): Promise<ServiciosEntity> {
-        return await apiFetch<ServiciosEntity>('servicios/editar', 'PUT', data);
+    public static async updateServicios(data: UpdateServiciosDto, proyecto_id?: string): Promise<ServiciosEntity> {
+        const url = proyecto_id ? `servicios/editar?proyecto_id=${proyecto_id}` : 'servicios/editar';
+        return await apiFetch<ServiciosEntity>(url, 'PUT', data);
     }
 
     public static async createServicio(data: CreateServicioDto): Promise<ServicioEntity> {

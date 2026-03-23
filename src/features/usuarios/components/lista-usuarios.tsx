@@ -17,8 +17,12 @@ interface UsuarioForm {
     rol: string;
 }
 
-export function ListaUsuarios() {
-    const [proyectoId, setProyectoId] = useState<string | null>(null);
+interface ListaUsuariosProps {
+    proyectoId?: string;
+}
+
+export function ListaUsuarios({ proyectoId: proyectoIdProp }: ListaUsuariosProps = {}) {
+    const [proyectoId, setProyectoId] = useState<string | null>(proyectoIdProp ?? null);
     const [usuarios, setUsuarios] = useState<UsuarioEntity[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,9 +41,13 @@ export function ListaUsuarios() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const yo = await UsuarioService.getUsuario();
-                setProyectoId(yo.proyecto_id);
-                const lista = await UsuarioService.getUsuariosAdmin(yo.proyecto_id);
+                let pid = proyectoIdProp ?? null;
+                if (!pid) {
+                    const yo = await UsuarioService.getUsuario();
+                    pid = yo.proyecto_id;
+                }
+                setProyectoId(pid);
+                const lista = await UsuarioService.getUsuariosAdmin(pid);
                 setUsuarios(lista);
             } catch (error) {
                 console.error('Error cargando usuarios:', error);
@@ -49,7 +57,7 @@ export function ListaUsuarios() {
             }
         };
         fetchData();
-    }, []);
+    }, [proyectoIdProp]);
 
     const openCreate = () => {
         setEditingUsuario(null);

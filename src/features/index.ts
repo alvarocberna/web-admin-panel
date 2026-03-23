@@ -20,6 +20,9 @@ export * from './auth/hooks/useAuth';
 export * from './proyectos/entities/proyecto.entity';
 export * from './proyectos/services/proyecto.service';
 export * from './proyectos/dtos/proyecto.dto';
+export * from './proyectos/components/lista-proyectos';
+export * from './proyectos/components/modal-crear-proyecto';
+export * from './proyectos/components/detalle-proyecto';
 //USUARIOS
 export * from './usuarios/entities/usuario.entity';
 export * from './usuarios/services/usuario.service';

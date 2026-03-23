@@ -6,16 +6,19 @@ import { UsuarioService, ArticuloEntity, ArticulosEntity, CreateArticulosDto, Up
 
 export class ArticulosService{
 
-    public static async createArticulos(data: CreateArticulosDto): Promise<ArticulosEntity> {
-        return await apiFetch<ArticulosEntity>('articulos/crear', 'POST', data);
+    public static async createArticulos(data: CreateArticulosDto, proyecto_id?: string): Promise<ArticulosEntity> {
+        const url = proyecto_id ? `articulos/crear?proyecto_id=${proyecto_id}` : 'articulos/crear';
+        return await apiFetch<ArticulosEntity>(url, 'POST', data);
     }
 
-    public static async getArticulos(): Promise<ArticulosEntity | null> {
-        return await apiFetch<ArticulosEntity>('articulos/ver-todo', 'GET');
+    public static async getArticulos(proyecto_id?: string): Promise<ArticulosEntity | null> {
+        const url = proyecto_id ? `articulos/ver-todo?proyecto_id=${proyecto_id}` : 'articulos/ver-todo';
+        return await apiFetch<ArticulosEntity>(url, 'GET');
     }
 
-    public static async updateArticulos(data: UpdateArticulosDto): Promise<ArticulosEntity> {
-        return await apiFetch<ArticulosEntity>('articulos/editar', 'PUT', data);
+    public static async updateArticulos(data: UpdateArticulosDto, proyecto_id?: string): Promise<ArticulosEntity> {
+        const url = proyecto_id ? `articulos/editar?proyecto_id=${proyecto_id}` : 'articulos/editar';
+        return await apiFetch<ArticulosEntity>(url, 'PUT', data);
     }
 
     public static async createArticulo(data: CreateArticuloForm): Promise<void>{

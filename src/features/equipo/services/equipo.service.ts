@@ -5,16 +5,19 @@ import { CreateEquipoDto, UpdateEquipoDto, CreateEmpleadoDto, UpdateEmpleadoDto 
 
 export class EquipoService {
 
-    public static async getEquipo(): Promise<EquipoEntity | null> {
-        return await apiFetch<EquipoEntity>('equipo/ver-todo', 'GET');
+    public static async getEquipo(proyecto_id?: string): Promise<EquipoEntity | null> {
+        const url = proyecto_id ? `equipo/ver-todo?proyecto_id=${proyecto_id}` : 'equipo/ver-todo';
+        return await apiFetch<EquipoEntity>(url, 'GET');
     }
 
-    public static async createEquipo(data: CreateEquipoDto): Promise<EquipoEntity> {
-        return await apiFetch<EquipoEntity>('equipo/crear', 'POST', data);
+    public static async createEquipo(data: CreateEquipoDto, proyecto_id?: string): Promise<EquipoEntity> {
+        const url = proyecto_id ? `equipo/crear?proyecto_id=${proyecto_id}` : 'equipo/crear';
+        return await apiFetch<EquipoEntity>(url, 'POST', data);
     }
 
-    public static async updateEquipo(data: UpdateEquipoDto): Promise<EquipoEntity> {
-        return await apiFetch<EquipoEntity>('equipo/editar', 'PUT', data);
+    public static async updateEquipo(data: UpdateEquipoDto, proyecto_id?: string): Promise<EquipoEntity> {
+        const url = proyecto_id ? `equipo/editar?proyecto_id=${proyecto_id}` : 'equipo/editar';
+        return await apiFetch<EquipoEntity>(url, 'PUT', data);
     }
 
     public static async createEmpleado(data: CreateEmpleadoDto): Promise<EmpleadoEntity> {

@@ -2,7 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse, faPeopleGroup, faGear, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse, faPeopleGroup, faGear, faUsers, faLayerGroup } from '@fortawesome/free-solid-svg-icons'
 import { faMessage, faFile, faUser } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { AuthService } from "@/features/auth/services/auth.service";
@@ -18,6 +18,7 @@ const navItems = [
   { nombre: "Historial", ruta: "/actividad",  icon: faClockRotateLeft, match: (p: string) => p === '/actividad' },
   { nombre: "Perfil", ruta: "/usuario",  icon: faUser, match: (p: string) => p === '/usuario' },
   { nombre: "Project", ruta: "/project",  icon: faFile, match: (p: string) => p === '/project' },
+  { nombre: "Superadmin", ruta: "/superadmin", icon: faLayerGroup, match: (p: string) => p.startsWith('/superadmin') },
 ];
 
 export function NavbarAdmin() {
