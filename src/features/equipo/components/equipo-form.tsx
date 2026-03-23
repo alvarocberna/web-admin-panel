@@ -49,6 +49,8 @@ export function EquipoForm({ equipo, onSaved }: Props) {
                     titulo: data.titulo,
                     descripcion: data.descripcion || null,
                     activo: data.activo,
+                    notificacion: false,
+                    habilitado: true,
                 });
                 toast.success('Equipo actualizado correctamente');
             } else {
@@ -56,6 +58,8 @@ export function EquipoForm({ equipo, onSaved }: Props) {
                     titulo: data.titulo,
                     descripcion: data.descripcion || null,
                     activo: data.activo,
+                    notificacion: false,
+                    habilitado: true,
                 });
                 toast.success('Equipo creado correctamente');
             }

@@ -52,6 +52,7 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                 activo: data.activo,
                 aprobar: data.aprobar,
                 notificacion: false,
+                habilitado: true,
             };
             let resultado: TestimoniosEntity;
             if (testimonios) {

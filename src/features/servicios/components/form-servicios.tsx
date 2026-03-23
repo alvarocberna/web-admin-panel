@@ -50,6 +50,8 @@ export function FormServicios({ servicios, onSaved }: Props) {
                 descripcion: data.descripcion || null,
                 icono: null,
                 activo: data.activo,
+                notificacion: false,
+                habilitado: true,
             };
             let resultado: ServiciosEntity;
             if (servicios) {
