@@ -4,10 +4,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Input, TextAreaArt } from '@/shared';
+import { Input, TextAreaArt, InputFile } from '@/shared';
 import { EquipoService } from '../services/equipo.service';
 import { EmpleadoEntity } from '../entities/empleado.entity';
-import { CreateEmpleadoDto } from '../dtos/equipo.dto';
 
 interface EmpleadoForm {
     nombre_primero: string;
@@ -18,8 +17,8 @@ interface EmpleadoForm {
     especialidad: string;
     descripcion: string;
     activo: boolean;
-    // img_url: string;
-    // img_alt: string;
+    img_alt: string;
+    image_file?: FileList;
 }
 
 interface Props {
@@ -50,8 +49,7 @@ export function Empleados({ empleados, onUpdated }: Props) {
             especialidad: '',
             descripcion: '',
             activo: true,
-            // img_url: '',
-            // img_alt: '',
+            img_alt: '',
         },
     });
 
@@ -68,8 +66,7 @@ export function Empleados({ empleados, onUpdated }: Props) {
             especialidad: '',
             descripcion: '',
             activo: true,
-            // img_url: '',
-            // img_alt: '',
+            img_alt: '',
         });
         setModalOpen(true);
     };
@@ -84,11 +81,8 @@ export function Empleados({ empleados, onUpdated }: Props) {
             profesion: empleado.profesion,
             especialidad: empleado.especialidad ?? '',
             descripcion: empleado.descripcion ?? '',
-            // orden: empleado.orden ?? '',
             activo: empleado.activo,
-            // img_url: empleado.img_url,
-            // img_alt: empleado.img_alt,
-            // slug: empleado.slug ?? '',
+            img_alt: empleado.img_alt ?? '',
         });
         setModalOpen(true);
     };
@@ -100,7 +94,7 @@ export function Empleados({ empleados, onUpdated }: Props) {
 
     const onSubmit = async (data: EmpleadoForm) => {
         try {
-            const payload: CreateEmpleadoDto = {
+            const payload = {
                 nombre_primero: data.nombre_primero,
                 nombre_segundo: data.nombre_segundo || null,
                 apellido_paterno: data.apellido_paterno,
@@ -108,11 +102,11 @@ export function Empleados({ empleados, onUpdated }: Props) {
                 profesion: data.profesion,
                 especialidad: data.especialidad || null,
                 descripcion: data.descripcion || null,
-                orden: "",
+                orden: null,
                 activo: data.activo,
-                img_url: "",
-                img_alt: "",
-                slug: "",
+                img_alt: data.img_alt || null,
+                slug: null,
+                image_file: data.image_file,
             };
 
             if (editingEmpleado) {
@@ -290,44 +284,21 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         rules={{ required: false }}
                                     />
                                 </div>
-                                {/* <div>
-                                    <Input
-                                        label="URL de imagen"
-                                        name="img_url"
+                                <div className="sm:col-span-2">
+                                    <InputFile
+                                        label="Imagen del empleado"
+                                        name="image_file"
                                         register={register}
-                                        rules={{ required: 'La URL de la imagen es requerida' }}
                                     />
-                                    {errors.img_url && (
-                                        <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_url.message}</p>
-                                    )}
-                                </div> */}
-                                {/* <div>
+                                </div>
+                                <div className="sm:col-span-2">
                                     <Input
-                                        label="Texto alternativo (alt)"
+                                        label="Texto alternativo de la imagen (alt)"
                                         name="img_alt"
                                         register={register}
-                                        rules={{ required: 'El texto alternativo es requerido' }}
-                                    />
-                                    {errors.img_alt && (
-                                        <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_alt.message}</p>
-                                    )}
-                                </div> */}
-                                {/* <div>
-                                    <Input
-                                        label="Orden"
-                                        name="orden"
-                                        register={register}
                                         rules={{ required: false }}
                                     />
-                                </div> */}
-                                {/* <div>
-                                    <Input
-                                        label="Slug"
-                                        name="slug"
-                                        register={register}
-                                        rules={{ required: false }}
-                                    />
-                                </div> */}
+                                </div>
                             </div>
 
                             <TextAreaArt

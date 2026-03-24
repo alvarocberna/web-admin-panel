@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Input, TextAreaArt } from '@/shared';
+import { Input, TextAreaArt, InputFile } from '@/shared';
 import { ServiciosService } from '../services/servicios.service';
 import { ServicioEntity } from '../entities/servicio.entity';
 
@@ -16,8 +16,8 @@ interface ServicioForm {
     porcentaje_descuento: string;
     destacado: string;
     activo: boolean;
-    // img_url: string;
-    // img_alt: string;
+    img_alt: string;
+    image_file?: FileList;
 }
 
 interface Props {
@@ -48,8 +48,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
             porcentaje_descuento: '',
             destacado: 'false',
             activo: true,
-            // img_url: '',
-            // img_alt: '',
+            img_alt: '',
         },
     });
 
@@ -66,8 +65,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
             porcentaje_descuento: '',
             destacado: 'false',
             activo: true,
-            // img_url: '',
-            // img_alt: '',
+            img_alt: '',
         });
         setModalOpen(true);
     };
@@ -82,8 +80,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
             porcentaje_descuento: servicio.porcentaje_descuento ?? '',
             destacado: servicio.destacado ? 'true' : 'false',
             activo: servicio.activo,
-            // img_url: servicio.img_url,
-            // img_alt: servicio.img_alt,
+            img_alt: servicio.img_alt ?? '',
         });
         setModalOpen(true);
     };
@@ -103,10 +100,10 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                 porcentaje_descuento: data.porcentaje_descuento || null,
                 destacado: data.destacado === 'true',
                 icono: null,
-                orden:  null,
+                orden: null,
                 activo: data.activo,
-                img_url: "",
-                img_alt: "",
+                img_alt: data.img_alt || null,
+                image_file: data.image_file,
             };
 
             if (editingServicio) {
@@ -264,44 +261,21 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                         rules={{ required: false }}
                                     />
                                 </div>
-                                {/* <div>
-                                    <Input
-                                        label="Icono"
-                                        name="icono"
+                                <div className="sm:col-span-2">
+                                    <InputFile
+                                        label="Imagen del servicio"
+                                        name="image_file"
                                         register={register}
-                                        rules={{ required: false }}
                                     />
-                                </div> */}
-                                {/* <div>
+                                </div>
+                                <div className="sm:col-span-2">
                                     <Input
-                                        label="Orden"
-                                        name="orden"
-                                        register={register}
-                                        rules={{ required: false }}
-                                    />
-                                </div> */}
-                                {/* <div>
-                                    <Input
-                                        label="URL de imagen"
-                                        name="img_url"
-                                        register={register}
-                                        rules={{ required: 'La URL de la imagen es requerida' }}
-                                    />
-                                    {errors.img_url && (
-                                        <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_url.message}</p>
-                                    )}
-                                </div> */}
-                                {/* <div>
-                                    <Input
-                                        label="Texto alternativo (alt)"
+                                        label="Texto alternativo de la imagen (alt)"
                                         name="img_alt"
                                         register={register}
-                                        rules={{ required: 'El texto alternativo es requerido' }}
+                                        rules={{ required: false }}
                                     />
-                                    {errors.img_alt && (
-                                        <p className="text-xs text-red-500 mt-1 ml-1">{errors.img_alt.message}</p>
-                                    )}
-                                </div> */}
+                                </div>
                             </div>
 
                             <TextAreaArt

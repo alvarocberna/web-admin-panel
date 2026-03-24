@@ -10,8 +10,8 @@ export class ServicioEntity {
         public icono: string | null,
         public orden: string | null,
         public activo: boolean,
-        public img_url: string,
-        public img_alt: string,
+        public img_url: string | null,
+        public img_alt: string | null,
         public servicios_id: string,
     ) {}
 }

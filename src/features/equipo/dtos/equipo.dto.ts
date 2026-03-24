@@ -24,8 +24,8 @@ export abstract class CreateEmpleadoDto {
     abstract descripcion: string | null;
     abstract orden: string | null;
     abstract activo: boolean;
-    abstract img_url: string;
-    abstract img_alt: string;
+    abstract img_url: string | null;
+    abstract img_alt: string | null;
     abstract slug: string | null;
 }
 
@@ -39,7 +39,7 @@ export abstract class UpdateEmpleadoDto {
     abstract descripcion: string | null;
     abstract orden: string | null;
     abstract activo: boolean;
-    abstract img_url: string;
-    abstract img_alt: string;
+    abstract img_url: string | null;
+    abstract img_alt: string | null;
     abstract slug: string | null;
 }
