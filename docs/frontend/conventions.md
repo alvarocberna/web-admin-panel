@@ -117,6 +117,29 @@ const onSubmit = async (data: FormType) => {
 
 Los errores de validación se muestran bajo el campo con texto pequeño en rojo.
 
+### Sanitización de inputs
+
+Antes de enviar datos al backend, los valores de los formularios se sanitizan con las utilidades de `src/shared/utils/sanitize.ts`:
+
+| Función | Comportamiento |
+|---------|---------------|
+| `stripTags(value)` | Elimina etiquetas HTML (`<...>`) y aplica `trim()`. Usar en campos de texto libre donde se quiere prevenir inyección de HTML. |
+| `trimOnly(value)` | Solo aplica `trim()`. Usar en campos donde el whitespace extra no es válido pero no hay riesgo de HTML. |
+
+Ejemplo de uso en un `onSubmit`:
+
+```ts
+import { stripTags, trimOnly } from '@/shared/utils/sanitize'
+
+const onSubmit = async (data: FormType) => {
+  const payload = {
+    nombre: trimOnly(data.nombre),
+    descripcion: stripTags(data.descripcion),
+  }
+  await ServicioService.createServicio(payload)
+}
+```
+
 ## Manejo de errores
 
 - Errores de API → `toast.error('Mensaje en español')`

@@ -148,6 +148,8 @@ src/
     │   ├── footer-sub-sec.tsx        # FooterSubSec
     │   ├── title-sub-sec.tsx         # TitleSubSec
     │   └── toast-provider.tsx        # ToastProvider
+    ├── utils/
+    │   └── sanitize.ts               # Funciones de sanitización de inputs
     └── index.ts                      # Barrel export de shared
 ```
 
