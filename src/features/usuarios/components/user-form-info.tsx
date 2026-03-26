@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Input } from '@/shared';
+import { Input, stripTags, trimOnly } from '@/shared';
 import { UsuarioService } from '../services/usuario.service';
 import { UpdateUsuarioInfoDto } from '../dtos/usuario.dto';
 
@@ -33,9 +33,9 @@ export function UserFormInfo() {
         setLoading(true);
         try {
             const payload: UpdateUsuarioInfoDto = {
-                nombre: formData.nombre,
-                apellido: formData.apellido,
-                email: formData.email,
+                nombre: stripTags(formData.nombre),
+                apellido: stripTags(formData.apellido),
+                email: trimOnly(formData.email),
             };
             await UsuarioService.updateUsuarioInfo(payload);
             toast.success('Información actualizada correctamente');

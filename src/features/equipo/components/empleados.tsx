@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Input, TextAreaArt, InputFile } from '@/shared';
+import { Input, TextAreaArt, InputFile, stripTags } from '@/shared';
 import { EquipoService } from '../services/equipo.service';
 import { EmpleadoEntity } from '../entities/empleado.entity';
 
@@ -95,16 +95,16 @@ export function Empleados({ empleados, onUpdated }: Props) {
     const onSubmit = async (data: EmpleadoForm) => {
         try {
             const payload = {
-                nombre_primero: data.nombre_primero,
-                nombre_segundo: data.nombre_segundo || null,
-                apellido_paterno: data.apellido_paterno,
-                apellido_materno: data.apellido_materno || null,
-                profesion: data.profesion,
-                especialidad: data.especialidad || null,
-                descripcion: data.descripcion || null,
+                nombre_primero: stripTags(data.nombre_primero),
+                nombre_segundo: stripTags(data.nombre_segundo) || null,
+                apellido_paterno: stripTags(data.apellido_paterno),
+                apellido_materno: stripTags(data.apellido_materno) || null,
+                profesion: stripTags(data.profesion),
+                especialidad: stripTags(data.especialidad) || null,
+                descripcion: stripTags(data.descripcion) || null,
                 orden: null,
                 activo: data.activo,
-                img_alt: data.img_alt || null,
+                img_alt: stripTags(data.img_alt) || null,
                 slug: null,
                 image_file: data.image_file,
             };

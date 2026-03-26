@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Input, TextAreaArt } from '@/shared';
+import { Input, TextAreaArt, stripTags } from '@/shared';
 import { EquipoService } from '../services/equipo.service';
 import { EquipoEntity } from '../entities/equipo.entity';
 
@@ -46,8 +46,8 @@ export function EquipoForm({ equipo, onSaved }: Props) {
             let resultado: EquipoEntity;
             if (equipo) {
                 resultado = await EquipoService.updateEquipo({
-                    titulo: data.titulo,
-                    descripcion: data.descripcion || null,
+                    titulo: stripTags(data.titulo),
+                    descripcion: stripTags(data.descripcion) || null,
                     activo: data.activo,
                     notificacion: false,
                     habilitado: true,
@@ -55,8 +55,8 @@ export function EquipoForm({ equipo, onSaved }: Props) {
                 toast.success('Equipo actualizado correctamente');
             } else {
                 resultado = await EquipoService.createEquipo({
-                    titulo: data.titulo,
-                    descripcion: data.descripcion || null,
+                    titulo: stripTags(data.titulo),
+                    descripcion: stripTags(data.descripcion) || null,
                     activo: data.activo,
                     notificacion: false,
                     habilitado: true,

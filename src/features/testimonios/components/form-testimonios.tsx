@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Input, TextAreaArt } from '@/shared';
+import { Input, TextAreaArt, stripTags } from '@/shared';
 import { TestimoniosService } from '../services/testimonios.service';
 import { TestimoniosEntity } from '../entities/testimonios.entity';
 
@@ -47,8 +47,8 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
     const onSubmit = async (data: TestimoniosForm) => {
         try {
             const payload = {
-                titulo: data.titulo,
-                descripcion: data.descripcion,
+                titulo: stripTags(data.titulo),
+                descripcion: stripTags(data.descripcion),
                 activo: data.activo,
                 aprobar: data.aprobar,
                 notificacion: false,

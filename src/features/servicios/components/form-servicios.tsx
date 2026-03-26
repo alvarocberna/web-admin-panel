@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Input, TextAreaArt } from '@/shared';
+import { Input, TextAreaArt, stripTags } from '@/shared';
 import { ServiciosService } from '../services/servicios.service';
 import { ServiciosEntity } from '../entities/servicios.entity';
 
@@ -46,8 +46,8 @@ export function FormServicios({ servicios, onSaved }: Props) {
     const onSubmit = async (data: ServiciosForm) => {
         try {
             const payload = {
-                titulo: data.titulo,
-                descripcion: data.descripcion || null,
+                titulo: stripTags(data.titulo),
+                descripcion: stripTags(data.descripcion) || null,
                 icono: null,
                 activo: data.activo,
                 notificacion: false,

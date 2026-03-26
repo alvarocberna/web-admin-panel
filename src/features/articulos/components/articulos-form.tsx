@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Input, TextAreaArt } from '@/shared';
+import { Input, TextAreaArt, stripTags } from '@/shared';
 import { ArticulosService, ArticulosEntity } from '@/features';
 
 interface ArticulosForm {
@@ -50,8 +50,8 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
             let resultado: ArticulosEntity;
             if (articulos) {
                 resultado = await ArticulosService.updateArticulos({
-                    titulo: data.titulo,
-                    descripcion: data.descripcion,
+                    titulo: stripTags(data.titulo),
+                    descripcion: stripTags(data.descripcion),
                     activo: data.activo,
                     aprobar: data.aprobar,
                     notificacion: false,
@@ -60,8 +60,8 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
                 toast.success('Equipo actualizado correctamente');
             } else {
                 resultado = await ArticulosService.createArticulos({
-                    titulo: data.titulo,
-                    descripcion: data.descripcion,
+                    titulo: stripTags(data.titulo),
+                    descripcion: stripTags(data.descripcion),
                     activo: data.activo,
                     aprobar: data.aprobar,
                     notificacion: false,

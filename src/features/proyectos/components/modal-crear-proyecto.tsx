@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Input } from '@/shared';
+import { Input, stripTags, trimOnly } from '@/shared';
 import { ProyectoService } from '../services/proyecto.service';
 import { ProyectoEntity } from '../entities/proyecto.entity';
 import { EquipoService } from '@/features/equipo/services/equipo.service';
@@ -51,9 +51,9 @@ export function ModalCrearProyecto({ onClose, onCreado }: Props) {
         setLoading(true);
         try {
             const proyecto = await ProyectoService.createProyecto({
-                nombre_proyecto: data.nombre_proyecto,
-                descripcion: data.descripcion,
-                cliente: data.cliente,
+                nombre_proyecto: stripTags(data.nombre_proyecto),
+                descripcion: stripTags(data.descripcion),
+                cliente: stripTags(data.cliente),
                 activo: data.activo,
             });
             const proyecto_id = proyecto.id;
@@ -78,7 +78,7 @@ export function ModalCrearProyecto({ onClose, onCreado }: Props) {
             ]);
 
             await UsuarioService.createUsuarioAdmin(
-                { nombre: data.nombre, apellido: data.apellido, email: data.email, password: data.password, rol: data.rol },
+                { nombre: stripTags(data.nombre), apellido: stripTags(data.apellido), email: trimOnly(data.email), password: data.password, rol: data.rol },
                 proyecto_id,
             );
 
