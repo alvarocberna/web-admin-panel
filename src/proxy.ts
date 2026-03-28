@@ -25,21 +25,6 @@ const proxyLog = (msg: string) => {
   console.log(`[proxy] ${time} — ${msg}`);
 };
 
-/** Adjunta un token CSRF (Double Submit Cookie) a la respuesta si aún no existe. */
-function withCsrfCookie(response: NextResponse, request: NextRequest): NextResponse {
-  const existing = request.cookies.get('csrf_token');
-  if (!existing) {
-    const token = crypto.randomUUID();
-    response.cookies.set('csrf_token', token, {
-      httpOnly: false,                                         // debe ser legible por JS
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-    });
-    proxyLog(`csrf_token generado → ${token.slice(0, 8)}…`);
-  }
-  return response;
-}
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -89,7 +74,7 @@ export function proxy(request: NextRequest) {
   // client.ts recibirá un 401 y ejecutará el refresh automáticamente
   if (!accessToken && refreshToken) {
     proxyLog(`access_token ausente pero refresh_token presente → permitido para que client.ts refresque`);
-    return withCsrfCookie(NextResponse.next(), request);
+    return NextResponse.next();
   }
 
   // Verificar restricción por rol (solo UX, la seguridad real está en el backend)
@@ -115,7 +100,7 @@ export function proxy(request: NextRequest) {
   }
 
   proxyLog(`ruta protegida con sesión → permitido`);
-  return withCsrfCookie(NextResponse.next(), request);
+  return NextResponse.next();
 }
 
 // Configurar para qué rutas se ejecuta el middleware
