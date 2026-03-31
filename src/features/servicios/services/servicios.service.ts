@@ -43,6 +43,12 @@ export class ServiciosService {
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen no puede superar 5MB.');
             formData.append('image_file', file);
         }
+        const slug = data.nombre_servicio
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '');
         const servicioData = {
             nombre_servicio: data.nombre_servicio,
             descripcion: data.descripcion,
@@ -55,6 +61,7 @@ export class ServiciosService {
             activo: data.activo,
             img_url: null,
             img_alt: data.img_alt || null,
+            slug,
         };
         formData.append('data', JSON.stringify(servicioData));
         return await apiFetchFormData<ServicioEntity>('servicios/servicio/crear', formData, 'POST');

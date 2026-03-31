@@ -1,9 +1,11 @@
 'use client'
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { EmpleadoEntity } from '@/features/project';
 
 export function Card2Empleado(props: EmpleadoEntity){
+    const router = useRouter();
     const [expanded, setExpanded] = useState(false);
     const [contentHeight, setContentHeight] = useState(0);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -27,7 +29,11 @@ export function Card2Empleado(props: EmpleadoEntity){
         // Container
         <div className="w-full sm:w-1/2 lg:w-1/3 mb-10 flex px-0">
            {/* contenedor principal */}
-            <div className='card w-full sm:w-[90%] lg:w-[90%] flex flex-col mx-auto h-full' style={{borderRadius: '15px'}}>
+            <div
+                className='card w-full sm:w-[90%] lg:w-[90%] flex flex-col mx-auto h-full cursor-pointer'
+                style={{borderRadius: '15px'}}
+                onClick={() => router.push(`/project/equipo/${props.slug}`)}
+            >
                 {/* contenedor secundario */}
                 <div
                     className="w-full flex flex-col relative flex-1"
@@ -69,7 +75,10 @@ export function Card2Empleado(props: EmpleadoEntity){
                 </div>
                 {/* btn */}
                 {showButton && (
-                    <button onClick={() => setExpanded(!expanded)} className='btn primary-btn py-2 text-sm text-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-700 focus-visible:ring-offset-0'>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
+                        className='btn primary-btn py-2 text-sm text-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-700 focus-visible:ring-offset-0'
+                    >
                         {expanded ? 'Ver menos' : 'Ver más'}
                     </button>
                 )}

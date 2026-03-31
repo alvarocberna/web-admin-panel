@@ -8,14 +8,14 @@ import { ArticulosService, SecArticuloEntity, SecArticulo } from "@/features/pro
 import { ContenedorPage } from "@/shared/project";
 
 export default function VerArticulo(){
-    const id_articulo = useParams<{articuloId: string}>().articuloId;
+    const slug = useParams<{slug: string}>().slug;
     const [articulo, setArticulo] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchArticulo = async () => {
             try{
-                const data = await ArticulosService.getArticuloById(id_articulo);
+                const data = await ArticulosService.getArticuloBySlug(slug);
                 setArticulo(data);
             }catch(error){
                 console.log("error: " + error)
@@ -53,7 +53,7 @@ export default function VerArticulo(){
                     <p>Autor: {articulo.autor}</p>
                     <p>Publicado el {dia}/{mes}/{anno}</p>
                 </div>
-            )}  
+            )}
         </ContenedorPage>
     )
 }

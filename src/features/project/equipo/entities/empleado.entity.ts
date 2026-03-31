@@ -10,9 +10,9 @@ export class EmpleadoEntity {
         public descripcion: string | null,
         public orden: string | null,
         public activo: boolean,
+        public slug: string,
         public img_url: string,
         public img_alt: string,
-        public slug: string | null,
         public equipo_id: string,
     ) {}
 }

@@ -17,7 +17,7 @@ export function Card2Servicio(srv: ServicioEntity) {
     const [opacity, setOpacity] = useState<number>(70)
 
     return (
-        <Link className="px-0 mb-10  w-full sm:w-[48%] lg:w-[30%]" href={'/'}
+        <Link className="px-0 mb-10  w-full sm:w-[48%] lg:w-[30%]" href={`/project/servicios/${srv.slug}`}
             style={{ height: '250px', position: 'relative', borderRadius: '12px' }} onMouseEnter={() => setOpacity(50)} onMouseLeave={() => setOpacity(70)}>
             <Image src={`${srv.img_url}`} alt='...' fill={true} style={{ position: 'absolute', borderRadius: '12px' }}></Image>
             <div className="w-full h-full absolute transition-all duration-300 ease-in-out bg-black"  style={{ borderRadius: '12px', opacity: opacity / 100 }}></div>

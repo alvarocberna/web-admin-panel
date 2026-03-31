@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { TestimoniosService } from '../services/testimonios.service';
+import { ContenedorSec } from '@/shared/project'
 
 interface TestimonioForm {
     nombre: string;
@@ -14,7 +15,7 @@ interface TestimonioForm {
     calificacion: number | null;
 }
 
-export function NuevoTestimonio() {
+export function NuevoTestimonio({ sinContenedor }: { sinContenedor?: boolean } = {}) {
     const [calificacion, setCalificacion] = useState<number | null>(null);
     const [hovered, setHovered] = useState<number | null>(null);
     const [enviado, setEnviado] = useState(false);
@@ -58,7 +59,7 @@ export function NuevoTestimonio() {
         );
     }
 
-    return (
+    const form = (
         <form onSubmit={handleSubmit(onSubmit)} className="card px-6 py-6 space-y-4">
             <h3 className="text-lg font-semibold text-zinc-900">Escribe tu testimonio</h3>
 
@@ -157,4 +158,6 @@ export function NuevoTestimonio() {
             </button>
         </form>
     );
+
+    return sinContenedor ? form : <ContenedorSec>{form}</ContenedorSec>;
 }

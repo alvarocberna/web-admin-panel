@@ -1,13 +1,15 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TestimoniosService } from '@/features/project';
 import { TestimonioEntity, TestimoniosEntity } from '@/features/project';
 import { ContenedorSec } from '@/shared/project';
+import { NuevoTestimonio } from './nuevo-testimonio';
 
 export function ListaTestimonios() {
     const [testimonios, setTestimonios] = useState<TestimoniosEntity>();
+    const [modalAbierto, setModalAbierto] = useState(false);
 
     useEffect(() => {
         const fetchTestimonios = async () => {
@@ -29,9 +31,17 @@ export function ListaTestimonios() {
             {
                 testimonios?.activo &&
         <ContenedorSec>
-            <h3 className="text-2xl font-semibold text-zinc-900 mb-4">
-                {testimonios?.titulo}
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-semibold text-zinc-900">
+                    {testimonios?.titulo}
+                </h3>
+                <button
+                    onClick={() => setModalAbierto(true)}
+                    className="btn primary-btn text-sm"
+                >
+                    Escribir testimonio
+                </button>
+            </div>
             {
                 testimonios.descripcion &&
                 <p className='text-md text-zinc-700 mb-4'>
@@ -55,7 +65,7 @@ export function ListaTestimonios() {
                                             <p className="text-md font-semibold text-zinc-900">{t.nombre} {t.apellido}</p>
                                             <p className="text-xs text-zinc-400">{t.correo}</p>
                                         </div>
-                
+
                                     </div>
 
                                     <div className="flex gap-0.5 mb-3">
@@ -85,6 +95,28 @@ export function ListaTestimonios() {
 
         </ContenedorSec>
                    }
+
+            {/* Modal */}
+            {modalAbierto && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+                    onClick={() => setModalAbierto(false)}
+                >
+                    <div
+                        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            onClick={() => setModalAbierto(false)}
+                            className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 transition-colors"
+                            aria-label="Cerrar"
+                        >
+                            <FontAwesomeIcon icon={faXmark} style={{ width: '14px', height: '14px' }} className="text-zinc-600" />
+                        </button>
+                        <NuevoTestimonio sinContenedor />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

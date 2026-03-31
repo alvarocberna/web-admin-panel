@@ -1,9 +1,11 @@
+'use client'
+import Link from 'next/link';
 import { ServicioEntity } from "../entities/servicio.entity"
 
 export function CardServicio(srv: ServicioEntity){
     return(
          <div key={srv.id} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-            <div className="card h-full flex flex-col">
+            <Link href={`/project/servicios/${srv.slug}`} className="card h-full flex flex-col hover-btn overflow-hidden">
                 {srv.img_url && (
                     <img
                         src={srv.img_url}
@@ -34,7 +36,7 @@ export function CardServicio(srv: ServicioEntity){
                         <p className="text-sm text-zinc-700 line-clamp-3 mb-3">{srv.descripcion}</p>
                     )}
                 </div>
-            </div>
+            </Link>
         </div>
     )
 

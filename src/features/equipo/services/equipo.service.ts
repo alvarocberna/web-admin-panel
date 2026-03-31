@@ -44,6 +44,12 @@ export class EquipoService {
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen no puede superar 5MB.');
             formData.append('image_file', file);
         }
+        const slug = `${data.nombre_primero} ${data.apellido_paterno}`
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '');
         const empleadoData = {
             nombre_primero: data.nombre_primero,
             nombre_segundo: data.nombre_segundo,
@@ -56,7 +62,7 @@ export class EquipoService {
             activo: data.activo,
             img_url: null,
             img_alt: data.img_alt || null,
-            slug: data.slug || null,
+            slug,
         };
         formData.append('data', JSON.stringify(empleadoData));
         return await apiFetchFormData<EmpleadoEntity>('equipo/empleado/crear', formData, 'POST');

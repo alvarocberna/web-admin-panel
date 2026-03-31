@@ -7,7 +7,6 @@ export default function Project(){
             <ServiciosPublic/>
             <Articulos/>
             <ListaTestimonios/>
-            <NuevoTestimonio/>
         </div>
     )
 }

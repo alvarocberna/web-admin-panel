@@ -16,4 +16,11 @@ export class ArticulosService{
         return await apiFetch<ArticuloEntity>(`articulos/project/ver/${id_articulo}?usuario_id=${id_usuario}`, 'GET')
     }
 
+    public static async getArticuloBySlug(slug: string): Promise<ArticuloEntity>{
+        const articulos = await this.getArticulos();
+        const found = articulos.articulo.find(art => art.slug === slug);
+        if (!found) throw new Error('Artículo no encontrado');
+        return found;
+    }
+
 } 

@@ -8,6 +8,7 @@ export abstract class CreateServicioDto {
     abstract icono: string | null;
     abstract orden: string | null;
     abstract activo: boolean;
+    abstract slug: string;
     abstract img_url: string | null;
     abstract img_alt: string | null;
 }
@@ -22,6 +23,7 @@ export abstract class UpdateServicioDto {
     abstract icono?: string;
     abstract orden?: string;
     abstract activo?: boolean;
+    abstract slug?: string;
     abstract img_url?: string;
     abstract img_alt?: string;
 }
