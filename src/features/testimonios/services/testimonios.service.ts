@@ -16,7 +16,7 @@ export class TestimoniosService {
 
     public static async updateTestimonios(data: UpdateTestimoniosDto, proyecto_id?: string): Promise<TestimoniosEntity> {
         const url = proyecto_id ? `testimonios/editar?proyecto_id=${proyecto_id}` : 'testimonios/editar';
-        return await apiFetch<TestimoniosEntity>(url, 'PUT', data);
+        return await apiFetch<TestimoniosEntity>(url, 'PATCH', data);
     }
 
 }

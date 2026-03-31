@@ -13,7 +13,7 @@ export class UsuarioService{
         return await apiFetch<any>('usuario/user/authenticated', 'GET')
     }
 
-    public static async updateUsuarioInfo(data: UpdateUsuarioInfoDto): Promise<UsuarioEntity>{
+    public static async updateUsuarioInfo(data: UpdateUsuarioDto): Promise<UsuarioEntity>{
         return await apiFetch<UsuarioEntity>('usuario/user/editar', 'PATCH', data)
     }
 

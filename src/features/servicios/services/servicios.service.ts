@@ -31,7 +31,7 @@ export class ServiciosService {
 
     public static async updateServicios(data: UpdateServiciosDto, proyecto_id?: string): Promise<ServiciosEntity> {
         const url = proyecto_id ? `servicios/editar?proyecto_id=${proyecto_id}` : 'servicios/editar';
-        return await apiFetch<ServiciosEntity>(url, 'PUT', data);
+        return await apiFetch<ServiciosEntity>(url, 'PATCH', data);
     }
 
     public static async createServicio(data: ServicioFormInput): Promise<ServicioEntity> {
@@ -85,7 +85,7 @@ export class ServiciosService {
             img_alt: data.img_alt || null,
         };
         formData.append('data', JSON.stringify(servicioData));
-        return await apiFetchFormData<ServicioEntity>(`servicios/servicio/editar/${id_servicio}`, formData, 'PUT');
+        return await apiFetchFormData<ServicioEntity>(`servicios/servicio/editar/${id_servicio}`, formData, 'PATCH');
     }
 
     public static async deleteServicio(id_servicio: string): Promise<void> {

@@ -8,10 +8,10 @@ export abstract class CreateServiciosDto {
 }
 
 export abstract class UpdateServiciosDto {
-    abstract titulo: string;
-    abstract descripcion: string | null;
-    abstract icono: string | null;
-    abstract activo: boolean;
-    abstract notificacion: boolean;
-    abstract habilitado: boolean;
+    abstract titulo?: string;
+    abstract descripcion?: string;
+    abstract icono?: string;
+    abstract activo?: boolean;
+    abstract notificacion?: boolean;
+    abstract habilitado?: boolean;
 }

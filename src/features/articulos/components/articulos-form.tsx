@@ -91,7 +91,7 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
                     label="Título"
                     name="titulo"
                     register={register}
-                    rules={{ required: 'El título es requerido' }}
+                    rules={{ required: 'El título es requerido', minLength: {value: 1, message: 'Mínimo 1 caracter'}, maxLength: {value: 200, message: 'Máximo 200 caracteres'}}}
                 />
                 {errors.titulo && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.titulo.message}</p>
@@ -101,7 +101,7 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
                     label="Descripción"
                     name="descripcion"
                     register={register}
-                    rules={{ required: false }}
+                    rules={{ required: false, maxLength: {value: 500, message: 'Máximo 500 caracteres'} }}
                 />
 
                 <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">

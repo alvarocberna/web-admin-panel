@@ -8,6 +8,7 @@ import { Input } from '@/shared';
 import { UsuarioService } from '../services/usuario.service';
 import { UsuarioEntity } from '../entities/usuario.entity';
 import { CreateUsuarioDto, UpdateUsuarioDto } from '../dtos/usuario.dto';
+import { kMaxLength } from 'buffer';
 
 interface UsuarioForm {
     nombre: string;
@@ -96,9 +97,12 @@ export function ListaUsuarios({ proyectoId: proyectoIdProp }: ListaUsuariosProps
                     email: data.email,
                     password: data.password,
                     rol: data.rol,
+                    img_url: null,
+                    img_alt: null,
                 };
-                const nuevo = await UsuarioService.createUsuarioAdmin(payload, proyectoId);
-                setUsuarios(prev => [...prev, nuevo]);
+                await UsuarioService.createUsuarioAdmin(payload, proyectoId);
+                const lista = await UsuarioService.getUsuariosAdmin(proyectoId);
+                setUsuarios(lista);
                 toast.success('Usuario creado correctamente');
             }
             closeModal();
@@ -217,7 +221,7 @@ export function ListaUsuarios({ proyectoId: proyectoIdProp }: ListaUsuariosProps
                                         label="Nombre"
                                         name="nombre"
                                         register={register}
-                                        rules={{ required: 'El nombre es requerido' }}
+                                        rules={{ required: 'El nombre es requerido',  minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 50, message: 'Máximo 50 caracteres' } }}
                                     />
                                     {errors.nombre && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre.message}</p>
@@ -228,7 +232,7 @@ export function ListaUsuarios({ proyectoId: proyectoIdProp }: ListaUsuariosProps
                                         label="Apellido"
                                         name="apellido"
                                         register={register}
-                                        rules={{ required: 'El apellido es requerido' }}
+                                        rules={{ required: 'El apellido es requerido',  minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 50, message: 'Máximo 50 caracteres' } }}
                                     />
                                     {errors.apellido && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.apellido.message}</p>
@@ -245,6 +249,7 @@ export function ListaUsuarios({ proyectoId: proyectoIdProp }: ListaUsuariosProps
                                     rules={{
                                         required: 'El correo es requerido',
                                         pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Correo no válido' },
+                                        minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 100, message: 'Máximo 100 caracteres' }
                                     }}
                                 />
                                 {errors.email && (
@@ -261,7 +266,8 @@ export function ListaUsuarios({ proyectoId: proyectoIdProp }: ListaUsuariosProps
                                         register={register}
                                         rules={{
                                             required: 'La contraseña es requerida',
-                                            minLength: { value: 8, message: 'Mínimo 8 caracteres' },
+                                            minLength: { value: 12, message: 'Mínimo 12 caracteres' },
+                                            kMaxLength: {value: 30, message: 'Máximo 30 caracteres'}
                                         }}
                                     />
                                     {errors.password && (

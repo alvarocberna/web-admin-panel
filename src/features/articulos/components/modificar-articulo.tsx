@@ -18,6 +18,8 @@ export function ModificarArticulo(props: {id_articulo: string}){
     //definimos estados
     const [loading, setLoading] = useState<boolean>(true);
     const [addSec, setAddSec] = useState(true);
+    const [articuloData, setArticuloData] = useState<ArticuloEntity | null>(null);
+    const [activo, setActivo] = useState<boolean>(true);
     //definimos variables
     const id_articulo = props.id_articulo;
     const router = useRouter();
@@ -37,14 +39,18 @@ export function ModificarArticulo(props: {id_articulo: string}){
         const fetchArticulo = async () => {
             try{
                 const data = await ArticulosService.getArticuloById(id_articulo);
+                setArticuloData(data);
+                setActivo(data.activo ?? true);
                 reset({ //forma estandar para poblar un form con datos
                     titulo: data.titulo ?? '',
                     subtitulo: data.subtitulo ?? '',
+                    image_url: data.image_url ?? null,
                     image_alt: data.image_alt ?? '',
                     sec_articulo: data.sec_articulo?.map(sec => ({
                         id_sec: sec.id,
                         titulo_sec: sec.titulo_sec ?? '',
                         contenido_sec: sec.contenido_sec ?? '',
+                        image_url: sec.image_url ?? null,
                         image_alt: sec.image_alt ?? '',
                         image_position: sec.image_position ?? 'left'
                     })) ?? []
@@ -67,7 +73,7 @@ export function ModificarArticulo(props: {id_articulo: string}){
     const onSubmit: SubmitHandler<UpdateArticuloForm> = async (data) => {
         try{
             console.log("intentando actualizar articulo")
-            await ArticulosService.updateArticulo(id_articulo, data);
+            await ArticulosService.updateArticulo(id_articulo, { ...data, activo });
             toast.success("Articulo actualizado");
             router.push('/articulos');
         }catch(error: any){
@@ -79,11 +85,45 @@ export function ModificarArticulo(props: {id_articulo: string}){
 
     return(
         <form onSubmit={handleSubmit(onSubmit)} className="w-full m-auto">
+            {/* Estado del artículo */}
+            <div className="flex items-center justify-between mb-3 px-1">
+                <span className="text-sm font-medium text-zinc-600">Estado del artículo</span>
+                <button
+                    type="button"
+                    onClick={() => setActivo(prev => !prev)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo ? 'bg-green-500' : 'bg-zinc-300'}`}
+                    aria-pressed={activo}
+                >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo ? 'translate-x-6' : 'translate-x-1'}`} />
+                    <span className="sr-only">{activo ? 'Activo' : 'Inactivo'}</span>
+                </button>
+                <span className={`text-xs font-semibold ml-2 ${activo ? 'text-green-600' : 'text-zinc-400'}`}>
+                    {activo ? 'Activo' : 'Inactivo'}
+                </span>
+            </div>
+
             {/* Cabecera artículo */}
             <div className="card px-4 pt-2 pb-4">
-                <InputArt label="Título" name="titulo" type="text" register={register} rules={{ required: true, minLength: {value: 1, message: 'Título demasiado corto'}, maxLength: {value: 200, message: 'Título demasiado largo'} }} textSize="lg"/>
+                <InputArt
+                    label="Título" 
+                    name="titulo" 
+                    type="text" 
+                    register={register} 
+                    rules={{ 
+                        required: true, 
+                        minLength: {value: 1, message: 'Mínimo 1 caracter'}, 
+                        maxLength: {value: 200, message: 'Máximo 200 caracteres'} }} 
+                    textSize="lg"/>
                 {errors.titulo && <span className="text-red-600 text-xs mt-1 block">{errors.titulo.message}</span>}
-                <InputArt label="Subtítulo" name="subtitulo" type="text" register={register} rules={{ required: false, minLength: {value: 1, message: 'Subtítulo demasiado corto'}, maxLength: {value: 200, message: 'Subtítulo demasiado largo'} }} textSize="md"/>
+                <InputArt 
+                    label="Subtítulo" 
+                    name="subtitulo" 
+                    type="text" 
+                    register={register} 
+                    rules={{ 
+                        required: false, 
+                        maxLength: {value: 500, message: 'Subtítulo demasiado largo'} }} 
+                    textSize="md"/>
                 {errors.subtitulo && <span className="text-red-600 text-xs mt-1 block">{errors.subtitulo.message}</span>}
                 <InputFile
                     label="Imagen de portada"
@@ -91,13 +131,14 @@ export function ModificarArticulo(props: {id_articulo: string}){
                     register={register}
                     rules={{ required: false }}
                     accept="image/*"
+                    currentImageUrl={articuloData?.image_url}
                 />
                 <InputArt
                     label="Texto alternativo de la imagen (Alt)"
                     name={"image_alt" as any}
                     type="text"
                     register={register}
-                    rules={{ required: false }}
+                    rules={{ required: false, maxLength: {value: 100, message: 'Máximo 100 caracteres'} }}
                 />
             </div>
 
@@ -105,7 +146,7 @@ export function ModificarArticulo(props: {id_articulo: string}){
             <div className="space-y-0">
                 {fields.map((field, index) => (
                     <div className="relative mt-3" key={field.id}>
-                        <SecArticulo field={field} index={index} register={register} />
+                        <SecArticulo field={field} index={index} register={register} currentImageUrl={field.image_url} />
                         <button
                             type="button"
                             onClick={() => remove(index)}

@@ -47,8 +47,8 @@ export function FormServicios({ servicios, onSaved }: Props) {
         try {
             const payload = {
                 titulo: stripTags(data.titulo),
-                descripcion: stripTags(data.descripcion) || null,
-                icono: null,
+                descripcion: stripTags(data.descripcion),
+                icono: 'x',
                 activo: data.activo,
                 notificacion: false,
                 habilitado: true,
@@ -83,7 +83,11 @@ export function FormServicios({ servicios, onSaved }: Props) {
                     label="Título"
                     name="titulo"
                     register={register}
-                    rules={{ required: 'El título es requerido' }}
+                    rules={{ 
+                        required: 'El título es requerido',
+                        minLength: {value: 1, message: 'Mínimo 1 caracter'},
+                        maxLength: {value: 200, message: 'Máximo 200 caracteres'} 
+                    }}
                 />
                 {errors.titulo && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.titulo.message}</p>
@@ -93,7 +97,10 @@ export function FormServicios({ servicios, onSaved }: Props) {
                     label="Descripción"
                     name="descripcion"
                     register={register}
-                    rules={{ required: false }}
+                    rules={{ 
+                        required: false,
+                        maxLength: {value: 500, message: 'Máximo 500 caracteres'} 
+                    }}
                 />
 
                 {/* <Input

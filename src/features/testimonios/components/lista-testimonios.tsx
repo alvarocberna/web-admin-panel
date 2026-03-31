@@ -79,7 +79,7 @@ export function ListaTestimonios() {
                                 key={i}
                                 icon={faStar}
                                 style={{ width: '12px', height: '12px' }}
-                                className={i < t.calificacion ? 'text-yellow-400' : 'text-zinc-200'}
+                                className={i < t.calificacion! ? 'text-yellow-400' : 'text-zinc-200'}
                             />
                         ))}
                     </div>

@@ -18,7 +18,7 @@ export class ArticulosService{
 
     public static async updateArticulos(data: UpdateArticulosDto, proyecto_id?: string): Promise<ArticulosEntity> {
         const url = proyecto_id ? `articulos/editar?proyecto_id=${proyecto_id}` : 'articulos/editar';
-        return await apiFetch<ArticulosEntity>(url, 'PUT', data);
+        return await apiFetch<ArticulosEntity>(url, 'PATCH', data);
     }
 
     public static async createArticulo(data: CreateArticuloForm): Promise<void>{
@@ -88,8 +88,9 @@ export class ArticulosService{
         const formData = new FormData();
 
         // 1. Agregar imagen principal si existe
-        if (data.image_file && data.image_file.length > 0) {
-            const file = data.image_file[0];
+        const hasNewMainFile = data.image_file && data.image_file.length > 0;
+        if (hasNewMainFile) {
+            const file = data.image_file![0];
             if (!file.type.startsWith('image/')) throw new Error('El archivo principal debe ser una imagen.');
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen principal no puede superar 5MB.');
             formData.append('image_file', file);
@@ -120,20 +121,23 @@ export class ArticulosService{
             fecha_publicacion: new Date(),
             fecha_actualizacion: new Date(),
             status: status,
-            activo: true,
+            activo: data.activo ?? true,
             slug: slug,
-            image_url: null,
+            image_url: hasNewMainFile ? null : (data.image_url ?? null),
             image_alt: data.image_alt || '',
             image_position: null,
-            sec_articulo: data.sec_articulo.map((dataSec, index) => ({
-                id: dataSec.id_sec,
-                nro_seccion: index,
-                titulo_sec: dataSec.titulo_sec,
-                contenido_sec: dataSec.contenido_sec,
-                image_url: null,
-                image_alt: dataSec.image_alt || null,
-                image_position: dataSec.image_position || null,
-            }))
+            sec_articulo: data.sec_articulo.map((dataSec, index) => {
+                const hasNewSecFile = dataSec.image_file && dataSec.image_file.length > 0;
+                return {
+                    id: dataSec.id_sec,
+                    nro_seccion: index,
+                    titulo_sec: dataSec.titulo_sec,
+                    contenido_sec: dataSec.contenido_sec,
+                    image_url: hasNewSecFile ? null : (dataSec.image_url ?? null),
+                    image_alt: dataSec.image_alt || null,
+                    image_position: dataSec.image_position || null,
+                };
+            })
         };
         
         // 4. ✅ IMPORTANTE: Enviar TODO en un solo campo 'data' como JSON
@@ -144,7 +148,7 @@ export class ArticulosService{
 
     //elimina un articulo por id
     public static async deleteArticulo(id_articulo: string): Promise<void>{
-        return await apiFetch<any>(`articulos/articulo/delete/${id_articulo}`, 'DELETE')
+        return await apiFetch<any>(`articulos/articulo/eliminar/${id_articulo}`, 'DELETE')
     }
 
     //aprueba un articulo actualizando su status a 'approved'

@@ -13,6 +13,7 @@ export interface EmpleadoFormInput {
     descripcion: string | null;
     orden: string | null;
     activo: boolean;
+    img_url?: string | null;
     img_alt?: string | null;
     slug?: string | null;
     image_file?: FileList;
@@ -32,7 +33,7 @@ export class EquipoService {
 
     public static async updateEquipo(data: UpdateEquipoDto, proyecto_id?: string): Promise<EquipoEntity> {
         const url = proyecto_id ? `equipo/editar?proyecto_id=${proyecto_id}` : 'equipo/editar';
-        return await apiFetch<EquipoEntity>(url, 'PUT', data);
+        return await apiFetch<EquipoEntity>(url, 'PATCH', data);
     }
 
     public static async createEmpleado(data: EmpleadoFormInput): Promise<EmpleadoEntity> {
@@ -67,8 +68,9 @@ export class EquipoService {
 
     public static async updateEmpleado(id_empleado: string, data: EmpleadoFormInput): Promise<EmpleadoEntity> {
         const formData = new FormData();
-        if (data.image_file && data.image_file.length > 0) {
-            const file = data.image_file[0];
+        const hasNewFile = data.image_file && data.image_file.length > 0;
+        if (hasNewFile) {
+            const file = data.image_file![0];
             if (!file.type.startsWith('image/')) throw new Error('El archivo debe ser una imagen.');
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen no puede superar 5MB.');
             formData.append('image_file', file);
@@ -83,12 +85,12 @@ export class EquipoService {
             descripcion: data.descripcion,
             orden: data.orden,
             activo: data.activo,
-            img_url: null,
+            img_url: hasNewFile ? null : (data.img_url ?? null),
             img_alt: data.img_alt || null,
             slug: data.slug || null,
         };
         formData.append('data', JSON.stringify(empleadoData));
-        return await apiFetchFormData<EmpleadoEntity>(`equipo/empleado/editar/${id_empleado}`, formData, 'PUT');
+        return await apiFetchFormData<EmpleadoEntity>(`equipo/empleado/editar/${id_empleado}`, formData, 'PATCH');
     }
 
     public static async deleteEmpleado(id_empleado: string): Promise<void> {

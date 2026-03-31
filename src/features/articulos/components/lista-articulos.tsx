@@ -65,7 +65,10 @@ export function ListaArticulos({ articulos, onUpdated, rol }: Props) {
                         {articulo.titulo}
                     </h4>
                     <p className="mb-1 text-sm text-zinc-500">Por: {articulo.autor}</p>
-                    <p className="mb-4 text-xs text-zinc-400">{dia}/{mes}/{anno}</p>
+                    <p className="mb-1 text-xs text-zinc-400">{dia}/{mes}/{anno}</p>
+                    {articulo.activo !== true && (
+                        <p className="mb-4 text-xs text-orange-700">Inactivo</p>
+                    )}
 
                     {showAcciones && (
                         <div className="flex gap-2 mb-4">

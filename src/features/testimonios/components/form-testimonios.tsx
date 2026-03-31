@@ -37,7 +37,7 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
         if (testimonios) {
             reset({
                 titulo: testimonios.titulo,
-                descripcion: testimonios.descripcion,
+                descripcion: testimonios.descripcion ?? '',
                 activo: testimonios.activo,
                 aprobar: testimonios.aprobar,
             });
@@ -84,7 +84,11 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                     label="Título"
                     name="titulo"
                     register={register}
-                    rules={{ required: 'El título es requerido' }}
+                    rules={{ 
+                        required: 'El título es requerido',
+                        minLength: {value: 1, message: 'Mínimo 1 caracter'},
+                        maxLength: {value: 200, message: 'Máximo 200 caracteres'} 
+                    }}
                 />
                 {errors.titulo && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.titulo.message}</p>
@@ -94,7 +98,10 @@ export function FormTestimonios({ testimonios, onSaved }: Props) {
                     label="Descripción"
                     name="descripcion"
                     register={register}
-                    rules={{ required: false }}
+                    rules={{ 
+                        required: false,
+                        maxLength: {value: 500, message: 'Máximo 500 caracteres'} 
+                    }}
                 />
 
                 {/* Toggle activo */}

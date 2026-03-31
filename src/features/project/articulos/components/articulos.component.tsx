@@ -32,7 +32,7 @@ export function Articulos(){
     }
 
     //componente con todos los articulos
-    const listaArticulos = articulos.articulo.filter(art => art.status === 'approved').map((art: ArticuloEntity, index: number) => {
+    const listaArticulos = articulos.articulo.filter(art => art.status === 'approved' && art.activo === true).map((art: ArticuloEntity, index: number) => {
         return(
             <div className='w-full sm:w-1/2 lg:w-1/3 px-2 mb-4' key={index}>
                 <Link href={`project/articulos/${art.id}`} className='card hover-btn w-full flex flex-col overflow-hidden'>

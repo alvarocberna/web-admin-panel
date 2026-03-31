@@ -71,14 +71,15 @@ export function Empleados({ empleados, onUpdated }: Props) {
         setModalOpen(true);
     };
 
+    //guardamos la info del empleado seleccionado en 'empleado'
     const openEdit = (empleado: EmpleadoEntity) => {
         setEditingEmpleado(empleado);
         reset({
             nombre_primero: empleado.nombre_primero,
-            nombre_segundo: empleado.nombre_segundo ?? '',
+            nombre_segundo: empleado.nombre_segundo ??  '',
             apellido_paterno: empleado.apellido_paterno,
             apellido_materno: empleado.apellido_materno ?? '',
-            profesion: empleado.profesion,
+            profesion: empleado.profesion ?? '',
             especialidad: empleado.especialidad ?? '',
             descripcion: empleado.descripcion ?? '',
             activo: empleado.activo,
@@ -104,6 +105,7 @@ export function Empleados({ empleados, onUpdated }: Props) {
                 descripcion: stripTags(data.descripcion) || null,
                 orden: null,
                 activo: data.activo,
+                img_url: editingEmpleado?.img_url ?? null,
                 img_alt: stripTags(data.img_alt) || null,
                 slug: null,
                 image_file: data.image_file,
@@ -232,7 +234,11 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Primer nombre"
                                         name="nombre_primero"
                                         register={register}
-                                        rules={{ required: 'El primer nombre es requerido' }}
+                                        rules={{ 
+                                            required: 'El primer nombre es requerido',
+                                            minLength: {value: 1, message: 'Mínimo 1 caracter'},
+                                            maxLength: {value: 50, message: 'Máximo 50 caracteres'}
+                                         }}
                                     />
                                     {errors.nombre_primero && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_primero.message}</p>
@@ -243,7 +249,10 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Segundo nombre"
                                         name="nombre_segundo"
                                         register={register}
-                                        rules={{ required: false }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 50, message: 'Máximo 50 caracteres'}
+                                         }}
                                     />
                                 </div>
                                 <div>
@@ -251,7 +260,11 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Apellido paterno"
                                         name="apellido_paterno"
                                         register={register}
-                                        rules={{ required: 'El apellido paterno es requerido' }}
+                                        rules={{
+                                            required: 'El apellido paterno es requerido',
+                                            minLength: {value: 1, message: 'Mínimo 1 caracter'},
+                                            maxLength: {value: 50, message: 'Máximo 50 caracteres'}
+                                        }}
                                     />
                                     {errors.apellido_paterno && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.apellido_paterno.message}</p>
@@ -262,7 +275,10 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Apellido materno"
                                         name="apellido_materno"
                                         register={register}
-                                        rules={{ required: false }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 50, message: 'Máximo 50 caracteres'}
+                                        }}
                                     />
                                 </div>
                                 <div>
@@ -270,7 +286,10 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Profesión"
                                         name="profesion"
                                         register={register}
-                                        rules={{ required: 'La profesión es requerida' }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 100, message: 'Máximo 100 caracteres'}
+                                         }}
                                     />
                                     {errors.profesion && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.profesion.message}</p>
@@ -281,7 +300,10 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Especialidad"
                                         name="especialidad"
                                         register={register}
-                                        rules={{ required: false }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 200, message: 'Máximo 200 caracteres'}
+                                         }}
                                     />
                                 </div>
                                 <div className="sm:col-span-2">
@@ -289,6 +311,7 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Imagen del empleado"
                                         name="image_file"
                                         register={register}
+                                        currentImageUrl={editingEmpleado?.img_url}
                                     />
                                 </div>
                                 <div className="sm:col-span-2">
@@ -296,7 +319,10 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                         label="Texto alternativo de la imagen (alt)"
                                         name="img_alt"
                                         register={register}
-                                        rules={{ required: false }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 100, message: 'Máximo 100 caracteres'}
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -305,7 +331,10 @@ export function Empleados({ empleados, onUpdated }: Props) {
                                 label="Descripción"
                                 name="descripcion"
                                 register={register}
-                                rules={{ required: false }}
+                                rules={{ 
+                                    required: false,
+                                    maxLength: {value: 500, message: 'Máximo 500 caracteres'}
+                                 }}
                             />
 
                             <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">

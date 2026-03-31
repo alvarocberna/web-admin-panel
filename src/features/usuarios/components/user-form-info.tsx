@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Input, stripTags, trimOnly } from '@/shared';
 import { UsuarioService } from '../services/usuario.service';
-import { UpdateUsuarioInfoDto } from '../dtos/usuario.dto';
+import { UpdateUsuarioInfoDto, UpdateUsuarioDto } from '../dtos/usuario.dto';
 
 interface InfoForm {
     nombre: string;
@@ -32,7 +32,7 @@ export function UserFormInfo() {
     const onSubmit = async (formData: InfoForm) => {
         setLoading(true);
         try {
-            const payload: UpdateUsuarioInfoDto = {
+            const payload: UpdateUsuarioDto = {
                 nombre: stripTags(formData.nombre),
                 apellido: stripTags(formData.apellido),
                 email: trimOnly(formData.email),
@@ -57,7 +57,7 @@ export function UserFormInfo() {
                     label="Nombre"
                     name="nombre"
                     register={register}
-                    rules={{ required: 'El nombre es requerido' }}
+                    rules={{ required: 'El nombre es requerido',  minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 50, message: 'Máximo 50 caracteres' } }}
                 />
                 {errors.nombre && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre.message}</p>
@@ -67,7 +67,7 @@ export function UserFormInfo() {
                     label="Apellido"
                     name="apellido"
                     register={register}
-                    rules={{ required: 'El apellido es requerido' }}
+                    rules={{ required: 'El apellido es requerido',  minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 50, message: 'Máximo 50 caracteres' } }}
                 />
                 {errors.apellido && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.apellido.message}</p>
@@ -81,6 +81,7 @@ export function UserFormInfo() {
                     rules={{
                         required: 'El correo es requerido',
                         pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Correo no válido' },
+                         minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 100, message: 'Máximo 100 caracteres' }
                     }}
                 />
                 {errors.email && (

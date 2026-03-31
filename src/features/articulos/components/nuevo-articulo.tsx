@@ -63,7 +63,7 @@ export function NuevoArticulo(){
                     name="titulo"
                     type="text"
                     register={register}
-                    rules={{ required: true, minLength: {value: 1, message: 'Título demasiado corto'}, maxLength: {value: 200, message: 'Título demasiado largo'} }}
+                    rules={{ required: 'Titulo requerido', minLength: {value: 1, message: 'Título demasiado corto'}, maxLength: {value: 200, message: 'Título demasiado largo'} }}
                     textSize="lg"
                 />
                 {errors.titulo && <span className="text-red-600 text-xs mt-1 block">{errors.titulo.message}</span>}
@@ -72,7 +72,7 @@ export function NuevoArticulo(){
                     name="subtitulo"
                     type="text"
                     register={register}
-                    rules={{ required: false, minLength: {value: 1, message: 'Subtítulo demasiado corto'}, maxLength: {value: 200, message: 'Subtítulo demasiado largo'} }}
+                    rules={{ required: false, maxLength: {value: 500, message: 'Subtítulo demasiado largo'} }}
                     textSize="md"
                 />
                 {errors.subtitulo && <span className="text-red-600 text-xs mt-1 block">{errors.subtitulo.message}</span>}
@@ -88,7 +88,7 @@ export function NuevoArticulo(){
                     name={"image_alt" as any}
                     type="text"
                     register={register}
-                    rules={{ required: false }}
+                    rules={{ required: false, maxLength: {value: 100, message: 'Máximo 100 caracteres'} }}
                 />
             </div>
 

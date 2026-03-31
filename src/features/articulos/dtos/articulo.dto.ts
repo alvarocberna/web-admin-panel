@@ -8,7 +8,7 @@ export abstract class CreateArticuloFullDto {
 
 export abstract class CreateArticuloDto{
         abstract titulo: string;
-        abstract subtitulo: string;
+        abstract subtitulo: string | null;
         abstract autor: string;
         abstract fecha_publicacion: Date;
         abstract fecha_actualizacion: Date | null;
@@ -23,7 +23,7 @@ export abstract class CreateArticuloDto{
 
 export abstract class UpdateArticuloDto{
         abstract titulo: string;
-        abstract subtitulo: string;
+        abstract subtitulo: string | null;
         abstract autor: string;
         abstract fecha_publicacion: Date;
         abstract fecha_actualizacion: Date | null;

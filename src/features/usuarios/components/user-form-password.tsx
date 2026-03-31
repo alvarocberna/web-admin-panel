@@ -44,7 +44,7 @@ export function UserFormPassword() {
                     name="currentPassword"
                     type="password"
                     register={register}
-                    rules={{ required: 'La contraseña actual es requerida' }}
+                    rules={{ required: 'La contraseña actual es requerida',  minLength: { value: 12, message: 'Mínimo 12 carácter' }, maxLength: { value: 30, message: 'Máximo 30 caracteres' } }}
                 />
                 {errors.currentPassword && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.currentPassword.message}</p>
@@ -57,7 +57,7 @@ export function UserFormPassword() {
                     register={register}
                     rules={{
                         required: 'La nueva contraseña es requerida',
-                        minLength: { value: 8, message: 'Mínimo 8 caracteres' },
+                        minLength: { value: 12, message: 'Mínimo 30 caracteres' },
                     }}
                 />
                 {errors.newPassword && (

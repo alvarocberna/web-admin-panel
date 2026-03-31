@@ -3,15 +3,15 @@ export abstract class CreateTestimonioDto {
     abstract apellido: string;
     abstract correo: string;
     abstract descripcion: string;
-    abstract calificacion: number;
+    abstract calificacion: number | null;
     abstract status: string;
 }
 
 export abstract class UpdateTestimonioDto {
-    abstract nombre: string;
-    abstract apellido: string;
-    abstract correo: string;
-    abstract descripcion: string;
-    abstract calificacion: number;
-    abstract status: string;
+    abstract nombre?: string;
+    abstract apellido?: string;
+    abstract correo?: string;
+    abstract descripcion?: string;
+    abstract calificacion?: number;
+    abstract status?: string;
 }

@@ -78,8 +78,8 @@ export function ModalCrearProyecto({ onClose, onCreado }: Props) {
             ]);
 
             await UsuarioService.createUsuarioAdmin(
-                { nombre: stripTags(data.nombre), apellido: stripTags(data.apellido), email: trimOnly(data.email), password: data.password, rol: data.rol },
-                proyecto_id,
+                { nombre: stripTags(data.nombre), apellido: stripTags(data.apellido), email: trimOnly(data.email), password: data.password, rol: data.rol, img_url: null, img_alt: null},
+                proyecto_id
             );
 
             toast.success('Proyecto creado correctamente');
@@ -109,15 +109,15 @@ export function ModalCrearProyecto({ onClose, onCreado }: Props) {
                         <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mb-3">Proyecto</p>
                         <div className="flex flex-col gap-3">
                             <div>
-                                <Input label="Nombre del proyecto" name="nombre_proyecto" register={register} rules={{ required: 'El nombre es requerido' }} />
+                                <Input label="Nombre del proyecto" name="nombre_proyecto" register={register} rules={{ required: 'El nombre es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
                                 {errors.nombre_proyecto && <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_proyecto.message}</p>}
                             </div>
                             <div>
-                                <Input label="Descripción" name="descripcion" register={register} rules={{ required: 'La descripción es requerida' }} />
+                                <Input label="Descripción" name="descripcion" register={register} rules={{ required: 'La descripción es requerida', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 500, message: 'Máximo 500 caracteres' } }} />
                                 {errors.descripcion && <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>}
                             </div>
                             <div>
-                                <Input label="Cliente" name="cliente" register={register} rules={{ required: 'El cliente es requerido' }} />
+                                <Input label="Cliente" name="cliente" register={register} rules={{ required: 'El cliente es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
                                 {errors.cliente && <p className="text-xs text-red-500 mt-1 ml-1">{errors.cliente.message}</p>}
                             </div>
                             <label className="flex items-center gap-2 cursor-pointer">
@@ -154,11 +154,11 @@ export function ModalCrearProyecto({ onClose, onCreado }: Props) {
                         <div className="flex flex-col gap-3">
                             <div className="grid grid-cols-2 gap-x-3">
                                 <div>
-                                    <Input label="Nombre" name="nombre" register={register} rules={{ required: 'El nombre es requerido' }} />
+                                    <Input label="Nombre" name="nombre" register={register} rules={{ required: 'El nombre es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 50, message: 'Máximo 50 caracteres' } }} />
                                     {errors.nombre && <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre.message}</p>}
                                 </div>
                                 <div>
-                                    <Input label="Apellido" name="apellido" register={register} rules={{ required: 'El apellido es requerido' }} />
+                                    <Input label="Apellido" name="apellido" register={register} rules={{ required: 'El apellido es requerido',  minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 50, message: 'Máximo 50 caracteres' } }} />
                                     {errors.apellido && <p className="text-xs text-red-500 mt-1 ml-1">{errors.apellido.message}</p>}
                                 </div>
                             </div>
@@ -171,6 +171,7 @@ export function ModalCrearProyecto({ onClose, onCreado }: Props) {
                                     rules={{
                                         required: 'El correo es requerido',
                                         pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Correo no válido' },
+                                         minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 100, message: 'Máximo 50 caracteres' }
                                     }}
                                 />
                                 {errors.email && <p className="text-xs text-red-500 mt-1 ml-1">{errors.email.message}</p>}
@@ -181,7 +182,7 @@ export function ModalCrearProyecto({ onClose, onCreado }: Props) {
                                     name="password"
                                     type="password"
                                     register={register}
-                                    rules={{ required: 'La contraseña es requerida', minLength: { value: 8, message: 'Mínimo 8 caracteres' } }}
+                                    rules={{ required: 'La contraseña es requerida', minLength: { value: 12, message: 'Mínimo 12 caracteres' }, maxLength: {value: 30, message: 'Máximo 30 caracteres'} }}
                                 />
                                 {errors.password && <p className="text-xs text-red-500 mt-1 ml-1">{errors.password.message}</p>}
                             </div>

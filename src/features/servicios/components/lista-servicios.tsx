@@ -231,7 +231,11 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                         label="Nombre del servicio"
                                         name="nombre_servicio"
                                         register={register}
-                                        rules={{ required: 'El nombre del servicio es requerido' }}
+                                        rules={{ 
+                                            required: 'El nombre del servicio es requerido',
+                                            minLength: {value: 1, message: 'Mínimo 1 caracter'},
+                                            maxLength: {value: 200, message: 'Máximo 200 caracteres'} 
+                                        }}
                                     />
                                     {errors.nombre_servicio && (
                                         <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_servicio.message}</p>
@@ -242,7 +246,10 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                         label="Valor"
                                         name="valor"
                                         register={register}
-                                        rules={{ required: false }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 100, message: 'Máximo 100 caracteres'} 
+                                        }}
                                     />
                                 </div>
                                 <div>
@@ -250,7 +257,10 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                         label="Nombre de promoción"
                                         name="nombre_promocion"
                                         register={register}
-                                        rules={{ required: false }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 200, message: 'Máximo 200 caracteres'} 
+                                         }}
                                     />
                                 </div>
                                 <div>
@@ -273,7 +283,10 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                         label="Texto alternativo de la imagen (alt)"
                                         name="img_alt"
                                         register={register}
-                                        rules={{ required: false }}
+                                        rules={{ 
+                                            required: false,
+                                            maxLength: {value: 100, message: 'Máximo 100 caracteres'} 
+                                        }}
                                     />
                                 </div>
                             </div>

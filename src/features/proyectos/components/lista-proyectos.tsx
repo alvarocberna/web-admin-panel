@@ -198,15 +198,15 @@ export function ListaProyectos({ onSelectProyecto }: Props) {
                         </div>
                         <form onSubmit={handleSubmit(onSubmitEdit)} noValidate className="px-6 py-5 flex flex-col gap-3">
                             <div>
-                                <Input label="Nombre del proyecto" name="nombre_proyecto" register={register} rules={{ required: 'El nombre es requerido' }} />
+                                <Input label="Nombre del proyecto" name="nombre_proyecto" register={register} rules={{ required: 'El nombre es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
                                 {errors.nombre_proyecto && <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_proyecto.message}</p>}
                             </div>
                             <div>
-                                <Input label="Descripción" name="descripcion" register={register} rules={{ required: 'La descripción es requerida' }} />
+                                <Input label="Descripción" name="descripcion" register={register} rules={{ required: 'La descripción es requerida', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 500, message: 'Máximo 500 caracteres' } }} />
                                 {errors.descripcion && <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>}
                             </div>
                             <div>
-                                <Input label="Cliente" name="cliente" register={register} rules={{ required: 'El cliente es requerido' }} />
+                                <Input label="Cliente" name="cliente" register={register} rules={{ required: 'El cliente es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
                                 {errors.cliente && <p className="text-xs text-red-500 mt-1 ml-1">{errors.cliente.message}</p>}
                             </div>
                             <label className="flex items-center gap-2 cursor-pointer">
