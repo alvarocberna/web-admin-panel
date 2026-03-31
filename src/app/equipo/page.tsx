@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { ContenedorAdmin, TitleSec } from '@/shared';
-import { EquipoService, EquipoEntity, EmpleadoEntity, EquipoForm, Empleados } from '@/features';
+import { EquipoService, EquipoEntity, EmpleadoEntity, EquipoForm, ListaEmpleados } from '@/features';
 
 export default function EquipoPage() {
     const [equipo, setEquipo] = useState<EquipoEntity | null>(null);
@@ -41,7 +41,7 @@ export default function EquipoPage() {
                     <EquipoForm equipo={equipo} onSaved={handleEquipoSaved} />
 
                     {equipo && (
-                        <Empleados
+                        <ListaEmpleados
                             empleados={equipo.empleado ?? []}
                             onUpdated={handleEmpleadosUpdated}
                         />

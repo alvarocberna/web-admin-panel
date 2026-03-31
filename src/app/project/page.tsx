@@ -1,12 +1,13 @@
-import { Articulos, ListaTestimonios, ProyectoEquipo, ProyectoServicios } from '@/features/project';
+import { Articulos, ListaTestimonios, EquipoPublic, ServiciosPublic, NuevoTestimonio } from '@/features/project';
 
 export default function Project(){
     return(
         <div className='flex flex-col'>
-            <ProyectoEquipo/>
-            <ProyectoServicios/>
+            <EquipoPublic/>
+            <ServiciosPublic/>
             <Articulos/>
             <ListaTestimonios/>
+            <NuevoTestimonio/>
         </div>
     )
 }

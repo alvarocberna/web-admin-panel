@@ -11,9 +11,9 @@ import { ServicioEntity } from '../entities/servicio.entity';
 interface ServicioForm {
     nombre_servicio: string;
     descripcion: string;
-    valor: string;
+    valor: number;
     nombre_promocion: string;
-    porcentaje_descuento: string;
+    porcentaje_descuento: number;
     destacado: string;
     activo: boolean;
     img_alt: string;
@@ -43,9 +43,9 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
         defaultValues: {
             nombre_servicio: '',
             descripcion: '',
-            valor: '',
+            valor: 0,
             nombre_promocion: '',
-            porcentaje_descuento: '',
+            porcentaje_descuento: 0,
             destacado: 'false',
             activo: true,
             img_alt: '',
@@ -60,9 +60,9 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
         reset({
             nombre_servicio: '',
             descripcion: '',
-            valor: '',
+            valor: 0,
             nombre_promocion: '',
-            porcentaje_descuento: '',
+            porcentaje_descuento: 0,
             destacado: 'false',
             activo: true,
             img_alt: '',
@@ -75,9 +75,9 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
         reset({
             nombre_servicio: servicio.nombre_servicio,
             descripcion: servicio.descripcion ?? '',
-            valor: servicio.valor ?? '',
+            valor: servicio.valor ?? 0,
             nombre_promocion: servicio.nombre_promocion ?? '',
-            porcentaje_descuento: servicio.porcentaje_descuento ?? '',
+            porcentaje_descuento: servicio.porcentaje_descuento ?? 0,
             destacado: servicio.destacado ? 'true' : 'false',
             activo: servicio.activo,
             img_alt: servicio.img_alt ?? '',
@@ -102,6 +102,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                 icono: null,
                 orden: null,
                 activo: data.activo,
+                img_url: editingServicio?.img_url ?? null,
                 img_alt: data.img_alt || null,
                 image_file: data.image_file,
             };
@@ -245,10 +246,10 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                     <Input
                                         label="Valor"
                                         name="valor"
+                                        type='number'
                                         register={register}
                                         rules={{ 
                                             required: false,
-                                            maxLength: {value: 100, message: 'Máximo 100 caracteres'} 
                                         }}
                                     />
                                 </div>
@@ -267,6 +268,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                     <Input
                                         label="Porcentaje de descuento"
                                         name="porcentaje_descuento"
+                                        type='number'
                                         register={register}
                                         rules={{ required: false }}
                                     />
@@ -276,6 +278,7 @@ export function ListaServicios({ serviciosId, servicios, onUpdated }: Props) {
                                         label="Imagen del servicio"
                                         name="image_file"
                                         register={register}
+                                        currentImageUrl={editingServicio?.img_url}
                                     />
                                 </div>
                                 <div className="sm:col-span-2">

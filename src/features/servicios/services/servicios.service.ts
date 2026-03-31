@@ -6,13 +6,14 @@ import { CreateServiciosDto, UpdateServiciosDto } from '../dtos/servicios.dto';
 export interface ServicioFormInput {
     nombre_servicio: string;
     descripcion: string | null;
-    valor: string | null;
+    valor: number | null;
     nombre_promocion: string | null;
-    porcentaje_descuento: string | null;
+    porcentaje_descuento: number | null;
     destacado: boolean | null;
     icono: string | null;
     orden: string | null;
     activo: boolean;
+    img_url?: string | null;
     img_alt?: string | null;
     image_file?: FileList;
 }
@@ -65,8 +66,9 @@ export class ServiciosService {
 
     public static async updateServicio(id_servicio: string, data: ServicioFormInput): Promise<ServicioEntity> {
         const formData = new FormData();
-        if (data.image_file && data.image_file.length > 0) {
-            const file = data.image_file[0];
+        const hasNewFile = data.image_file && data.image_file.length > 0;
+        if (hasNewFile) {
+            const file = data.image_file![0];
             if (!file.type.startsWith('image/')) throw new Error('El archivo debe ser una imagen.');
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen no puede superar 5MB.');
             formData.append('image_file', file);
@@ -81,7 +83,7 @@ export class ServiciosService {
             icono: data.icono,
             orden: data.orden,
             activo: data.activo,
-            img_url: null,
+            img_url: hasNewFile ? null : (data.img_url ?? null),
             img_alt: data.img_alt || null,
         };
         formData.append('data', JSON.stringify(servicioData));

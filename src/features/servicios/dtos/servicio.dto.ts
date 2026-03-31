@@ -1,9 +1,9 @@
 export abstract class CreateServicioDto {
     abstract nombre_servicio: string;
     abstract descripcion: string | null;
-    abstract valor: string | null;
+    abstract valor: number | null;
     abstract nombre_promocion: string | null;
-    abstract porcentaje_descuento: string | null;
+    abstract porcentaje_descuento: number | null;
     abstract destacado: boolean;
     abstract icono: string | null;
     abstract orden: string | null;
@@ -15,9 +15,9 @@ export abstract class CreateServicioDto {
 export abstract class UpdateServicioDto {
     abstract nombre_servicio?: string;
     abstract descripcion?: string;
-    abstract valor?: string;
+    abstract valor?: number;
     abstract nombre_promocion?: string;
-    abstract porcentaje_descuento?: string;
+    abstract porcentaje_descuento?: number;
     abstract destacado?: boolean;
     abstract icono?: string;
     abstract orden?: string;

@@ -26,7 +26,7 @@ interface Props {
     onUpdated: (empleados: EmpleadoEntity[]) => void;
 }
 
-export function Empleados({ empleados, onUpdated }: Props) {
+export function ListaEmpleados({ empleados, onUpdated }: Props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [editingEmpleado, setEditingEmpleado] = useState<EmpleadoEntity | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
