@@ -36,9 +36,10 @@ export * from './actividad/services/actividad.service';
 export * from './equipo/dtos/equipo.dto';
 export * from './equipo/entities/equipo.entity';
 export * from './equipo/entities/empleado.entity';
+export * from './equipo/entities/sec-empleado.entity';
 export * from './equipo/services/equipo.service';
 export * from './equipo/components/equipo-form';
-export * from './equipo/components/empleados';
+export * from './equipo/components/form-empleado';
 //TESTIMONIOS
 export * from './testimonios/entities/testimonios.entity';
 export * from './testimonios/entities/testimonio.entity';
@@ -51,8 +52,10 @@ export * from './testimonios/components/lista-testimonios';
 //SERVICIOS
 export * from './servicios/entities/servicios.entity';
 export * from './servicios/entities/servicio.entity';
+export * from './servicios/entities/sec-servicio.entity';
 export * from './servicios/dtos/servicios.dto';
 export * from './servicios/dtos/servicio.dto';
+export * from './servicios/dtos/sec-servicio.dto';
 export * from './servicios/services/servicios.service';
 export * from './servicios/components/form-servicios';
 export * from './servicios/components/lista-servicios';

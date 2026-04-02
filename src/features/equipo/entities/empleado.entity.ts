@@ -1,3 +1,5 @@
+import {SecEmpleadoEntity} from '@/features';
+
 export class EmpleadoEntity {
     constructor(
         public id: string,
@@ -14,5 +16,6 @@ export class EmpleadoEntity {
         public img_url: string | null,
         public img_alt: string | null,
         public equipo_id: string,
+        public sec_empleado: SecEmpleadoEntity[],
     ) {}
 }
