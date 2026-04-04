@@ -54,32 +54,16 @@ export function ProyectoForm({ onClose, onCreado }: Props) {
                 descripcion: stripTags(data.descripcion),
                 cliente: stripTags(data.cliente),
                 activo: data.activo,
+                equipo_habilitado: data.equipo_habilitado,
+                servicios_habilitado: data.servicios_habilitado,
+                articulos_habilitado: data.articulos_habilitado,
+                testimonios_habilitado: data.servicios_habilitado,
+                nombre: data.nombre,
+                apellido: data.apellido,
+                email: data.email,
+                password: data.password,
+                rol: data.rol,
             });
-            const proyecto_id = proyecto.id;
-
-            await Promise.allSettled([
-                EquipoService.createEquipo(
-                    { titulo: 'Equipo', descripcion: null, activo: true, notificacion: false, habilitado: data.equipo_habilitado },
-                    proyecto_id,
-                ),
-                ServiciosService.createServicios(
-                    { titulo: 'Servicios', descripcion: null, icono: null, activo: true, notificacion: false, habilitado: data.servicios_habilitado },
-                    proyecto_id,
-                ),
-                ArticulosService.createArticulos(
-                    { titulo: 'Artículos', descripcion: '', activo: true, aprobar: false, notificacion: false, habilitado: data.articulos_habilitado },
-                    proyecto_id,
-                ),
-                TestimoniosService.createTestimonios(
-                    { titulo: 'Testimonios', descripcion: '', activo: true, aprobar: false, notificacion: false, habilitado: data.testimonios_habilitado },
-                    proyecto_id,
-                ),
-            ]);
-
-            await UsuarioService.createUsuarioAdmin(
-                { nombre: stripTags(data.nombre), apellido: stripTags(data.apellido), email: trimOnly(data.email), password: data.password, rol: data.rol, img_url: null, img_alt: null},
-                proyecto_id
-            );
 
             toast.success('Proyecto creado correctamente');
             onCreado(proyecto);
