@@ -1,12 +1,12 @@
 'use client'
-//next
+//NEXT
 import { useParams } from "next/navigation"
-//react
+//REACT
 import { useState, useEffect } from "react";
 import Image from "next/image";
-//features
+//FEATURES
 import { ArticulosService, SecArticuloEntity } from "@/features";
-//shared
+//SHARED
 import {ContenedorAdmin} from '@/shared';
 
 export default function VerArticulo(){

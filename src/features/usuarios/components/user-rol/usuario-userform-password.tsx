@@ -1,17 +1,19 @@
 'use client'
+//REACT
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//SHARED
 import { Input } from '@/shared';
-import { UsuarioService } from '../services/usuario.service';
-import { UpdateUsuarioPasswordDto } from '../dtos/usuario.dto';
+//FEATURES
+import { UsuarioService, UpdateUsuarioPasswordDto } from '@/features';
 
 interface PasswordForm {
     currentPassword: string;
     newPassword: string;
 }
 
-export function UserFormPassword() {
+export function UsuarioFormPassword() {
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, reset, formState: { errors } } = useForm<PasswordForm>();
 

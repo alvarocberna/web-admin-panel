@@ -1,10 +1,14 @@
 'use client'
+//REACT
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-import { TestimoniosService } from '../services/testimonios.service';
+//FEATURES
+import { TestimoniosService } from '@/features/project';
+//SHARED
 import { ContenedorSec } from '@/shared/project'
 
 interface TestimonioForm {
@@ -15,7 +19,7 @@ interface TestimonioForm {
     calificacion: number | null;
 }
 
-export function NuevoTestimonio({ sinContenedor }: { sinContenedor?: boolean } = {}) {
+export function TestimonioForm({ sinContenedor }: { sinContenedor?: boolean } = {}) {
     const [calificacion, setCalificacion] = useState<number | null>(null);
     const [hovered, setHovered] = useState<number | null>(null);
     const [enviado, setEnviado] = useState(false);

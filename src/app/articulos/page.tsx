@@ -1,8 +1,13 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
+//FEATURES
+import { ArticulosEntity, ArticuloEntity, UsuarioEntity } from '@/features';
+import { ArticulosService, ArticulosForm, ArticuloList } from '@/features';
+import { UsuarioService } from '@/features';
+//SHARED
 import { ContenedorAdmin, TitleSec } from '@/shared';
-import { ArticulosService, ArticulosEntity, ArticuloEntity, ArticulosForm, ListaArticulos, UsuarioEntity } from '@/features';
-import { UsuarioService } from '@/features/usuarios/services/usuario.service';
+
 
 export default function ArticulosPage() {
     const [articulos, setArticulos] = useState<ArticulosEntity | null>(null);
@@ -47,7 +52,7 @@ export default function ArticulosPage() {
                     <ArticulosForm articulos={articulos} onSaved={handleArticulosSaved} rol={usuario?.rol} />
 
                     {articulos && (
-                        <ListaArticulos
+                        <ArticuloList
                             articulos={articulos.articulo ?? []}
                             onUpdated={handleArticulosUpdated}
                             rol={usuario?.rol}

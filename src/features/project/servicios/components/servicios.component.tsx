@@ -1,6 +1,9 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
-import { ServiciosEntity, ServiciosService, CardServicio, Card2Servicio } from '@/features/project';
+//FEATURES
+import { ServiciosEntity, ServiciosService, ServicioCard } from '@/features/project';
+//SHARED
 import { ContenedorSec } from '@/shared/project';
 
 export function ServiciosPublic() {
@@ -36,7 +39,7 @@ export function ServiciosPublic() {
                     {servicios.servicio && servicios.servicio.length > 0 ? (
                         <div className="flex flex-wrap -mx-2">
                             {servicios.servicio.filter(srv => srv.activo).map(srv => (
-                               <CardServicio {...srv}/>
+                               <ServicioCard {...srv}/>
                             ))}
                         </div>
                     ) : (

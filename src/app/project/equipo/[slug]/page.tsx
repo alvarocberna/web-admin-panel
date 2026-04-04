@@ -1,8 +1,12 @@
 'use client'
+//NEXT
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ProyectoEquipoService, EmpleadoEntity } from "@/features/project";
+//REACT
+import { useState, useEffect } from "react";
+//FEATURES
+import { EquipoService, EmpleadoEntity, SecEmpleado } from "@/features/project";
+//SHARED
 import { ContenedorPage } from "@/shared/project";
 
 export default function VerEmpleado() {
@@ -13,7 +17,7 @@ export default function VerEmpleado() {
     useEffect(() => {
         const fetchEmpleado = async () => {
             try {
-                const data = await ProyectoEquipoService.getEmpleadoBySlug(slug);
+                const data = await EquipoService.getEmpleadoBySlug(slug);
                 setEmpleado(data);
             } catch (error) {
                 console.log("error: " + error);
@@ -43,11 +47,12 @@ export default function VerEmpleado() {
     return (
         <ContenedorPage>
             <div className="text-black">
+                {/* Cabecera */}
                 {empleado.img_url && (
                     <div className="relative w-40 h-40 rounded-full overflow-hidden mb-6">
                         <Image
                             src={empleado.img_url}
-                            alt={empleado.img_alt}
+                            alt={empleado.img_alt ?? 'image'}
                             fill={true}
                             unoptimized
                             className="object-cover object-top"
@@ -67,7 +72,18 @@ export default function VerEmpleado() {
                     <p className="text-md text-zinc-600 mb-4">{empleado.especialidad}</p>
                 )}
                 {empleado.descripcion && (
-                    <p className="text-zinc-700 leading-relaxed">{empleado.descripcion}</p>
+                    <p className="text-zinc-700 leading-relaxed mb-10">{empleado.descripcion}</p>
+                )}
+
+                {/* Secciones */}
+                {empleado.sec_empleado?.length > 0 && (
+                    <div>
+                        {[...empleado.sec_empleado]
+                            .sort((a, b) => a.nro_seccion - b.nro_seccion)
+                            .map((sec) => (
+                                <SecEmpleado key={sec.id} data={sec} />
+                            ))}
+                    </div>
                 )}
             </div>
         </ContenedorPage>

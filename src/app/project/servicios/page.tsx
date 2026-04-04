@@ -1,9 +1,10 @@
-import { ProyectoServicios } from '@/features/project';
+//FEATURES
+import { ServiciosPublic } from '@/features/project';
 
 export default function ProjectServiciosPage() {
     return (
         <div className="flex flex-col">
-            <ProyectoServicios />
+            <ServiciosPublic />
         </div>
     );
 }

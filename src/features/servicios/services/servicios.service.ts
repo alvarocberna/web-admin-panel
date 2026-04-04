@@ -3,6 +3,16 @@ import { ServiciosEntity } from '../entities/servicios.entity';
 import { ServicioEntity } from '../entities/servicio.entity';
 import { CreateServiciosDto, UpdateServiciosDto } from '../dtos/servicios.dto';
 
+export interface SecServicioFormInput {
+    id_sec?: string;
+    titulo_sec: string;
+    contenido_sec: string;
+    image_file?: FileList;
+    image_url?: string | null;
+    image_alt?: string;
+    image_position?: string;
+}
+
 export interface ServicioFormInput {
     nombre_servicio: string;
     descripcion: string | null;
@@ -16,6 +26,7 @@ export interface ServicioFormInput {
     img_url?: string | null;
     img_alt?: string | null;
     image_file?: FileList;
+    sec_servicio?: SecServicioFormInput[];
 }
 
 export class ServiciosService {
@@ -43,6 +54,16 @@ export class ServiciosService {
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen no puede superar 5MB.');
             formData.append('image_file', file);
         }
+        (data.sec_servicio ?? []).forEach((sec, idx) => {
+            if (sec.image_file && sec.image_file.length > 0) {
+                const file = sec.image_file[0];
+                if (!file.type.startsWith('image/')) throw new Error(`La imagen de la sección ${idx + 1} debe ser una imagen.`);
+                if (file.size > 5 * 1024 * 1024) throw new Error(`La imagen de la sección ${idx + 1} no puede superar 5MB.`);
+                formData.append('sec_images', file);
+            } else {
+                formData.append('sec_images', new File([], `empty-${idx}`));
+            }
+        });
         const slug = data.nombre_servicio
             .toLowerCase()
             .normalize('NFD')
@@ -59,9 +80,17 @@ export class ServiciosService {
             icono: data.icono,
             orden: data.orden,
             activo: data.activo,
+            slug: slug,
             img_url: null,
             img_alt: data.img_alt || null,
-            slug,
+            sec_servicio: (data.sec_servicio ?? []).map((sec, index) => ({
+                nro_seccion: index,
+                titulo_sec: sec.titulo_sec,
+                contenido_sec: sec.contenido_sec,
+                image_url: null,
+                image_alt: sec.image_alt || null,
+                image_position: sec.image_position || null,
+            })),
         };
         formData.append('data', JSON.stringify(servicioData));
         return await apiFetchFormData<ServicioEntity>('servicios/servicio/crear', formData, 'POST');
@@ -80,6 +109,22 @@ export class ServiciosService {
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen no puede superar 5MB.');
             formData.append('image_file', file);
         }
+        (data.sec_servicio ?? []).forEach((sec, idx) => {
+            if (sec.image_file && sec.image_file.length > 0) {
+                const file = sec.image_file[0];
+                if (!file.type.startsWith('image/')) throw new Error(`La imagen de la sección ${idx + 1} debe ser una imagen.`);
+                if (file.size > 5 * 1024 * 1024) throw new Error(`La imagen de la sección ${idx + 1} no puede superar 5MB.`);
+                formData.append('sec_images', file);
+            } else {
+                formData.append('sec_images', new File([], `empty-${idx}`));
+            }
+        });
+        const slug = data.nombre_servicio
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '');
         const servicioData = {
             nombre_servicio: data.nombre_servicio,
             descripcion: data.descripcion,
@@ -90,8 +135,21 @@ export class ServiciosService {
             icono: data.icono,
             orden: data.orden,
             activo: data.activo,
+            slug: slug,
             img_url: hasNewFile ? null : (data.img_url ?? null),
             img_alt: data.img_alt || null,
+            sec_servicio: (data.sec_servicio ?? []).map((sec, index) => {
+                const hasNewSecFile = sec.image_file && sec.image_file.length > 0;
+                return {
+                    id: sec.id_sec || undefined,
+                    nro_seccion: index,
+                    titulo_sec: sec.titulo_sec,
+                    contenido_sec: sec.contenido_sec,
+                    image_url: hasNewSecFile ? null : (sec.image_url ?? null),
+                    image_alt: sec.image_alt || null,
+                    image_position: sec.image_position || null,
+                };
+            }),
         };
         formData.append('data', JSON.stringify(servicioData));
         return await apiFetchFormData<ServicioEntity>(`servicios/servicio/editar/${id_servicio}`, formData, 'PATCH');

@@ -1,18 +1,14 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { ProyectoEntity } from '../entities/proyecto.entity';
-import { EquipoEntity } from '@/features/equipo/entities/equipo.entity';
-import { ServiciosEntity } from '@/features/servicios/entities/servicios.entity';
-import { ArticulosEntity } from '@/features/articulos/entities/articulos.entity';
-import { TestimoniosEntity } from '@/features/testimonios/entities/testimonios.entity';
-import { EquipoService } from '@/features/equipo/services/equipo.service';
-import { ServiciosService } from '@/features/servicios/services/servicios.service';
-import { ArticulosService } from '@/features/articulos/services/articulos.service';
-import { TestimoniosService } from '@/features/testimonios/services/testimonios.service';
-import { ListaUsuarios } from '@/features/usuarios/components/lista-usuarios';
+//FEATURES
+import { ProyectoEntity, EquipoEntity, ServiciosEntity, ArticulosEntity, TestimoniosEntity } from '@/features';
+import { EquipoService, ServiciosService, ArticulosService, TestimoniosService, UsuarioList } from '@/features';
+
 
 interface SectionState {
     equipo: EquipoEntity | null;
@@ -45,7 +41,7 @@ function Toggle({ checked, onChange }: ToggleProps) {
     );
 }
 
-export function DetalleProyecto({ proyecto, onBack }: Props) {
+export function Proyecto({ proyecto, onBack }: Props) {
     const [loading, setLoading] = useState(true);
     const [sections, setSections] = useState<SectionState>({ equipo: null, servicios: null, articulos: null, testimonios: null });
 
@@ -73,7 +69,7 @@ export function DetalleProyecto({ proyecto, onBack }: Props) {
         if (!sections.equipo) return;
         try {
             const updated = await EquipoService.updateEquipo(
-                { titulo: sections.equipo.titulo, descripcion: sections.equipo.descripcion, activo: sections.equipo.activo, notificacion: sections.equipo.notificacion, habilitado },
+                { titulo: sections.equipo.titulo, descripcion: sections.equipo.descripcion ?? '', activo: sections.equipo.activo, notificacion: sections.equipo.notificacion, habilitado },
                 proyecto.id,
             );
             setSections(prev => ({ ...prev, equipo: updated }));
@@ -87,7 +83,7 @@ export function DetalleProyecto({ proyecto, onBack }: Props) {
         if (!sections.servicios) return;
         try {
             const updated = await ServiciosService.updateServicios(
-                { titulo: sections.servicios.titulo, descripcion: sections.servicios.descripcion, icono: sections.servicios.icono, activo: sections.servicios.activo, notificacion: sections.servicios.notificacion, habilitado },
+                { titulo: sections.servicios.titulo, descripcion: sections.servicios.descripcion ?? '', icono: sections.servicios.icono ?? '', activo: sections.servicios.activo, notificacion: sections.servicios.notificacion, habilitado },
                 proyecto.id,
             );
             setSections(prev => ({ ...prev, servicios: updated }));
@@ -115,7 +111,7 @@ export function DetalleProyecto({ proyecto, onBack }: Props) {
         if (!sections.testimonios) return;
         try {
             const updated = await TestimoniosService.updateTestimonios(
-                { titulo: sections.testimonios.titulo, descripcion: sections.testimonios.descripcion, activo: sections.testimonios.activo, aprobar: sections.testimonios.aprobar, notificacion: sections.testimonios.notificacion, habilitado },
+                { titulo: sections.testimonios.titulo, descripcion: sections.testimonios.descripcion ?? '', activo: sections.testimonios.activo, aprobar: sections.testimonios.aprobar, notificacion: sections.testimonios.notificacion, habilitado },
                 proyecto.id,
             );
             setSections(prev => ({ ...prev, testimonios: updated }));
@@ -208,7 +204,7 @@ export function DetalleProyecto({ proyecto, onBack }: Props) {
             {/* Usuarios */}
             <div>
                 <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mb-3">Usuarios</p>
-                <ListaUsuarios proyectoId={proyecto.id} />
+                <UsuarioList proyectoId={proyecto.id} />
             </div>
         </div>
     );

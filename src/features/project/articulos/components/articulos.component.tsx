@@ -1,14 +1,14 @@
 'use client'
-//react
+//REACT
 import { useState, useEffect } from 'react';
-//next
-import Link from 'next/link';
-import Image from 'next/image';
-//features
+//FEATURES
 import {ArticulosService, ArticuloEntity, ArticulosEntity} from '@/features/project';
+//SHARED
 import {ContenedorSec} from '@/shared/project'
+//COMPONENTS
+import { ArticuloCard } from './articulo-card.component';
 
-export function Articulos(){
+export function ArticulosPublic(){
     const [articulos, setArticulos] = useState<ArticulosEntity | null>(null) //seccion articulos
     const [loading, setLoading] = useState(true)
 
@@ -31,27 +31,7 @@ export function Articulos(){
         return null;
     }
 
-    //componente con todos los articulos
-    const listaArticulos = articulos.articulo.filter(art => art.status === 'approved' && art.activo === true).map((art: ArticuloEntity, index: number) => {
-        return(
-            <div className='w-full sm:w-1/2 lg:w-1/3 px-2 mb-4' key={index}>
-                <Link href={`/project/articulos/${art.slug}`} className='card hover-btn w-full flex flex-col overflow-hidden'>
-                    <div className='w-full h-48 relative'>
-                        <Image
-                            src={art.image_url || ''}
-                            alt={art.image_alt!}
-                            fill={true}
-                            unoptimized
-                            className='object-cover'
-                        />
-                    </div>
-                    <div className='px-4 py-3'>
-                        <h4 className='text-base font-semibold text-zinc-900'>{art.titulo}</h4>
-                    </div>
-                </Link>
-            </div>
-        )
-    })
+    const articulosFiltrados = articulos.articulo.filter(art => art.status === 'approved' && art.activo === true);
 
     return(
         <div>
@@ -75,7 +55,9 @@ export function Articulos(){
                                 </div>
                                 :
                                 <div className='w-full flex flex-wrap -mx-2 pb-10'>
-                                    {listaArticulos}
+                                    {articulosFiltrados.map((art: ArticuloEntity, index: number) => (
+                                        <ArticuloCard key={index} articulo={art} />
+                                    ))}
                                 </div>
                             }
                         </div>

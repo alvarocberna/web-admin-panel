@@ -1,8 +1,10 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
+//SHARED
 import { ContenedorAdmin, TitleSec } from '@/shared';
-import { TestimoniosService, TestimoniosEntity } from '@/features';
-import { FormTestimonios, ListaTestimonios } from '@/features';
+//FEATURES
+import { TestimoniosService, TestimoniosEntity, TestimoniosForm, TestimonioList } from '@/features';
 
 export default function TestimoniosPage() {
     const [testimonios, setTestimonios] = useState<TestimoniosEntity | null>(null);
@@ -30,14 +32,14 @@ export default function TestimoniosPage() {
                 <div className="py-16 text-center text-zinc-400 text-sm">Cargando...</div>
             ) : (
                 <div className="mt-4">
-                    <FormTestimonios
+                    <TestimoniosForm
                         testimonios={testimonios}
                         onSaved={(t) => setTestimonios(t)}
                     />
                     {testimonios && (
                         ''
                     )}
-                    <ListaTestimonios/>
+                    <TestimonioList/>
                 </div>
             )}
         </ContenedorAdmin>

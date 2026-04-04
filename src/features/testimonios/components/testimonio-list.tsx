@@ -6,7 +6,7 @@ import { faTrash, faStar, faCheck, faXmark } from '@fortawesome/free-solid-svg-i
 import { TestimonioService, TestimoniosService } from '@/features';
 import { TestimonioEntity } from '../entities/testimonio.entity';
 
-export function ListaTestimonios() {
+export function TestimonioList() {
     const [testimonios, setTestimonios] = useState<TestimonioEntity[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [testimonioToDelete, setTestimonioToDelete] = useState<string | null>(null);

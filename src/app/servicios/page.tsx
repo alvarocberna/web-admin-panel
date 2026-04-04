@@ -1,7 +1,10 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
+//SHARED
 import { ContenedorAdmin, TitleSec } from '@/shared';
-import { ServiciosService, ServiciosEntity, ServicioEntity, FormServicios, ListaServicios } from '@/features';
+//FEATURES
+import { ServiciosService, ServiciosEntity, ServicioEntity, ServiciosForm, ServicioList } from '@/features';
 
 export default function ServiciosPage() {
     const [servicios, setServicios] = useState<ServiciosEntity | null>(null);
@@ -38,10 +41,10 @@ export default function ServiciosPage() {
                 <div className="py-16 text-center text-zinc-400 text-sm">Cargando...</div>
             ) : (
                 <div className="mt-4">
-                    <FormServicios servicios={servicios} onSaved={handleServiciosSaved} />
+                    <ServiciosForm servicios={servicios} onSaved={handleServiciosSaved} />
 
                     {servicios && (
-                        <ListaServicios
+                        <ServicioList
                             serviciosId={servicios.id}
                             servicios={servicios.servicio ?? []}
                             onUpdated={handleServiciosUpdated}

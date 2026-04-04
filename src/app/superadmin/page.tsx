@@ -1,9 +1,10 @@
 'use client'
+//REACT
 import { useState } from 'react';
+//SHARED
 import { ContenedorAdmin, TitleSec } from '@/shared';
-import { ProyectoEntity } from '@/features/proyectos/entities/proyecto.entity';
-import { ListaProyectos } from '@/features/proyectos/components/lista-proyectos';
-import { DetalleProyecto } from '@/features/proyectos/components/detalle-proyecto';
+//FEATURES
+import { ProyectoEntity, ProyectoList, Proyecto } from '@/features';
 
 export default function SuperAdminPage() {
     const [selectedProyecto, setSelectedProyecto] = useState<ProyectoEntity | null>(null);
@@ -11,14 +12,14 @@ export default function SuperAdminPage() {
     return (
         <ContenedorAdmin>
             {selectedProyecto ? (
-                <DetalleProyecto
+                <Proyecto
                     proyecto={selectedProyecto}
                     onBack={() => setSelectedProyecto(null)}
                 />
             ) : (
                 <>
                     <TitleSec title="Superadmin" />
-                    <ListaProyectos onSelectProyecto={setSelectedProyecto} />
+                    <ProyectoList onSelectProyecto={setSelectedProyecto} />
                 </>
             )}
         </ContenedorAdmin>

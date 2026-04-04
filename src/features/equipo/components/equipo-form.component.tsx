@@ -1,10 +1,12 @@
 'use client'
+//REACT
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//SHARED
 import { Input, TextAreaArt, stripTags } from '@/shared';
-import { EquipoService } from '../services/equipo.service';
-import { EquipoEntity } from '../entities/equipo.entity';
+//FEATURES
+import { EquipoService, EquipoEntity } from '@/features';
 
 interface EquipoForm {
     titulo: string;

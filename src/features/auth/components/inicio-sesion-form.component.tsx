@@ -1,17 +1,17 @@
 'use client'
-//next
+//NEXT
 import { useRouter } from "next/navigation";
-//react
+//REACT
 import { useForm, SubmitHandler } from "react-hook-form" 
-//features
+//FEATURES
 import { AuthService } from '../services/auth.service';
 import { FormValues } from '../types/auth.types';
-//shared
+//SHARED
 import { Input } from '@/shared';
-//toastify
+//TOASTIFY
 import { toast } from 'react-toastify';
-//global
-import '@/app/globals.css'
+//GLOBAL
+// import '@/app/globals.css'
 
 
 export function InicioSesionForm() {

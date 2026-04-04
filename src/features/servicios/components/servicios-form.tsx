@@ -18,7 +18,7 @@ interface Props {
     onSaved: (s: ServiciosEntity) => void;
 }
 
-export function FormServicios({ servicios, onSaved }: Props) {
+export function ServiciosForm({ servicios, onSaved }: Props) {
     const {
         register,
         handleSubmit,

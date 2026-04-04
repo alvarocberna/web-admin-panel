@@ -7,6 +7,7 @@ export class EquipoEntity {
         public descripcion: string | null,
         public activo: boolean,
         public notificacion: boolean,
+        public habilitado: boolean,
         public proyecto_id: string,
         public empleado: EmpleadoEntity[],
     ) {}

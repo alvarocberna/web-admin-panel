@@ -1,14 +1,14 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
+//NEXT
 import Link from 'next/link';
+//SHARED
 import { ContenedorAdmin } from '@/shared';
+//FEATURES
 import { UsuarioEntity, EquipoEntity, ServiciosEntity, ArticulosEntity, TestimoniosEntity, ProyectoEntity } from '@/features';
-import { UsuarioService } from '@/features/usuarios/services/usuario.service';
-import { EquipoService } from '@/features/equipo/services/equipo.service';
-import { ServiciosService } from '@/features/servicios/services/servicios.service';
-import { ArticulosService } from '@/features/articulos/services/articulos.service';
-import { TestimoniosService } from '@/features/testimonios/services/testimonios.service';
-import { ProyectoService } from '@/features/proyectos/services/proyecto.service';
+import { UsuarioService, EquipoService, ServiciosService, ArticulosService, TestimoniosService, ProyectoService } from '@/features';
+
 
 export default function Dashboard() {
     const [usuario, setUsuario] = useState<UsuarioEntity>()

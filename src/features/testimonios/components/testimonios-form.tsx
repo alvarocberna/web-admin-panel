@@ -18,7 +18,7 @@ interface Props {
     onSaved: (t: TestimoniosEntity) => void;
 }
 
-export function FormTestimonios({ testimonios, onSaved }: Props) {
+export function TestimoniosForm({ testimonios, onSaved }: Props) {
     const {
         register,
         handleSubmit,

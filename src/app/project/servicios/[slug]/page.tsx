@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ServiciosService, ServicioEntity } from "@/features/project";
+import { ServiciosService, ServicioEntity, SecServicio } from "@/features/project";
 import { ContenedorPage } from "@/shared/project";
 
 export default function VerServicio() {
@@ -43,11 +43,12 @@ export default function VerServicio() {
     return (
         <ContenedorPage>
             <div className="text-black">
+                {/* Cabecera */}
                 {servicio.img_url && (
                     <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6">
                         <Image
                             src={servicio.img_url}
-                            alt={servicio.img_alt}
+                            alt={servicio.img_alt ?? 'image'}
                             fill={true}
                             unoptimized
                             className="object-cover"
@@ -72,7 +73,18 @@ export default function VerServicio() {
                     </p>
                 )}
                 {servicio.descripcion && (
-                    <p className="text-zinc-700 leading-relaxed">{servicio.descripcion}</p>
+                    <p className="text-zinc-700 leading-relaxed mb-10">{servicio.descripcion}</p>
+                )}
+
+                {/* Secciones */}
+                {servicio.sec_servicio?.length > 0 && (
+                    <div>
+                        {[...servicio.sec_servicio]
+                            .sort((a, b) => a.nro_seccion - b.nro_seccion)
+                            .map((sec) => (
+                                <SecServicio key={sec.id} data={sec} />
+                            ))}
+                    </div>
                 )}
             </div>
         </ContenedorPage>

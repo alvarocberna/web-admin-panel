@@ -13,7 +13,7 @@ interface Props {
     rol?: string;
 }
 
-export function ListaArticulos({ articulos, onUpdated, rol }: Props) {
+export function ArticuloList({ articulos, onUpdated, rol }: Props) {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
 

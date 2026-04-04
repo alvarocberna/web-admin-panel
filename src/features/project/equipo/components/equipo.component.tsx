@@ -1,6 +1,9 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
-import { EquipoEntity, ProyectoEquipoService, CardEmpleado, Card2Empleado } from '@/features/project';
+//FEATURES
+import { EquipoEntity, EquipoService, EmpleadoCard } from '@/features/project';
+//SHARED
 import { ContenedorSec } from '@/shared/project';
 
 export function EquipoPublic() {
@@ -9,7 +12,7 @@ export function EquipoPublic() {
     useEffect(() => {
         const fetchEquipo = async () => {
             try {
-                const data = await ProyectoEquipoService.getEquipo();
+                const data = await EquipoService.getEquipo();
                 setEquipo(data);
             } catch (error) {
                 console.error('Error obteniendo equipo:', error);
@@ -36,7 +39,7 @@ export function EquipoPublic() {
                         <div className="flex flex-wrap -mx-2">
                             {equipo.empleado.filter(emp => emp.activo).map(emp => (
                                 //CARD EMPLEADO
-                                <Card2Empleado {...emp} />
+                                <EmpleadoCard {...emp} />
                             ))}
                         </div>
                     ) : (

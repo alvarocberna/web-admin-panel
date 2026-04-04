@@ -7,7 +7,7 @@ import { faMessage, faFile, faUser } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { AuthService } from "@/features/auth/services/auth.service";
 import { toast } from 'react-toastify';
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 
 const navItems = [
   { nombre: "Inicio",      ruta: "/dashboard",  icon: faHouse,           match: (p: string) => p === '/dashboard',         roles: ['USER', 'ADMIN', 'SUPERADMIN'] },
@@ -17,7 +17,7 @@ const navItems = [
   { nombre: "Testimonios", ruta: "/testimonios", icon: faMessage,         match: (p: string) => p === '/testimonios',        roles: ['ADMIN', 'SUPERADMIN'] },
   { nombre: "Usuarios",    ruta: "/usuarios",    icon: faUsers,           match: (p: string) => p.startsWith('/usuarios'),   roles: ['ADMIN', 'SUPERADMIN'] },
   { nombre: "Historial",   ruta: "/actividad",   icon: faClockRotateLeft, match: (p: string) => p === '/actividad',          roles: ['ADMIN', 'SUPERADMIN'] },
-  { nombre: "Perfil",      ruta: "/usuario",     icon: faUser,            match: (p: string) => p === '/usuario',            roles: ['USER', 'ADMIN', 'SUPERADMIN'] },
+  { nombre: "Perfil",      ruta: "/perfil",     icon: faUser,            match: (p: string) => p === '/perfil',            roles: ['USER', 'ADMIN', 'SUPERADMIN'] },
   { nombre: "Project",     ruta: "/project",     icon: faFile,            match: (p: string) => p === '/project',            roles: ['SUPERADMIN'] },
   { nombre: "Superadmin",  ruta: "/superadmin",  icon: faLayerGroup,      match: (p: string) => p.startsWith('/superadmin'), roles: ['SUPERADMIN'] },
 ];

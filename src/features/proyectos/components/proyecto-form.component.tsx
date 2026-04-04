@@ -1,17 +1,16 @@
 'use client'
+//REACT
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+//SHARED
 import { Input, stripTags, trimOnly } from '@/shared';
-import { ProyectoService } from '../services/proyecto.service';
-import { ProyectoEntity } from '../entities/proyecto.entity';
-import { EquipoService } from '@/features/equipo/services/equipo.service';
-import { ServiciosService } from '@/features/servicios/services/servicios.service';
-import { ArticulosService } from '@/features/articulos/services/articulos.service';
-import { TestimoniosService } from '@/features/testimonios/services/testimonios.service';
-import { UsuarioService } from '@/features/usuarios/services/usuario.service';
+//FEATURES
+import { ProyectoService, EquipoService, ServiciosService, ArticulosService, TestimoniosService, UsuarioService } from '@/features';
+import { ProyectoEntity } from '@/features';
 
 interface CrearForm {
     nombre_proyecto: string;
@@ -34,7 +33,7 @@ interface Props {
     onCreado: (proyecto: ProyectoEntity) => void;
 }
 
-export function ModalCrearProyecto({ onClose, onCreado }: Props) {
+export function ProyectoForm({ onClose, onCreado }: Props) {
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm<CrearForm>({
         defaultValues: {

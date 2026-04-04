@@ -1,4 +1,4 @@
-import { ServicioEntity } from '@/features/project';
+import { ServicioEntity } from './servicio.entity';
 
 export class ServiciosEntity {
     constructor(
@@ -8,6 +8,7 @@ export class ServiciosEntity {
         public icono: string | null,
         public activo: boolean,
         public notificacion: boolean,
+        public habilitado: boolean,
         public proyecto_id: string,
         public servicio: ServicioEntity[],
     ) {}

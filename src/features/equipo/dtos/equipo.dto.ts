@@ -33,6 +33,7 @@ export abstract class CreateEmpleadoDto {
 }
 
 export abstract class UpdateEmpleadoDto {
+    abstract id: string;
     abstract nombre_primero?: string;
     abstract nombre_segundo?: string;
     abstract apellido_paterno?: string;

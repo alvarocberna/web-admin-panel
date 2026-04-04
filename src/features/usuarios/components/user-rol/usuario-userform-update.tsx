@@ -1,10 +1,12 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//SHARED
 import { Input, stripTags, trimOnly } from '@/shared';
-import { UsuarioService } from '../services/usuario.service';
-import { UpdateUsuarioInfoDto, UpdateUsuarioDto } from '../dtos/usuario.dto';
+//FEATURES
+import { UpdateUsuarioDto, UsuarioService } from '@/features';
 
 interface InfoForm {
     nombre: string;
@@ -12,7 +14,7 @@ interface InfoForm {
     email: string;
 }
 
-export function UserFormInfo() {
+export function UsuarioFormUserUpdate() {
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, reset, formState: { errors } } = useForm<InfoForm>();
 

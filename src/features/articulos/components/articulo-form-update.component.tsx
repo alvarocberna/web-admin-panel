@@ -1,80 +1,129 @@
 'use client'
 //react
-import { useForm, //contiene elementos para manejar el form
-    useFieldArray, //hook para manejar array dinamico dentro de formularios
-    SubmitHandler //define datos del form, ayuda al autocompletado 
-    } from "react-hook-form" 
-import { useState } from "react";
+import { useForm, useFieldArray, SubmitHandler } from "react-hook-form" 
+import {useState, useEffect} from 'react';
 //Next
 import {useRouter} from 'next/navigation';
 import Image from "next/image";
 //features
-import { ArticulosService, CreateArticuloForm} from '@/features';
-import { SecArticulo } from './sec-articulo';
+import {ArticulosService, ArticuloEntity, UpdateArticuloForm} from '@/features';
+import { SecArticulo } from './sec-articulo.component';
 //shared
 import {InputArt, InputFile} from '@/shared';
 //librerías
 import {toast} from 'react-toastify'
 
 
-export function NuevoArticulo(){
-    //estados
-    const [addSec, setAddSec] = useState(true)
-    //variables
+export function ArticuloFormUpdate(props: {id_articulo: string}){
+    //definimos estados
+    const [loading, setLoading] = useState<boolean>(true);
+    const [addSec, setAddSec] = useState(true);
+    const [articuloData, setArticuloData] = useState<ArticuloEntity | null>(null);
+    const [activo, setActivo] = useState<boolean>(true);
+    //definimos variables
+    const id_articulo = props.id_articulo;
     const router = useRouter();
-    //destructuring de useForm
-    const {
-        register, //conecta cada input al form, registrando su name y rules
-        handleSubmit, //intercepta el evento submit del form. Valida los campos según las rules y luego ejecuta el callback (onSubmit)
-        control, //conecta el form principal con el array dinamico
-        formState: { errors } //objeto que contiene el estado del form
-    } = useForm<CreateArticuloForm>({ //le dice a ts que estructura tendrá el form, osea, handleSubmit sabe que campos recibir y validar
-        defaultValues: { //podemos definir un default value a cualquier campo, pero no es necesario
-            sec_articulo: [] //sin un defaultValue, sec_articulo sería undefined y .map fallaría
+    //destructuring de useForm 
+    const {register, handleSubmit, control, formState: { errors }, reset } = 
+    useForm<UpdateArticuloForm>({
+        defaultValues: {
+            titulo: '',
+            subtitulo: '',
+            image_file: undefined,
+            image_alt: '',
+            sec_articulo: []
         }
     })
+    //traemos los datos del articulo al cargar el componente
+    useEffect(() => {
+        const fetchArticulo = async () => {
+            try{
+                const data = await ArticulosService.getArticuloById(id_articulo);
+                setArticuloData(data);
+                setActivo(data.activo ?? true);
+                reset({ //forma estandar para poblar un form con datos
+                    titulo: data.titulo ?? '',
+                    subtitulo: data.subtitulo ?? '',
+                    image_url: data.image_url ?? null,
+                    image_alt: data.image_alt ?? '',
+                    sec_articulo: data.sec_articulo?.map(sec => ({
+                        id_sec: sec.id,
+                        titulo_sec: sec.titulo_sec ?? '',
+                        contenido_sec: sec.contenido_sec ?? '',
+                        image_url: sec.image_url ?? null,
+                        image_alt: sec.image_alt ?? '',
+                        image_position: sec.image_position ?? 'left'
+                    })) ?? []
+                });
+            }catch(error){
+                console.log("error: " + error)
+            } finally {
+                setLoading(false);
+            }  
+        }
+        fetchArticulo();
+    }, [id_articulo, reset]);
     //destructuring de useFieldArray
-    const { 
-        fields, //array de objetos que representa el estado del array dinamico. Contiene los elementos agregados con append
-        append,  //fn que agrega nuevo elemento al array dinamico
-        remove  //fn que elimina elementos por índice
-    } = useFieldArray({ //inicializamos useFieldArray 
-        control, //conecta el array con el form principal
-        name: "sec_articulo" //corresponde al campo sec_articulo de CreateArticuloForm
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "sec_articulo"
     });
+
     //fn onSubmit
-    const onSubmit: SubmitHandler<CreateArticuloForm> = async (data) => {
+    const onSubmit: SubmitHandler<UpdateArticuloForm> = async (data) => {
         try{
-            await ArticulosService.createArticulo(data);
-            toast.success("Articulo creado");
+            console.log("intentando actualizar articulo")
+            await ArticulosService.updateArticulo(id_articulo, { ...data, activo });
+            toast.success("Articulo actualizado");
             router.push('/articulos');
-            router.refresh();
         }catch(error: any){
-            toast.error(error.message || "Error al crear articulo");
+            toast.error(error.message || "Error al actualizar articulo");
         }
     }
 
+    if (loading) return <div className="p-4">Cargando artículo...</div>;
+
     return(
         <form onSubmit={handleSubmit(onSubmit)} className="w-full m-auto">
+            {/* Estado del artículo */}
+            <div className="flex items-center justify-between mb-3 px-1">
+                <span className="text-sm font-medium text-zinc-600">Estado del artículo</span>
+                <button
+                    type="button"
+                    onClick={() => setActivo(prev => !prev)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none ${activo ? 'bg-green-500' : 'bg-zinc-300'}`}
+                    aria-pressed={activo}
+                >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${activo ? 'translate-x-6' : 'translate-x-1'}`} />
+                    <span className="sr-only">{activo ? 'Activo' : 'Inactivo'}</span>
+                </button>
+                <span className={`text-xs font-semibold ml-2 ${activo ? 'text-green-600' : 'text-zinc-400'}`}>
+                    {activo ? 'Activo' : 'Inactivo'}
+                </span>
+            </div>
+
             {/* Cabecera artículo */}
             <div className="card px-4 pt-2 pb-4">
                 <InputArt
-                    label="Título"
-                    name="titulo"
-                    type="text"
-                    register={register}
-                    rules={{ required: 'Titulo requerido', minLength: {value: 1, message: 'Título demasiado corto'}, maxLength: {value: 200, message: 'Título demasiado largo'} }}
-                    textSize="lg"
-                />
+                    label="Título" 
+                    name="titulo" 
+                    type="text" 
+                    register={register} 
+                    rules={{ 
+                        required: true, 
+                        minLength: {value: 1, message: 'Mínimo 1 caracter'}, 
+                        maxLength: {value: 200, message: 'Máximo 200 caracteres'} }} 
+                    textSize="lg"/>
                 {errors.titulo && <span className="text-red-600 text-xs mt-1 block">{errors.titulo.message}</span>}
-                <InputArt
-                    label="Subtítulo"
-                    name="subtitulo"
-                    type="text"
-                    register={register}
-                    rules={{ required: false, maxLength: {value: 500, message: 'Subtítulo demasiado largo'} }}
-                    textSize="md"
-                />
+                <InputArt 
+                    label="Subtítulo" 
+                    name="subtitulo" 
+                    type="text" 
+                    register={register} 
+                    rules={{ 
+                        required: false, 
+                        maxLength: {value: 500, message: 'Subtítulo demasiado largo'} }} 
+                    textSize="md"/>
                 {errors.subtitulo && <span className="text-red-600 text-xs mt-1 block">{errors.subtitulo.message}</span>}
                 <InputFile
                     label="Imagen de portada"
@@ -82,6 +131,7 @@ export function NuevoArticulo(){
                     register={register}
                     rules={{ required: false }}
                     accept="image/*"
+                    currentImageUrl={articuloData?.image_url}
                 />
                 <InputArt
                     label="Texto alternativo de la imagen (Alt)"
@@ -96,7 +146,7 @@ export function NuevoArticulo(){
             <div className="space-y-0">
                 {fields.map((field, index) => (
                     <div className="relative mt-3" key={field.id}>
-                        <SecArticulo field={field} index={index} register={register} />
+                        <SecArticulo field={field} index={index} register={register} currentImageUrl={field.image_url} />
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -150,7 +200,7 @@ export function NuevoArticulo(){
                                 type="button"
                                 onClick={() => {
                                     setAddSec(true);
-                                    append({ titulo_sec: "", contenido_sec: "", image_file: undefined, image_alt: "", image_position: position });
+                                    append({ id_sec: "", titulo_sec: "", contenido_sec: "", image_file: undefined, image_alt: "", image_position: position });
                                 }}
                                 className="flex-1 flex flex-col items-center gap-1.5 group"
                                 title={label}
@@ -166,7 +216,7 @@ export function NuevoArticulo(){
             </div>
 
             <button type="submit" className="btn btn-primary btn-lg">
-                Crear artículo
+                Actualizar artículo
             </button>
         </form>
     )

@@ -1,13 +1,15 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash, faPlus, faXmark, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+//SHARED
 import { Input } from '@/shared';
-import { ProyectoService } from '../services/proyecto.service';
-import { ProyectoEntity } from '../entities/proyecto.entity';
-import { ModalCrearProyecto } from './modal-crear-proyecto';
+//FEATURS
+import { ProyectoService, ProyectoEntity, ProyectoForm } from '@/features';
 
 interface EditForm {
     nombre_proyecto: string;
@@ -20,7 +22,7 @@ interface Props {
     onSelectProyecto: (proyecto: ProyectoEntity) => void;
 }
 
-export function ListaProyectos({ onSelectProyecto }: Props) {
+export function ProyectoList({ onSelectProyecto }: Props) {
     const [proyectos, setProyectos] = useState<ProyectoEntity[]>([]);
     const [loading, setLoading] = useState(true);
     const [crearModalOpen, setCrearModalOpen] = useState(false);
@@ -178,7 +180,7 @@ export function ListaProyectos({ onSelectProyecto }: Props) {
 
             {/* Modal crear */}
             {crearModalOpen && (
-                <ModalCrearProyecto onClose={() => setCrearModalOpen(false)} onCreado={onProyectoCreado} />
+                <ProyectoForm onClose={() => setCrearModalOpen(false)} onCreado={onProyectoCreado} />
             )}
 
             {/* Modal editar */}
