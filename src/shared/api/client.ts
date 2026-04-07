@@ -1,3 +1,22 @@
+const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
+/** Lee el CSRF token de la cookie; si no existe, lo solicita al backend. */
+async function ensureCsrfToken(): Promise<string | null> {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]+)/);
+  if (match) return decodeURIComponent(match[1]);
+  try {
+    const res = await fetch('/api/auth/csrf-token', { credentials: 'include' });
+    if (res.ok) {
+      const data: { csrfToken: string } = await res.json();
+      return data.csrfToken ?? null;
+    }
+  } catch {
+    // silent fail — la request mutante simplemente irá sin token
+  }
+  return null;
+}
+
 const getBaseUrl = () => {
   // En el browser → usa rewrite de Next
   if (typeof window !== 'undefined') {
@@ -8,16 +27,37 @@ const getBaseUrl = () => {
   return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 };
 
-async function refreshSession(): Promise<boolean> {
-  const baseUrl = getBaseUrl();
+const tokenLog = (msg: string) => {
+  const time = new Date().toLocaleTimeString('es-CL', { hour12: false });
+  console.log(`[auth] ${time} — ${msg}`);
+};
 
-  const res = await fetch(`${baseUrl}/auth/refresh`, {
+let refreshPromise: Promise<boolean> | null = null;
+
+async function refreshSession(): Promise<boolean> {
+  if (refreshPromise) {
+    tokenLog('refresh ya en curso, esperando resultado...');
+    return refreshPromise;
+  }
+
+  tokenLog('iniciando refresh de sesión');
+
+  const refreshHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+  const csrfForRefresh = await ensureCsrfToken();
+  if (csrfForRefresh) refreshHeaders['X-CSRF-Token'] = csrfForRefresh;
+
+  refreshPromise = fetch(`${getBaseUrl()}/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-  });
+    headers: refreshHeaders,
+  })
+    .then(res => {
+      tokenLog(res.ok ? 'refresh exitoso — nueva sesión activa' : `refresh fallido — status ${res.status}`);
+      return res.ok;
+    })
+    .finally(() => { refreshPromise = null; });
 
-  return res.ok;
+  return refreshPromise;
 }
 
 export async function apiFetch<T>(
@@ -29,10 +69,16 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const baseUrl = getBaseUrl();
 
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (MUTATING_METHODS.has(method.toUpperCase())) {
+    const csrf = await ensureCsrfToken();
+    if (csrf) headers['X-CSRF-Token'] = csrf;
+  }
+
   const res = await fetch(`${baseUrl}/${endpoint}`, {
     method,
     credentials,
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: data ? JSON.stringify(data) : undefined,
   });
 
@@ -87,9 +133,16 @@ export async function apiFetchFormData<T>(
 ): Promise<T> {
   const baseUrl = getBaseUrl();
 
+  const headers: Record<string, string> = {};
+  if (MUTATING_METHODS.has(method.toUpperCase())) {
+    const csrf = await ensureCsrfToken();
+    if (csrf) headers['X-CSRF-Token'] = csrf;
+  }
+
   const res = await fetch(`${baseUrl}/${endpoint}`, {
     method,
     credentials,
+    headers: Object.keys(headers).length ? headers : undefined,
     body: formData,
   });
 

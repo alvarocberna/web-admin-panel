@@ -1,0 +1,34 @@
+# Web Admin Panel — Documentación
+
+Panel de administración web construido con Next.js 16, React 19 y TypeScript. Permite gestionar contenido, usuarios y proyectos mediante una interfaz basada en roles.
+
+## Índice
+
+### Arquitectura
+- [Visión general](./architecture/overview.md) — Stack, módulos, flujo de datos
+- [Renderizado](./architecture/rendering.md) — SSR vs CSR, estrategias por ruta
+- [Enrutamiento](./architecture/routing.md) — App Router, rutas protegidas, middleware
+
+### Frontend
+- [Estructura de carpetas](./frontend/folder-structure.md) — Árbol de directorios y convenciones
+- [Convenciones](./frontend/conventions.md) — Patrones de código, nomenclatura, estilos
+
+### Guías
+- [Instalación](./guides/setup.md) — Requisitos y configuración inicial
+- [Desarrollo](./guides/development.md) — Flujo de trabajo local
+- [Despliegue](./guides/deployment.md) — Build y puesta en producción
+
+### UI
+- [Sistema de diseño](./ui/design-system.md) — Colores, tipografía, utilitarios CSS
+- [Componentes](./ui/components.md) — Catálogo de componentes compartidos
+
+## Stack rápido
+
+| Capa | Tecnología |
+|------|-----------|
+| Framework | Next.js 16.1.1 (App Router) |
+| UI | React 19 + Tailwind CSS 4 |
+| Lenguaje | TypeScript 5 |
+| Formularios | React Hook Form 7 |
+| Notificaciones | React Toastify 11 |
+| Iconos | FontAwesome 6 |

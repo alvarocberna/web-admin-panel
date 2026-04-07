@@ -13,3 +13,5 @@ export * from './components/input';
 export * from './components/input-art';
 export * from './components/input-file';
 export * from './components/textarea';
+//UTILS
+export * from './utils/sanitize';

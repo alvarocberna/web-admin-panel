@@ -1,37 +1,155 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens ─────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Canvas / Surfaces */
+  --canvas:    #f4f4f5; /* zinc-100 — page background */
+  --surface:   #ffffff; /* cards, sidebar, panels     */
+
+  /* Text hierarchy */
+  --text-1:    #18181b; /* zinc-900 — headings, primary  */
+  --text-2:    #52525b; /* zinc-600 — body, labels       */
+  --text-3:    #a1a1aa; /* zinc-400 — meta, placeholders */
+
+  /* Borders */
+  --border:    rgba(24, 24, 27, 0.10); /* standard separator   */
+  --border-md: rgba(24, 24, 27, 0.18); /* input borders        */
+  --border-lg: rgba(24, 24, 27, 0.26); /* emphasis borders     */
+
+  /* Actions */
+  --accent:         #18181b; /* zinc-900 — primary CTA       */
+  --accent-hover:   #3f3f46; /* zinc-700                     */
+  --action:         #2563eb; /* blue-600 — interactive       */
+  --action-hover:   #1d4ed8; /* blue-700                     */
+
+  /* Semantic */
+  --destructive:       #ef4444;
+  --destructive-hover: #dc2626;
+  --success:           #22c55e;
+  --warning:           #f59e0b;
+
+  /* Focus ring */
+  --focus-ring: rgba(37, 99, 235, 0.40);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--canvas);
+  --color-foreground: var(--text-1);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ─── Base ───────────────────────────────────────────────────── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--canvas);
+  color: var(--text-1);
+  font-family: var(--font-geist-sans, 'Inter', system-ui, sans-serif);
 }
 
-/* estilos personalizados */
-
-.hover-btn{
-  transition: 0.9s;
+/* ─── Hover card lift ────────────────────────────────────────── */
+.hover-btn {
+  transition: box-shadow 0.15s ease;
 }
-.hover-btn:hover{
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
-  transition: 0.2s;
+.hover-btn:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
   cursor: pointer;
+}
+
+/* ─── Button system ──────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0 1.25rem;
+  height: 2.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+  line-height: 1;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.btn-action {
+  background: var(--action);
+  color: #ffffff;
+  border-color: var(--action);
+}
+.btn-action:hover:not(:disabled) { background: var(--action-hover); border-color: var(--action-hover); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-1);
+  border-color: var(--border-md);
+}
+.btn-outline:hover:not(:disabled) { background: #f4f4f5; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-2);
+  border-color: var(--border);
+}
+.btn-ghost:hover:not(:disabled) { background: #f4f4f5; color: var(--text-1); }
+
+.btn-ghost-destructive {
+  background: transparent;
+  color: var(--text-2);
+  border-color: var(--border);
+}
+.btn-ghost-destructive:hover:not(:disabled) {
+  background: #fef2f2;
+  color: var(--destructive);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.btn-destructive {
+  background: var(--destructive);
+  color: #ffffff;
+  border-color: var(--destructive);
+}
+.btn-destructive:hover:not(:disabled) { background: var(--destructive-hover); border-color: var(--destructive-hover); }
+
+/* pill variant */
+.btn-pill { border-radius: 9999px; }
+
+/* sm / lg sizes */
+.btn-sm { height: 1.875rem; padding: 0 0.875rem; font-size: 0.8125rem; }
+.btn-lg { height: 2.625rem; padding: 0 1.5rem; font-size: 0.9375rem; }
+
+/* ─── Input base ─────────────────────────────────────────────── */
+.input-base {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-1);
+  background: transparent;
+  border: 1px solid var(--border-md);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  appearance: none;
+}
+.input-base::placeholder { color: transparent; }
+.input-base:focus {
+  border-color: var(--action);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+/* ─── Card ───────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
 }

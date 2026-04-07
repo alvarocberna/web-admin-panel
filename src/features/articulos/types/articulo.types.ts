@@ -19,9 +19,11 @@ export class CreateSecArticuloForm{
 export class UpdateArticuloForm{
     "titulo": string
     "subtitulo": string
+    "activo"?: boolean
+    "image_url"?: string | null
     "image_file"?: FileList
     "image_alt"?: string
-    "sec_articulo": UpdateSecArticuloForm[]  
+    "sec_articulo": UpdateSecArticuloForm[]
 
 }
 
@@ -29,6 +31,7 @@ export class UpdateSecArticuloForm{
     "id_sec": string
     "titulo_sec": string
     "contenido_sec": string
+    "image_url"?: string | null
     "image_file"?: FileList
     "image_alt"?: string
     "image_position"?: string
