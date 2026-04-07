@@ -151,8 +151,8 @@ export class ArticulosService{
         return await apiFetch<any>(`articulos/articulo/eliminar/${id_articulo}`, 'DELETE')
     }
 
-    //aprueba un articulo actualizando su status a 'approved'
+    //modifica el status de un articulo a 'approved'
     public static async approveArticulo(id_articulo: string): Promise<void>{
-        return await apiFetch<any>(`articulos/articulo/editar/${id_articulo}`, 'PATCH', { status: 'approved' })
+        return await apiFetch<void>(`articulos/articulo/editar-status/${id_articulo}`, 'PATCH', { status: 'approved' });
     }
 } 

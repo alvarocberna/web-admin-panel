@@ -152,7 +152,7 @@ export class ServiciosService {
             }),
         };
         formData.append('data', JSON.stringify(servicioData));
-        return await apiFetchFormData<ServicioEntity>(`servicios/servicio/editar/${id_servicio}`, formData, 'PATCH');
+        return await apiFetchFormData<ServicioEntity>(`servicios/servicio/editar/${id_servicio}`, formData, 'PUT');
     }
 
     public static async deleteServicio(id_servicio: string): Promise<void> {

@@ -10,13 +10,14 @@ export class ArticuloEntity{
         public fecha_publicacion: Date,
         public fecha_actualizacion: Date | null,
         public status: string,
+        public activo: boolean,
         public slug: string,
         public image_url: string | null,
         public image_alt: string | null,
         public image_position: string | null,
-        public activo: boolean,
-        public autor_id: string,
         public proyecto_id: string,
+        public usuario_id: string,
+        public articulos_id: string,
         public sec_articulo: SecArticuloEntity[],
     ){}
 }

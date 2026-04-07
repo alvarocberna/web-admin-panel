@@ -154,7 +154,7 @@ export class EquipoService {
             }),
         };
         formData.append('data', JSON.stringify(empleadoData));
-        return await apiFetchFormData<EmpleadoEntity>(`equipo/empleado/editar/${id_empleado}`, formData, 'PATCH');
+        return await apiFetchFormData<EmpleadoEntity>(`equipo/empleado/editar/${id_empleado}`, formData, 'PUT');
     }
 
     public static async deleteEmpleado(id_empleado: string): Promise<void> {

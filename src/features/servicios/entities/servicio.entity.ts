@@ -15,6 +15,7 @@ export class ServicioEntity {
         public slug: string,
         public img_url: string | null,
         public img_alt: string | null,
+        public proyecto_id: string,
         public servicios_id: string,
         public sec_servicio: SecServicioEntity[],
     ) {}

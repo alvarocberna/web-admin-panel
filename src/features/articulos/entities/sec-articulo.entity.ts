@@ -8,7 +8,7 @@ export class SecArticuloEntity {
         public image_url: string | null,
         public image_alt: string | null,
         public image_position: string | null,
-        public articulo_id: string,
         public proyecto_id: string,
+        public articulo_id: string,
     ){}
 }

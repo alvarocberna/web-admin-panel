@@ -15,6 +15,7 @@ export class EmpleadoEntity {
         public slug: string,
         public img_url: string | null,
         public img_alt: string | null,
+        public proyecto_id: string,
         public equipo_id: string,
         public sec_empleado: SecEmpleadoEntity[],
     ) {}
