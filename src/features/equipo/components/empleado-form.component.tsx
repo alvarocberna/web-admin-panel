@@ -311,13 +311,13 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                                         label="Título"
                                         name={`sec_empleado.${index}.titulo_sec` as any}
                                         register={register}
-                                        rules={{ required: 'Título requerido', maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
+                                        rules={{ required: false, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
                                     />
                                     <TextAreaArt
                                         label="Contenido"
                                         name={`sec_empleado.${index}.contenido_sec` as any}
                                         register={register}
-                                        rules={{ required: 'Contenido requerido', maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
+                                        rules={{ required: false, maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
                                     />
                                     {field.image_position !== 'none' && (
                                         <InputFile

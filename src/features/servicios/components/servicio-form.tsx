@@ -255,13 +255,13 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
                                         label="Título"
                                         name={`sec_servicio.${index}.titulo_sec` as any}
                                         register={register}
-                                        rules={{ required: 'Título requerido', maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
+                                        rules={{ required: false, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
                                     />
                                     <TextAreaArt
                                         label="Contenido"
                                         name={`sec_servicio.${index}.contenido_sec` as any}
                                         register={register}
-                                        rules={{ required: 'Contenido requerido', maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
+                                        rules={{ required: false, maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
                                     />
                                     {field.image_position !== 'none' && (
                                         <InputFile

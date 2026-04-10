@@ -20,6 +20,7 @@ export * from './equipo/components/sec-empleado.component';
 //TESTIMONIOS
 export * from './testimonios/components/testimonios.component';
 export * from './testimonios/components/testimonio-form.component';
+export * from './testimonios/components/testimonio-card.component';
 export * from './testimonios/dtos/create-testimonio.dto';
 export * from './testimonios/entities/testimonio.entity';
 export * from './testimonios/entities/testimonios.entity';

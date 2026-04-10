@@ -28,11 +28,13 @@ export function EquipoPublic() {
             {
                 equipo.activo ?
                 <ContenedorSec>
-                    <div className="">
-                        <h2 className="text-2xl font-semibold mb-4 text-zinc-900">{equipo.titulo}</h2>
-                        {equipo.descripcion && (
-                            <p className="text-md text-zinc-700 mb-4">{equipo.descripcion}</p>
-                        )}
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-extrabold text-texto mb-4">
+                            {equipo.titulo}
+                        </h2>
+                        <p className="text-gris text-lg max-w-xl mx-auto">
+                            {equipo.descripcion}
+                        </p>
                     </div>
 
                     {equipo.empleado && equipo.empleado.length > 0 ? (

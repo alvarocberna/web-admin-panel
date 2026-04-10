@@ -13,9 +13,15 @@ export function TestimonioCard({ testimonio }: TestimonioCardProps) {
     const fecha = new Date(testimonio.fecha_creacion);
 
     return (
-        <div className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
+        // <div className=" px-2 mb-4" style={{border: '1px solid red'}}>
             <div className="card px-5 py-5 h-full flex flex-col hover-btn">
-                <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center justify-start  mb-2">
+                    <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold me-2"
+                    style={{ background: '#7c6fbf' }}
+                    >
+                        {testimonio.nombre[0]}{testimonio.apellido[0]}
+                    </div>
                     <div>
                         <p className="text-md font-semibold text-zinc-900">{testimonio.nombre} {testimonio.apellido}</p>
                     </div>
@@ -42,6 +48,7 @@ export function TestimonioCard({ testimonio }: TestimonioCardProps) {
                     </p>
                 </div>
             </div>
-        </div>
+        // </div>
     );
 }
+

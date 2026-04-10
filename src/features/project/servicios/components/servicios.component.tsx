@@ -28,13 +28,13 @@ export function ServiciosPublic() {
             {
                 servicios.activo &&
                 <ContenedorSec>
-                    <div className="">
-                        <h2 className="text-2xl font-semibold text-zinc-900 mb-4">
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-extrabold text-texto mb-4">
                             {servicios.titulo}
                         </h2>
-                        {servicios.descripcion && (
-                            <p className="text-md text-zinc-700 mb-4">{servicios.descripcion}</p>
-                        )}
+                        <p className="text-gris text-lg max-w-xl mx-auto">
+                            {servicios.descripcion}
+                        </p>
                     </div>
                     {servicios.servicio && servicios.servicio.length > 0 ? (
                         <div className="flex flex-wrap -mx-2">

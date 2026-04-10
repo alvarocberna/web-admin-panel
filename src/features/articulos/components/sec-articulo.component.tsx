@@ -28,13 +28,13 @@ export function SecArticulo<T extends FieldValues = FieldValues>({ field, index,
                     name={`sec_articulo.${index}.titulo_sec` as any}
                     type="text"
                     register={register}
-                    rules={{ required: 'Titulo requerido', minLength: {value: 1, message: 'Mínomo 1 caracter'}, maxLength: {value: 200, message: 'Máximo 200 caracteres'} }}
+                    rules={{ required: false, minLength: {value: 1, message: 'Mínomo 1 caracter'}, maxLength: {value: 200, message: 'Máximo 200 caracteres'} }}
                 />
                 <TextAreaArt
                     label={`Contenido Sub Sección ${index + 1}`}
                     name={`sec_articulo.${index}.contenido_sec` as any}
                     register={register}
-                    rules={{ required: 'Contenido requerido', minLength: {value: 1, message: 'Mínimo 1 caracter'}, maxLength: {value: 5000, message: 'Máximo 5000 caracteres'} }}
+                    rules={{ required: false, minLength: {value: 1, message: 'Mínimo 1 caracter'}, maxLength: {value: 5000, message: 'Máximo 5000 caracteres'} }}
                 />
             </div>
             <div className={`w-${imgW} ${imgHidden} px-2`}>

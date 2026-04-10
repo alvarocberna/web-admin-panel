@@ -106,13 +106,23 @@ export function EmpleadoCard(props: EmpleadoEntity){
                         className="card px-5 py-5 h-full flex flex-col cursor-pointer"
                         onClick={onCardClick}
                     >
-                        {props.img_url && (
+                        {props.img_url ? (
                             <img
                                 src={props.img_url}
                                 alt={props.img_alt ?? 'image'}
                                 className="w-20 h-20 rounded-full object-cover mb-3"
                             />
-                        )}
+                        )
+                        :
+                        (
+                            <div
+                            className="w-16 h-16 rounded-full flex items-center justify-center text-white text-md font-bold mb-2"
+                            style={{ background: '#7c6fbf' }}
+                            >
+                                {props.nombre_primero[0]}{props.apellido_paterno[0]}
+                            </div>
+                        )
+                        }
                         <p className="text-md font-semibold text-zinc-900">
                             {props.nombre_primero}
                             {props.nombre_segundo ? ` ${props.nombre_segundo}` : ''}{' '}
