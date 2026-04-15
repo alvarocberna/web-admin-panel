@@ -1,38 +1,41 @@
 'use client'
+//REACT
 import { useState, useEffect, useRef } from 'react';
+//NEXT
 import { useRouter } from 'next/navigation';
+//GSAP
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faStar } from '@fortawesome/free-solid-svg-icons';
-import { TestimoniosService, TestimoniosEntity, TestimonioEntity, TestimonioCard } from '@/features/project';
-import { ContenedorSec } from '@/shared/project';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+//FEATURES
+import { TestimoniosEntity, TestimonioEntity, TestimonioCard } from '@/features/project';
 import { TestimonioForm } from './testimonio-form.component';
+//SHARED
+import { ContenedorSec } from '@/shared/project';
 
 const VISIBLES = 3;
 const INTERVALO_MS = 5000;
 
+interface Props {
+    dataTestimonios: TestimoniosEntity | null
+}
 
-export function TestimoniosPublic() {
-    const [testimonios, setTestimonios] = useState<TestimoniosEntity>();
+gsap.registerPlugin(useGSAP,ScrollTrigger);
+
+
+export function TestimoniosPublic({dataTestimonios}: Props) {
     const [modalAbierto, setModalAbierto] = useState(false);
     const [indice, setIndice] = useState(0);
     const [animando, setAnimando] = useState(false);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const router = useRouter();
 
-    useEffect(() => {
-        const fetchTestimonios = async () => {
-            try {
-                const data = await TestimoniosService.getTestimonios();
-                if (!data) return;
-                setTestimonios(data);
-            } catch (error) {
-                console.error('Error obteniendo testimonios:', error);
-            }
-        };
-        fetchTestimonios();
-    }, []);
+    const compRef = useRef(null);
 
-    const aprobados = (testimonios?.testimonio ?? [])
+    const aprobados = (dataTestimonios?.testimonio ?? [])
         .filter(t => t.status === 'approved')
         .slice(-10);
 
@@ -54,17 +57,37 @@ export function TestimoniosPublic() {
           )
         : [];
 
-    if (!testimonios?.activo) return null;
+    useGSAP(() => {
+        if(!dataTestimonios) return;
+
+        const gsapTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: compRef.current,
+                start: 'top 65%',
+                end: 'bottom top',
+                markers: false,
+            }
+        });
+        gsapTimeline.from(['.head-element', '.body-element'], {
+            y: 50,
+            opacity: 0,
+            ease: "power2.inOut",
+            duration: 1,
+            stagger: 0.3
+        })
+    }, { scope: compRef, dependencies: [dataTestimonios] })
+
+    if(!dataTestimonios) return null;
 
     return (
-        <div>
+        <div ref={compRef}>
             <ContenedorSec>
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl font-extrabold text-texto mb-4">
-                        {testimonios.titulo}
+                <div className="head-element text-center mb-12">
+                    <h2 className="title-element text-4xl font-extrabold text-texto mb-4">
+                        {dataTestimonios.titulo}
                     </h2>
-                    <p className="text-gris text-lg max-w-xl mx-auto">
-                        {testimonios.descripcion}
+                    <p className="description-element text-gris text-lg max-w-xl mx-auto">
+                        {dataTestimonios.descripcion}
                     </p>
                 </div>
 
@@ -74,7 +97,7 @@ export function TestimoniosPublic() {
                     </div>
                 ) : (
                     <div
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-400"
+                        className="body-element grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-400"
                         style={{ opacity: animando ? 0 : 1 }}
                     >
                         {visibles.map(t => (
@@ -82,7 +105,7 @@ export function TestimoniosPublic() {
                         ))}
                     </div>
                 )}
-                <div className='w-full flex justify-between'>
+                <div className='body-element w-full flex justify-between'>
                     <button
                         onClick={() => router.push('/testimonios')}
                         className="btn secondary-btn text-sm"

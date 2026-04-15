@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 //REACT
 import { useState } from "react"
+import { createPortal } from "react-dom"
 //FEATURES
 import { ServicioEntity } from "@/features/project"
 
@@ -99,7 +100,7 @@ export function ServicioCard(srv: ServicioEntity) {
             )}
 
             {/* ── Modal completo ────────────────────────────────────────────────── */}
-            {fullModalOpen && (
+            {fullModalOpen && createPortal(
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
                     onClick={() => setFullModalOpen(false)}
@@ -194,7 +195,8 @@ export function ServicioCard(srv: ServicioEntity) {
                             </div>
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );
