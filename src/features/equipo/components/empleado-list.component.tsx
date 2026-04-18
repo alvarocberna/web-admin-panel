@@ -17,17 +17,21 @@ interface Props {
 
 export function EmpleadoList({ empleados, onUpdated }: Props) {
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalKey, setModalKey] = useState(0);
     const [editingEmpleado, setEditingEmpleado] = useState<EmpleadoEntity | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [empleadoToDelete, setEmpleadoToDelete] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const openCreate = () => {
         setEditingEmpleado(null);
+        setModalKey(k => k + 1);
         setModalOpen(true);
     };
 
     const openEdit = (empleado: EmpleadoEntity) => {
         setEditingEmpleado(empleado);
+        setModalKey(k => k + 1);
         setModalOpen(true);
     };
 
@@ -56,6 +60,7 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
 
     const confirmDelete = async () => {
         if (!empleadoToDelete) return;
+        setIsDeleting(true);
         try {
             await EquipoService.deleteEmpleado(empleadoToDelete);
             onUpdated(empleados.filter(e => e.id !== empleadoToDelete));
@@ -64,6 +69,8 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el empleado');
             closeDeleteModal();
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -132,6 +139,7 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
             )}
 
             <EmpleadoForm
+                key={modalKey}
                 open={modalOpen}
                 editingEmpleado={editingEmpleado}
                 onClose={closeModal}
@@ -149,7 +157,9 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
                         </p>
                         <div className="flex justify-end gap-2">
                             <button onClick={closeDeleteModal} className="btn btn-outline">Cancelar</button>
-                            <button onClick={confirmDelete} className="btn btn-destructive">Eliminar</button>
+                            <button onClick={confirmDelete} disabled={isDeleting} className={`btn btn-destructive transition-opacity ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                {isDeleting ? 'Eliminando...' : 'Eliminar'}
+                            </button>
                         </div>
                     </div>
                 </div>

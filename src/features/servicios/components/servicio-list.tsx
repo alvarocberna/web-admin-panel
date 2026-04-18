@@ -18,6 +18,7 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
     const [editingServicio, setEditingServicio] = useState<ServicioEntity | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [servicioToDelete, setServicioToDelete] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const openCreate = () => {
         setEditingServicio(null);
@@ -46,6 +47,7 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
 
     const confirmDelete = async () => {
         if (!servicioToDelete) return;
+        setIsDeleting(true);
         try {
             await ServiciosService.deleteServicio(servicioToDelete);
             onUpdated(servicios.filter(s => s.id !== servicioToDelete));
@@ -54,6 +56,8 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el servicio');
             closeDeleteModal();
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -143,7 +147,9 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
                         </p>
                         <div className="flex justify-end gap-2">
                             <button onClick={closeDeleteModal} className="btn btn-outline">Cancelar</button>
-                            <button onClick={confirmDelete} className="btn btn-destructive">Eliminar</button>
+                            <button onClick={confirmDelete} disabled={isDeleting} className={`btn btn-destructive transition-opacity ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                {isDeleting ? 'Eliminando...' : 'Eliminar'}
+                            </button>
                         </div>
                     </div>
                 </div>

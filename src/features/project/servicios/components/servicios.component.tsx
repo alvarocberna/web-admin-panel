@@ -10,6 +10,15 @@ import { ServiciosEntity, ServicioCard } from '@/features/project';
 //SHARED
 import { ContenedorSec } from '@/shared/project';
 
+const ICON_COLORS: { bg: string; icon: string }[] = [
+    { bg: '#c0ddef', icon: '#4a90b8' }, // violeta
+    { bg: '#faf0c0', icon: '#decc78' }, // rosa
+    { bg: '#fce4ec', icon: '#d47090' }, // azul
+    { bg: '#c8e6d4', icon: '#4f9a72' }, // verde
+    { bg: '#e8dff5', icon: '#c0a8dc' }, // ámbar
+    { bg: '#c8e6d4', icon: '#4f9a72' }, // verde
+];
+
 interface Props {
     dataServicios: ServiciosEntity | null
 }
@@ -57,8 +66,8 @@ export function ServiciosPublic({dataServicios}: Props) {
                     </div>
                     {dataServicios.servicio && dataServicios.servicio.length > 0 ? (
                         <div className="body-element flex flex-wrap -mx-2">
-                            {dataServicios.servicio.filter(srv => srv.activo).map(srv => (
-                               <ServicioCard {...srv}/>
+                            {dataServicios.servicio.filter(srv => srv.activo).map((srv, i) => (
+                               <ServicioCard key={srv.slug} {...srv} iconColor={ICON_COLORS[i % ICON_COLORS.length]}/>
                             ))}
                         </div>
                     ) : (

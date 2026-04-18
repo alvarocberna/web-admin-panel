@@ -10,6 +10,8 @@ export function TestimonioList() {
     const [testimonios, setTestimonios] = useState<TestimonioEntity[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [testimonioToDelete, setTestimonioToDelete] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [approvingId, setApprovingId] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchTestimonios = async () => {
@@ -33,6 +35,7 @@ export function TestimonioList() {
 
     const confirmDelete = async () => {
         if (!testimonioToDelete) return;
+        setIsDeleting(true);
         try {
             await TestimonioService.deleteTestimonio(testimonioToDelete);
             setTestimonios(prev => prev.filter(t => t.id !== testimonioToDelete));
@@ -41,16 +44,21 @@ export function TestimonioList() {
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el testimonio');
             closeModal();
+        } finally {
+            setIsDeleting(false);
         }
     };
 
     const handleAprobar = async (id: string) => {
+        setApprovingId(id);
         try {
             await TestimonioService.approveTestimonio(id);
             setTestimonios(prev => prev.map(t => t.id === id ? { ...t, status: 'approved' } as TestimonioEntity : t));
             toast.success('Testimonio aprobado');
         } catch (error: any) {
             toast.error(error?.message || 'Error al aprobar el testimonio');
+        } finally {
+            setApprovingId(null);
         }
     };
 
@@ -90,11 +98,12 @@ export function TestimonioList() {
                         <div className="flex gap-2 mt-4">
                             <button
                                 onClick={() => handleAprobar(t.id)}
-                                className="btn btn-primary flex-1 h-9 text-xs flex items-center justify-center gap-1.5"
+                                disabled={approvingId === t.id}
+                                className={`btn btn-primary flex-1 h-9 text-xs flex items-center justify-center gap-1.5 transition-opacity ${approvingId === t.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 title="Aceptar testimonio"
                             >
                                 <FontAwesomeIcon icon={faCheck} style={{ width: '12px', height: '12px' }} />
-                                Aceptar
+                                {approvingId === t.id ? 'Procesando...' : 'Aceptar'}
                             </button>
                             <button
                                 onClick={() => openModal(t.id)}
@@ -170,7 +179,9 @@ export function TestimonioList() {
                         </p>
                         <div className="flex justify-end gap-2">
                             <button onClick={closeModal} className="btn btn-outline">Cancelar</button>
-                            <button onClick={confirmDelete} className="btn btn-destructive">Eliminar</button>
+                            <button onClick={confirmDelete} disabled={isDeleting} className={`btn btn-destructive transition-opacity ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                {isDeleting ? 'Eliminando...' : 'Eliminar'}
+                            </button>
                         </div>
                     </div>
                 </div>

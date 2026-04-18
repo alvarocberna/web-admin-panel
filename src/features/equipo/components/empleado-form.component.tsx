@@ -80,6 +80,14 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
     useEffect(() => {
         if (!open) return;
         if (editingEmpleado) {
+            const sections = editingEmpleado.sec_empleado?.map(sec => ({
+                id_sec: sec.id,
+                titulo_sec: sec.titulo_sec ?? '',
+                contenido_sec: sec.contenido_sec ?? '',
+                image_url: sec.image_url ?? null,
+                image_alt: sec.image_alt ?? '',
+                image_position: sec.image_position ?? 'none',
+            })) ?? [];
             reset({
                 nombre_primero: editingEmpleado.nombre_primero,
                 nombre_segundo: editingEmpleado.nombre_segundo ?? '',
@@ -90,14 +98,7 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                 descripcion: editingEmpleado.descripcion ?? '',
                 activo: editingEmpleado.activo,
                 img_alt: editingEmpleado.img_alt ?? '',
-                sec_empleado: editingEmpleado.sec_empleado?.map(sec => ({
-                    id_sec: sec.id,
-                    titulo_sec: sec.titulo_sec ?? '',
-                    contenido_sec: sec.contenido_sec ?? '',
-                    image_url: sec.image_url ?? null,
-                    image_alt: sec.image_alt ?? '',
-                    image_position: sec.image_position ?? 'none',
-                })) ?? [],
+                sec_empleado: sections,
             });
         } else {
             reset({
