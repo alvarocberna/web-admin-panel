@@ -4,10 +4,17 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import * as solidIcons from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import Image from 'next/image';
 import { Input, TextAreaArt, InputFile } from '@/shared';
 import { ServiciosService } from '../services/servicios.service';
 import { ServicioEntity } from '../entities/servicio.entity';
+
+const ALL_SOLID_ICONS: IconDefinition[] = Object.values(solidIcons).filter(
+    (v): v is IconDefinition =>
+        !!v && typeof v === 'object' && 'iconName' in v && 'icon' in v,
+);
 
 interface SecServicioForm {
     id_sec?: string;
@@ -27,6 +34,7 @@ interface ServicioFormFields {
     porcentaje_descuento: number;
     destacado: string;
     activo: boolean;
+    icono: string;
     img_alt: string;
     image_file?: FileList;
     sec_servicio: SecServicioForm[];
@@ -39,8 +47,11 @@ interface Props {
     onClose: () => void;
 }
 
+
 export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }: Props) {
     const [addSec, setAddSec] = useState(true);
+    const [iconPickerOpen, setIconPickerOpen] = useState(false);
+    const [iconSearch, setIconSearch] = useState('');
 
     const {
         register,
@@ -58,6 +69,7 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
             porcentaje_descuento: editingServicio.porcentaje_descuento ?? 0,
             destacado: editingServicio.destacado ? 'true' : 'false',
             activo: editingServicio.activo,
+            icono: editingServicio.icono ?? '',
             img_alt: editingServicio.img_alt ?? '',
             sec_servicio: editingServicio.sec_servicio?.map(sec => ({
                 id_sec: sec.id,
@@ -75,6 +87,7 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
             porcentaje_descuento: 0,
             destacado: 'false',
             activo: true,
+            icono: '',
             img_alt: '',
             sec_servicio: [],
         },
@@ -87,6 +100,7 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
 
     const activo = watch('activo');
     const destacado = watch('destacado');
+    const icono = watch('icono');
 
     const onSubmit = async (data: ServicioFormFields) => {
         try {
@@ -97,7 +111,7 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
                 nombre_promocion: data.nombre_promocion || null,
                 porcentaje_descuento: data.porcentaje_descuento || null,
                 destacado: data.destacado === 'true',
-                icono: null,
+                icono: data.icono || null,
                 orden: null,
                 activo: data.activo,
                 img_url: editingServicio?.img_url ?? null,
@@ -135,7 +149,9 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} noValidate className="px-6 py-5">
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+
                         <div className="sm:col-span-2">
                             <Input
                                 label="Nombre del servicio"
@@ -192,6 +208,77 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
                                 register={register}
                                 rules={{ required: false, maxLength: { value: 100, message: 'Máximo 100 caracteres' } }}
                             />
+                        </div>
+
+                        {/* Selector de icono */}
+                        <div className="sm:col-span-2 mt-1">
+                            <p className="text-sm font-medium text-zinc-700 mb-1.5">Icono</p>
+                            <div className="flex items-center gap-2">
+                                {icono && (
+                                    <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-lg min-w-0">
+                                        <FontAwesomeIcon
+                                            icon={ALL_SOLID_ICONS.find(ic => ic.iconName === icono)!}
+                                            style={{ width: '14px', height: '14px' }}
+                                            className="text-blue-600 shrink-0"
+                                        />
+                                        <span className="text-sm text-blue-700 font-medium truncate">{icono}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setValue('icono', ''); setIconPickerOpen(false); }}
+                                            className="text-blue-400 hover:text-blue-700 transition-colors shrink-0 ml-1"
+                                            title="Quitar icono"
+                                        >
+                                            <FontAwesomeIcon icon={faXmark} style={{ width: '11px', height: '11px' }} />
+                                        </button>
+                                    </div>
+                                )}
+                                <button
+                                    type="button"
+                                    onClick={() => setIconPickerOpen(o => !o)}
+                                    className="text-sm text-zinc-600 hover:text-blue-600 border border-zinc-200 hover:border-blue-400 rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap"
+                                >
+                                    {icono ? 'Cambiar icono' : 'Seleccionar icono'}
+                                </button>
+                            </div>
+                            {iconPickerOpen && (
+                                <div className="mt-2 border border-zinc-200 rounded-xl p-3 bg-white shadow-sm">
+                                    <input
+                                        type="text"
+                                        placeholder="Buscar icono..."
+                                        value={iconSearch}
+                                        onChange={e => setIconSearch(e.target.value.toLowerCase())}
+                                        className="w-full border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2"
+                                        autoFocus
+                                    />
+                                    <div className="overflow-y-auto max-h-48">
+                                        <div className="grid grid-cols-8 gap-1">
+                                            {ALL_SOLID_ICONS
+                                                .filter(ic => ic.iconName.includes(iconSearch))
+                                                .slice(0, 64)
+                                                .map(ic => (
+                                                    <button
+                                                        key={ic.iconName}
+                                                        type="button"
+                                                        title={ic.iconName}
+                                                        onClick={() => {
+                                                            setValue('icono', ic.iconName);
+                                                            setIconPickerOpen(false);
+                                                            setIconSearch('');
+                                                        }}
+                                                        className={`flex items-center justify-center w-full aspect-square rounded-lg transition-colors duration-150 ${
+                                                            icono === ic.iconName
+                                                                ? 'bg-blue-600 text-white'
+                                                                : 'bg-zinc-50 text-zinc-600 hover:bg-blue-50 hover:text-blue-600 border border-zinc-200'
+                                                        }`}
+                                                    >
+                                                        <FontAwesomeIcon icon={ic} style={{ width: '14px', height: '14px' }} />
+                                                    </button>
+                                                ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            <input type="hidden" {...register('icono')} />
                         </div>
                     </div>
 
@@ -255,13 +342,13 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
                                         label="Título"
                                         name={`sec_servicio.${index}.titulo_sec` as any}
                                         register={register}
-                                        rules={{ required: 'Título requerido', maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
+                                        rules={{ required: false, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
                                     />
                                     <TextAreaArt
                                         label="Contenido"
                                         name={`sec_servicio.${index}.contenido_sec` as any}
                                         register={register}
-                                        rules={{ required: 'Contenido requerido', maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
+                                        rules={{ required: false, maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
                                     />
                                     {field.image_position !== 'none' && (
                                         <InputFile

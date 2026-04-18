@@ -23,9 +23,15 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
     //definimos variables
     const id_articulo = props.id_articulo;
     const router = useRouter();
+
     //destructuring de useForm 
-    const {register, handleSubmit, control, formState: { errors }, reset } = 
-    useForm<UpdateArticuloForm>({
+    const {
+        register, 
+        handleSubmit, 
+        control, 
+        reset,
+        formState: { errors, isSubmitting }
+    } = useForm<UpdateArticuloForm>({
         defaultValues: {
             titulo: '',
             subtitulo: '',
@@ -215,9 +221,9 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
                 )}
             </div>
 
-            <button type="submit" className="btn btn-primary btn-lg">
-                Actualizar artículo
-            </button>
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                            {isSubmitting ? 'Guardando...' : 'Guardar'}
+                </button>
         </form>
     )
 }

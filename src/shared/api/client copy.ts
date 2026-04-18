@@ -64,6 +64,7 @@ export async function apiFetch<T>(
   endpoint: string,
   method: string = 'GET',
   data?: any,
+  credentials: RequestCredentials = 'include',
   isRetry = false // evita loop infinito
 ): Promise<T> {
   const baseUrl = getBaseUrl();
@@ -76,6 +77,7 @@ export async function apiFetch<T>(
 
   const res = await fetch(`${baseUrl}/${endpoint}`, {
     method,
+    credentials,
     headers,
     body: data ? JSON.stringify(data) : undefined,
   });
@@ -85,7 +87,7 @@ export async function apiFetch<T>(
     const refreshed = await refreshSession();
 
     if (refreshed) {
-      return apiFetch<T>(endpoint, method, data, true);
+      return apiFetch<T>(endpoint, method, data, credentials, true);
     }
 
     throw new Error('Sesión expirada');

@@ -1,45 +1,73 @@
 'use client'
 //REACT
-import { useState, useEffect } from 'react';
+import { useRef } from 'react';
+//GSAP
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 //FEATURES
-import { ServiciosEntity, ServiciosService, ServicioCard } from '@/features/project';
+import { ServiciosEntity, ServicioCard } from '@/features/project';
 //SHARED
 import { ContenedorSec } from '@/shared/project';
 
-export function ServiciosPublic() {
-    const [servicios, setServicios] = useState<ServiciosEntity | null>(null);
+const ICON_COLORS: { bg: string; icon: string }[] = [
+    { bg: '#c0ddef', icon: '#4a90b8' }, // violeta
+    { bg: '#faf0c0', icon: '#decc78' }, // rosa
+    { bg: '#fce4ec', icon: '#d47090' }, // azul
+    { bg: '#c8e6d4', icon: '#4f9a72' }, // verde
+    { bg: '#e8dff5', icon: '#c0a8dc' }, // ámbar
+    { bg: '#c8e6d4', icon: '#4f9a72' }, // verde
+];
 
-    useEffect(() => {
-        const fetchServicios = async () => {
-            try {
-                const data = await ServiciosService.getServicios();
-                setServicios(data);
-            } catch (error) {
-                console.error('Error obteniendo servicios:', error);
+interface Props {
+    dataServicios: ServiciosEntity | null
+}
+
+gsap.registerPlugin(useGSAP,ScrollTrigger);
+
+export function ServiciosPublic({dataServicios}: Props) {
+
+    const compRef = useRef(null);
+
+    useGSAP(() => {
+        if(!dataServicios) return;
+
+        const gsapTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: compRef.current,
+                start: 'top 65%',
+                end: 'bottom top',
+                markers: false,
             }
-        };
-        fetchServicios();
-    }, []);
+        });
+        gsapTimeline.from(['.head-element', '.body-element'], {
+            y: 50,
+            opacity: 0,
+            ease: "power2.inOut",
+            duration: 1,
+            stagger: 0.3
+        })
+    }, { scope: compRef, dependencies: [dataServicios] })
 
-    if (!servicios) return null;
+    if (!dataServicios) return null;
 
     return (
-        <div>
+        <div ref={compRef}>
             {
-                servicios.activo &&
+                dataServicios.activo &&
                 <ContenedorSec>
-                    <div className="">
-                        <h2 className="text-2xl font-semibold text-zinc-900 mb-4">
-                            {servicios.titulo}
+                    <div className="head-element text-center mb-12">
+                        <h2 className="title-element text-4xl font-extrabold text-texto mb-4">
+                            {dataServicios.titulo}
                         </h2>
-                        {servicios.descripcion && (
-                            <p className="text-md text-zinc-700 mb-4">{servicios.descripcion}</p>
-                        )}
+                        <p className="description-element text-gris text-lg max-w-xl mx-auto">
+                            {dataServicios.descripcion}
+                        </p>
                     </div>
-                    {servicios.servicio && servicios.servicio.length > 0 ? (
-                        <div className="flex flex-wrap -mx-2">
-                            {servicios.servicio.filter(srv => srv.activo).map(srv => (
-                               <ServicioCard {...srv}/>
+                    {dataServicios.servicio && dataServicios.servicio.length > 0 ? (
+                        <div className="body-element flex flex-wrap -mx-2">
+                            {dataServicios.servicio.filter(srv => srv.activo).map((srv, i) => (
+                               <ServicioCard key={srv.slug} {...srv} iconColor={ICON_COLORS[i % ICON_COLORS.length]}/>
                             ))}
                         </div>
                     ) : (

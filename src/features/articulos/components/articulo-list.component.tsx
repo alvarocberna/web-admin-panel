@@ -16,6 +16,8 @@ interface Props {
 export function ArticuloList({ articulos, onUpdated, rol }: Props) {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [approvingId, setApprovingId] = useState<string | null>(null);
 
     const pending = articulos.filter(a => a.status === 'pending');
     const approved = articulos.filter(a => a.status === 'approved');
@@ -32,6 +34,7 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
 
     const confirmDelete = async () => {
         if (!articleToDelete) return;
+        setIsDeleting(true);
         try {
             await ArticulosService.deleteArticulo(articleToDelete);
             onUpdated(articulos.filter(a => a.id !== articleToDelete));
@@ -40,16 +43,21 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el artículo');
             closeDeleteModal();
+        } finally {
+            setIsDeleting(false);
         }
     };
 
     const handleAprobar = async (id: string) => {
+        setApprovingId(id);
         try {
             await ArticulosService.approveArticulo(id);
             onUpdated(articulos.map(a => a.id === id ? { ...a, status: 'approved' } as ArticuloEntity : a));
             toast.success('Artículo aprobado');
         } catch (error: any) {
             toast.error(error?.message || 'Error al aprobar el artículo');
+        } finally {
+            setApprovingId(null);
         }
     };
 
@@ -74,11 +82,12 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
                         <div className="flex gap-2 mb-4">
                             <button
                                 onClick={() => handleAprobar(articulo.id)}
-                                className="btn btn-primary flex-1 h-9 text-xs flex items-center justify-center gap-1.5"
+                                disabled={approvingId === articulo.id}
+                                className={`btn btn-primary flex-1 h-9 text-xs flex items-center justify-center gap-1.5 transition-opacity ${approvingId === articulo.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 title="Aceptar artículo"
                             >
                                 <FontAwesomeIcon icon={faCheck} style={{ width: '12px', height: '12px' }} />
-                                Aceptar
+                                {approvingId === articulo.id ? 'Procesando...' : 'Aceptar'}
                             </button>
                             <button
                                 onClick={() => openDeleteModal(articulo.id)}
@@ -172,7 +181,9 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
                         </p>
                         <div className="flex justify-end gap-2">
                             <button onClick={closeDeleteModal} className="btn btn-outline">Cancelar</button>
-                            <button onClick={confirmDelete} className="btn btn-destructive">Eliminar</button>
+                            <button onClick={confirmDelete} disabled={isDeleting} className={`btn btn-destructive transition-opacity ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                {isDeleting ? 'Eliminando...' : 'Eliminar'}
+                            </button>
                         </div>
                     </div>
                 </div>

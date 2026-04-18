@@ -10,7 +10,8 @@ export class TestimoniosService {
     }
 
     public static async createTestimonio(data: Omit<CreateTestimonioDto, never>): Promise<void> {
-        await apiFetch<void>('testimonios/testimonio/crear', 'POST', data);
+        const id_usuario = process.env.NEXT_PUBLIC_ID_USUARIO;
+        await apiFetch<void>(`testimonios/project/crear?usuario_id=${id_usuario}`, 'POST', data);
     }
 
 }

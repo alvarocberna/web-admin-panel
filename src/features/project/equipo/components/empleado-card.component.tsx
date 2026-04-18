@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 //REACT
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 //FEATURES
 import { EmpleadoEntity } from '@/features/project';
 
@@ -106,13 +107,23 @@ export function EmpleadoCard(props: EmpleadoEntity){
                         className="card px-5 py-5 h-full flex flex-col cursor-pointer"
                         onClick={onCardClick}
                     >
-                        {props.img_url && (
+                        {props.img_url ? (
                             <img
                                 src={props.img_url}
                                 alt={props.img_alt ?? 'image'}
                                 className="w-20 h-20 rounded-full object-cover mb-3"
                             />
-                        )}
+                        )
+                        :
+                        (
+                            <div
+                            className="w-16 h-16 rounded-full flex items-center justify-center text-white text-md font-bold mb-2"
+                            style={{ background: '#7c6fbf' }}
+                            >
+                                {props.nombre_primero[0]}{props.apellido_paterno[0]}
+                            </div>
+                        )
+                        }
                         <p className="text-md font-semibold text-zinc-900">
                             {props.nombre_primero}
                             {props.nombre_segundo ? ` ${props.nombre_segundo}` : ''}{' '}
@@ -133,7 +144,7 @@ export function EmpleadoCard(props: EmpleadoEntity){
             )}
 
             {/* ── Modal completo ────────────────────────────────────────────────── */}
-            {fullModalOpen && (
+            {fullModalOpen && createPortal(
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
                     onClick={() => setFullModalOpen(false)}
@@ -210,7 +221,8 @@ export function EmpleadoCard(props: EmpleadoEntity){
                             </div>
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );

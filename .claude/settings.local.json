@@ -5,7 +5,9 @@
       "Bash(npx skills:*)",
       "Bash(npm run:*)",
       "Bash(mkdir -p \"C:/Users/cbern/OneDrive/Desktop/PROYECTOS/PRODUCTOS/web-core-root/web-admin-panel/src/app/project/equipo/[slug]\")",
-      "Bash(mkdir -p \"C:/Users/cbern/OneDrive/Desktop/PROYECTOS/PRODUCTOS/web-core-root/web-admin-panel/src/app/project/servicios/[slug]\")"
+      "Bash(mkdir -p \"C:/Users/cbern/OneDrive/Desktop/PROYECTOS/PRODUCTOS/web-core-root/web-admin-panel/src/app/project/servicios/[slug]\")",
+      "Bash(npx eslint *)",
+      "Bash(xargs grep *)"
     ]
   }
 }

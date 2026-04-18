@@ -25,7 +25,7 @@ export function ArticuloFormCreate(){
         register, //conecta cada input al form, registrando su name y rules
         handleSubmit, //intercepta el evento submit del form. Valida los campos según las rules y luego ejecuta el callback (onSubmit)
         control, //conecta el form principal con el array dinamico
-        formState: { errors } //objeto que contiene el estado del form
+        formState: { errors, isSubmitting } //objeto que contiene el estado del form
     } = useForm<CreateArticuloForm>({ //le dice a ts que estructura tendrá el form, osea, handleSubmit sabe que campos recibir y validar
         defaultValues: { //podemos definir un default value a cualquier campo, pero no es necesario
             sec_articulo: [] //sin un defaultValue, sec_articulo sería undefined y .map fallaría
@@ -163,8 +163,8 @@ export function ArticuloFormCreate(){
                 )}
             </div>
 
-            <button type="submit" className="btn btn-primary btn-lg">
-                Crear artículo
+            <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
+                {isSubmitting ? 'Guardando...' : 'Guardar'}
             </button>
         </form>
     )
