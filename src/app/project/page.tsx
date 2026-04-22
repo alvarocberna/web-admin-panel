@@ -1,6 +1,8 @@
 import { ArticulosPublic, TestimoniosPublic, EquipoPublic, ServiciosPublic } from '@/features/project';
 import { EquipoService, ServiciosService, ArticulosService, TestimoniosService } from '@/features/project';
 
+export const revalidate = 300;
+
 export default async function Project(){
 
     const [equipo, servicios, articulos, testimonios] = await Promise.all([
