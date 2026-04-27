@@ -1,3 +1,5 @@
+//NAVBAR
+export * from './navbar/navbar.component';
 //ARTICULOS
 export * from './articulos/components/sec-articulo.component';
 export * from './articulos/components/articulos.component';
