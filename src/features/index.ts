@@ -1,3 +1,7 @@
+//INICIO
+export * from './inicio/components/navbar.component';
+export * from './inicio/components/portada.component';
+export * from './inicio/components/contenido.component';
 //ARTICULOS
 export * from './articulos/components/articulo-form-create.component';
 export * from './articulos/components/articulo-form-update.component';

@@ -14,8 +14,12 @@ import { toast } from 'react-toastify';
 // import '@/app/globals.css'
 
 
-export function InicioSesionForm() {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormValues>();
+interface InicioSesionFormProps {
+  defaultValues?: Partial<FormValues>;
+}
+
+export function InicioSesionForm({ defaultValues }: InicioSesionFormProps = {}) {
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormValues>({ defaultValues });
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {

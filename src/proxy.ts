@@ -116,6 +116,6 @@ export const config = {
      * - favicon.ico
      * - archivos públicos (png, jpg, jpeg, gif, svg, webp)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|mp4|webm|ogg|mov)$).*)',
   ],
 };
