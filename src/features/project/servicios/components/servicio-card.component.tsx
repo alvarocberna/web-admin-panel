@@ -18,7 +18,7 @@ interface IconColor {
 }
 
 // ALTERNAR COMPORTAMIENTO: 'navegar' | 'modal'
-const COMPORTAMIENTO: 'navegar' | 'modal' = 'modal';
+const COMPORTAMIENTO: 'navegar' | 'modal' = 'navegar';
 
 // ALTERNAR ESTILO: 1 (imagen con overlay) | 2 (card con imagen superior y texto) | 3 (card con icono superior izquierdo)
 const ESTILO: 1 | 2 | 3 = 3;

@@ -3,6 +3,7 @@ export * from './api/client';
 //COMPONENTS
 export * from './components/container';
 export * from './components/navbar';
+export * from './components/footer';
 export * from './components/title-sec';
 export * from './components/cont-sub-sec';
 export * from './components/head-sub-sec';

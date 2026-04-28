@@ -1,9 +1,14 @@
-import { ArticulosAllPublic } from '@/features/project';
+import { ArticulosAllPublic, ArticulosService } from '@/features/project';
 
-export default function ArticulosPage() {
+export default async function ArticulosPage() {
+
+    const [articulos] = await Promise.all([
+        ArticulosService.getArticulos()
+    ])
+    
     return (
         <div className="flex flex-col">
-            <ArticulosAllPublic />
+            <ArticulosAllPublic dataArticulos={articulos} />
         </div>
     );
 }

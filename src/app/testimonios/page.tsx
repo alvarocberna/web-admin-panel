@@ -34,7 +34,7 @@ export default function TestimoniosPage() {
                 <div className="mt-4">
                     <TestimoniosForm
                         testimonios={testimonios}
-                        onSaved={(t) => setTestimonios(t)}
+                        onSaved={(t) => setTestimonios(prev => ({ ...t, testimonio: t.testimonio?.length ? t.testimonio : (prev?.testimonio ?? []) }))}
                     />
                     {testimonios && (
                         ''

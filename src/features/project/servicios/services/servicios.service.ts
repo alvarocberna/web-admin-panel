@@ -5,8 +5,8 @@ import { ServicioEntity } from '../entities/servicio.entity';
 export class ServiciosService {
 
     public static async getServicios(): Promise<ServiciosEntity | null> {
-        const id_usuario = process.env.NEXT_PUBLIC_ID_USUARIO;
-        return await apiFetch<ServiciosEntity>(`servicios/project/ver-todo?usuario_id=${id_usuario}`, 'GET');
+        const id_proyecto = process.env.NEXT_PUBLIC_PROYECTO_ID;
+        return await apiFetch<ServiciosEntity>(`servicios/project/ver-todo?proyecto_id=${id_proyecto}`, 'GET');
     }
 
     public static async getServicioBySlug(slug: string): Promise<ServicioEntity | null> {

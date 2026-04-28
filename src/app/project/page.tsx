@@ -1,5 +1,7 @@
-import { ArticulosPublic, TestimoniosPublic, EquipoPublic, ServiciosPublic } from '@/features/project';
+import { ArticulosPublic, TestimoniosPublic, EquipoPublic, ServiciosPublic, NavbarPublic } from '@/features/project';
 import { EquipoService, ServiciosService, ArticulosService, TestimoniosService } from '@/features/project';
+
+export const revalidate = 300;
 
 export default async function Project(){
 
@@ -12,6 +14,8 @@ export default async function Project(){
 
     return(
         <div className='flex flex-col'>
+            <NavbarPublic/>
+            <div className='h-20'></div>
             <ServiciosPublic dataServicios={servicios}/>
             <EquipoPublic dataEquipo={equipo}/>
             <TestimoniosPublic dataTestimonios={testimonios}/>

@@ -155,6 +155,10 @@ export class ServiciosService {
         return await apiFetchFormData<ServicioEntity>(`servicios/servicio/editar/${id_servicio}`, formData, 'PUT');
     }
 
+    public static async updateServicioOrden(id: string, orden: number): Promise<ServicioEntity> {
+        return await apiFetch<ServicioEntity>(`servicios/servicio/editar/orden/${id}`, 'PATCH', { id, orden });
+    }
+
     public static async deleteServicio(id_servicio: string): Promise<void> {
         return await apiFetch<void>(`servicios/servicio/eliminar/${id_servicio}`, 'DELETE');
     }

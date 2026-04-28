@@ -30,6 +30,10 @@
 
   /* Focus ring */
   --focus-ring: rgba(37, 99, 235, 0.40);
+
+  /* ── Gradiente principal ─────────────────────────── */
+  --gradient-primary: linear-gradient(135deg, #d2ceff 0%, #b3acff 30%, #ada5ff 100%);
+  --gradient-secondary: linear-gradient(135deg, #fedfff 0%, #f8acac 40%, #f99961 70%, #fd8609 100%);
 }
 
 @theme inline {

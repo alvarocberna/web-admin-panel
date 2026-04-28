@@ -1,0 +1,69 @@
+'use client'
+import Image from "next/image";
+import { ServicioEntity, SecServicio } from "@/features/project";
+import { ContenedorPage } from "@/shared/project";
+
+interface ServicioPublicProps {
+    dataServicio: ServicioEntity | null
+}
+
+export function ServicioPublic({dataServicio}: ServicioPublicProps) {
+
+    if (!dataServicio) {
+        return (
+            <ContenedorPage>
+                <p className="text-zinc-700">Servicio no encontrado.</p>
+            </ContenedorPage>
+        );
+    }
+
+    return (
+        <ContenedorPage>
+            <div className="text-black">
+                {/* Cabecera */}
+                {dataServicio.img_url && (
+                    <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6">
+                        <Image
+                            src={dataServicio.img_url}
+                            alt={dataServicio.img_alt ?? 'image'}
+                            fill={true}
+                            unoptimized
+                            className="object-cover"
+                        />
+                    </div>
+                )}
+                <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-3xl font-semibold">{dataServicio.nombre_servicio}</h2>
+                    {dataServicio.destacado && (
+                        <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
+                            Destacado
+                        </span>
+                    )}
+                </div>
+                {dataServicio.valor && (
+                    <p className="text-xl font-medium text-zinc-800 mb-2">{dataServicio.valor}</p>
+                )}
+                {dataServicio.nombre_promocion && (
+                    <p className="text-md text-zinc-600 mb-4">
+                        {dataServicio.nombre_promocion}
+                        {dataServicio.porcentaje_descuento ? ` — ${dataServicio.porcentaje_descuento}% off` : ''}
+                    </p>
+                )}
+                {dataServicio.descripcion && (
+                    <p className="text-zinc-700 leading-relaxed mb-10">{dataServicio.descripcion}</p>
+                )}
+
+                {/* Secciones */}
+                {dataServicio.sec_servicio?.length > 0 && (
+                    <div>
+                        {[...dataServicio.sec_servicio]
+                            .sort((a, b) => a.nro_seccion - b.nro_seccion)
+                            .map((sec) => (
+                                <SecServicio key={sec.id} data={sec} />
+                            ))}
+                    </div>
+                )}
+            </div>
+        </ContenedorPage>
+    );
+}

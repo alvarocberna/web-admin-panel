@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// verifica 1) la auth mediante los jwt y 2) extrae el rol del payload para controlar el acceso a UX
+
 /** Decodifica el payload de un JWT sin verificar firma (solo lectura de claims). */
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
   try {
@@ -114,6 +116,6 @@ export const config = {
      * - favicon.ico
      * - archivos públicos (png, jpg, jpeg, gif, svg, webp)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|mp4|webm|ogg|mov)$).*)',
   ],
 };

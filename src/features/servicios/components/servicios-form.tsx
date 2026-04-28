@@ -102,6 +102,9 @@ export function ServiciosForm({ servicios, onSaved }: Props) {
                         maxLength: {value: 500, message: 'Máximo 500 caracteres'} 
                     }}
                 />
+                {errors.descripcion && (
+                    <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>
+                )}
 
                 {/* <Input
                     label="Icono"

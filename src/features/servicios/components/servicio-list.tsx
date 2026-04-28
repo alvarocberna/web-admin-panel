@@ -1,8 +1,17 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTrash, faPlus, faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import {
+    DndContext, closestCenter, DragEndEvent,
+    PointerSensor, useSensor, useSensors,
+} from '@dnd-kit/core';
+import {
+    SortableContext, rectSortingStrategy,
+    useSortable, arrayMove,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { ServiciosService } from '../services/servicios.service';
 import { ServicioEntity } from '../entities/servicio.entity';
 import { ServicioForm } from './servicio-form';
@@ -13,12 +22,129 @@ interface Props {
     onUpdated: (servicios: ServicioEntity[]) => void;
 }
 
+interface CardProps {
+    srv: ServicioEntity;
+    onEdit: () => void;
+    onDelete: () => void;
+}
+
+function SortableCard({ srv, onEdit, onDelete }: CardProps) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: srv.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
+
+    return (
+        <div ref={setNodeRef} style={style} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
+            <div className="card px-5 py-5 h-full flex flex-col hover-btn">
+                <div className="flex items-start justify-between mb-2">
+                    <button
+                        {...attributes}
+                        {...listeners}
+                        className="mr-2 mt-0.5 text-zinc-300 hover:text-zinc-500 cursor-grab active:cursor-grabbing flex-shrink-0"
+                        title="Arrastrar para reordenar"
+                        type="button"
+                    >
+                        <FontAwesomeIcon icon={faGripVertical} style={{ width: '11px', height: '11px' }} />
+                    </button>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-zinc-900 truncate">{srv.nombre_servicio}</p>
+                        {srv.valor && (
+                            <p className="text-xs text-zinc-500 truncate">{srv.valor}</p>
+                        )}
+                        {srv.destacado && (
+                            <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700 mt-1 inline-block">
+                                Destacado
+                            </span>
+                        )}
+                    </div>
+                    <span className={`ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${srv.activo === true ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
+                        {srv.activo === true ? 'Activo' : 'Inactivo'}
+                    </span>
+                </div>
+
+                {srv.descripcion && (
+                    <p className="text-xs text-zinc-600 flex-1 line-clamp-2 mb-3">{srv.descripcion}</p>
+                )}
+
+                {/* {srv.orden && (
+                    <p className="text-xs text-zinc-400 mb-2">Orden: {srv.orden}</p>
+                )} */}
+
+                <div className="flex items-center justify-end gap-2 mt-auto pt-3 border-t border-zinc-100">
+                    <button
+                        onClick={onEdit}
+                        className="btn btn-outline h-8 text-xs px-3"
+                        title="Editar servicio"
+                    >
+                        <FontAwesomeIcon icon={faPencil} style={{ width: '11px', height: '11px' }} />
+                    </button>
+                    <button
+                        onClick={onDelete}
+                        className="btn btn-ghost-destructive h-8 text-xs px-3"
+                        title="Eliminar servicio"
+                    >
+                        <FontAwesomeIcon icon={faTrash} style={{ width: '11px', height: '11px' }} />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
+    const [items, setItems] = useState<ServicioEntity[]>(servicios);
     const [modalOpen, setModalOpen] = useState(false);
     const [editingServicio, setEditingServicio] = useState<ServicioEntity | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [servicioToDelete, setServicioToDelete] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        setItems(servicios);
+    }, [servicios]);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
+    );
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = items.findIndex(s => s.id === active.id);
+        const newIndex = items.findIndex(s => s.id === over.id);
+        const newItems = arrayMove(items, oldIndex, newIndex);
+
+        const prevOrden = newIndex > 0
+            ? parseFloat(newItems[newIndex - 1].orden ?? '0')
+            : 0;
+        const nextOrden = newIndex < newItems.length - 1
+            ? parseFloat(newItems[newIndex + 1].orden ?? '0')
+            : parseFloat(newItems[newIndex - 1].orden ?? '0') + 1000;
+
+        const newOrden = (prevOrden + nextOrden) / 2;
+
+        const optimistic = newItems.map((s, i) =>
+            i === newIndex ? { ...s, orden: newOrden.toString() } : s
+        );
+        setItems(optimistic);
+        onUpdated(optimistic);
+
+        ServiciosService.updateServicioOrden(active.id as string, newOrden)
+            .then(saved => {
+                setItems(curr => curr.map(s => s.id === saved.id ? saved : s));
+                onUpdated(optimistic.map(s => s.id === saved.id ? saved : s));
+            })
+            .catch(() => {
+                setItems(items);
+                onUpdated(items);
+                toast.error('Error al actualizar el orden');
+            });
+    };
 
     const openCreate = () => {
         setEditingServicio(null);
@@ -50,7 +176,7 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
         setIsDeleting(true);
         try {
             await ServiciosService.deleteServicio(servicioToDelete);
-            onUpdated(servicios.filter(s => s.id !== servicioToDelete));
+            onUpdated(items.filter(s => s.id !== servicioToDelete));
             toast.success('Servicio eliminado correctamente');
             closeDeleteModal();
         } catch (error: any) {
@@ -71,66 +197,31 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
                 </button>
             </div>
 
-            {servicios.length === 0 ? (
+            {items.length === 0 ? (
                 <div className="card py-14 text-center text-zinc-400 text-sm">
                     No hay servicios registrados.
                 </div>
             ) : (
-                <div className="flex flex-wrap -mx-2">
-                    {servicios.map(srv => (
-                        <div key={srv.id} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-                            <div className="card px-5 py-5 h-full flex flex-col hover-btn">
-                                <div className="flex items-start justify-between mb-2">
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-semibold text-zinc-900 truncate">{srv.nombre_servicio}</p>
-                                        {srv.valor && (
-                                            <p className="text-xs text-zinc-500 truncate">{srv.valor}</p>
-                                        )}
-                                        {srv.destacado && (
-                                            <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700 mt-1 inline-block">
-                                                Destacado
-                                            </span>
-                                        )}
-                                    </div>
-                                    <span className={`ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${srv.activo === true ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
-                                        {srv.activo === true ? 'Activo' : 'Inactivo'}
-                                    </span>
-                                </div>
-
-                                {srv.descripcion && (
-                                    <p className="text-xs text-zinc-600 flex-1 line-clamp-2 mb-3">{srv.descripcion}</p>
-                                )}
-
-                                {srv.orden && (
-                                    <p className="text-xs text-zinc-400 mb-2">Orden: {srv.orden}</p>
-                                )}
-
-                                <div className="flex items-center justify-end gap-2 mt-auto pt-3 border-t border-zinc-100">
-                                    <button
-                                        onClick={() => openEdit(srv)}
-                                        className="btn btn-outline h-8 text-xs px-3"
-                                        title="Editar servicio"
-                                    >
-                                        <FontAwesomeIcon icon={faPencil} style={{ width: '11px', height: '11px' }} />
-                                    </button>
-                                    <button
-                                        onClick={() => openDeleteModal(srv.id)}
-                                        className="btn btn-ghost-destructive h-8 text-xs px-3"
-                                        title="Eliminar servicio"
-                                    >
-                                        <FontAwesomeIcon icon={faTrash} style={{ width: '11px', height: '11px' }} />
-                                    </button>
-                                </div>
-                            </div>
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                    <SortableContext items={items.map(s => s.id)} strategy={rectSortingStrategy}>
+                        <div className="flex flex-wrap -mx-2">
+                            {items.map(srv => (
+                                <SortableCard
+                                    key={srv.id}
+                                    srv={srv}
+                                    onEdit={() => openEdit(srv)}
+                                    onDelete={() => openDeleteModal(srv.id)}
+                                />
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </SortableContext>
+                </DndContext>
             )}
 
             {modalOpen && (
                 <ServicioForm
                     editingServicio={editingServicio}
-                    servicios={servicios}
+                    servicios={items}
                     onUpdated={onUpdated}
                     onClose={closeModal}
                 />

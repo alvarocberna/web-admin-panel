@@ -8,7 +8,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 //FEATURES
-import { ArticulosService, ArticuloEntity, ArticulosEntity } from '@/features/project';
+import { ArticuloEntity, ArticulosEntity } from '@/features/project';
 //SHARED
 import { ContenedorSec, ContenedorPage } from '@/shared/project';
 //COMPONENTS
@@ -21,21 +21,6 @@ gsap.registerPlugin(useGSAP,ScrollTrigger);
 
 const MAX_ARTICULOS = 9;
 const POR_PAGINA = 3;
-
-/* ─── Hook compartido ─────────────────────────────────────────────────────── */
-function useArticulos() {
-    const [articulos, setArticulos] = useState<ArticulosEntity | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        ArticulosService.getArticulos()
-            .then(data => setArticulos(data))
-            .catch(err => console.log('error: ' + err))
-            .finally(() => setLoading(false));
-    }, []);
-
-    return { articulos, loading };
-}
 
 interface ArticulosPublicProps {
     dataArticulos: ArticulosEntity | null
@@ -178,22 +163,15 @@ export function ArticulosPublic({ dataArticulos }: ArticulosPublicProps) {
     );
 }
 
-/* ─── ArticulosTodosPublic (página /articulos — todos) ───────────────────── */
-export function ArticulosAllPublic() {
-    const { articulos, loading } = useArticulos();
 
-    const articulosFiltrados = (articulos?.articulo ?? [])
+/* ─── ArticulosTodosPublic (página /articulos — todos) ───────────────────── */
+export function ArticulosAllPublic({dataArticulos}: ArticulosPublicProps) {
+
+
+    const articulosFiltrados = (dataArticulos?.articulo ?? [])
         .filter(art => art.status === 'approved' && art.activo === true);
 
-    if (loading) {
-        return (
-            <div className="w-full h-[60vh] flex justify-center items-center bg-white">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-            </div>
-        );
-    }
-
-    if (!articulos) return null;
+    if (!dataArticulos) return null;
 
     return (
         <ContenedorPage>
@@ -205,11 +183,11 @@ export function ArticulosAllPublic() {
                         Blog
                     </span>
                     <h2 className="text-4xl font-extrabold text-texto mb-4">
-                        {articulos.titulo}
+                        {dataArticulos.titulo}
                     </h2>
-                    {articulos.descripcion && (
+                    {dataArticulos.descripcion && (
                         <p className="text-gris text-lg max-w-xl">
-                            {articulos.descripcion}
+                            {dataArticulos.descripcion}
                         </p>
                     )}
                 </div>
@@ -228,3 +206,4 @@ export function ArticulosAllPublic() {
         </ContenedorPage>
     );
 }
+

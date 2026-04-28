@@ -157,6 +157,14 @@ export class EquipoService {
         return await apiFetchFormData<EmpleadoEntity>(`equipo/empleado/editar/${id_empleado}`, formData, 'PUT');
     }
 
+    public static async updateEmpleadoOrden(id: string, orden: number): Promise<EmpleadoEntity> {
+        const data = {
+            id: id,
+            orden: orden
+        }
+        return await apiFetch<EmpleadoEntity>(`equipo/empleado/editar/orden/${id}`, 'PATCH', data);
+    }
+
     public static async deleteEmpleado(id_empleado: string): Promise<void> {
         return await apiFetch<void>(`equipo/empleado/eliminar/${id_empleado}`, 'DELETE');
     }
