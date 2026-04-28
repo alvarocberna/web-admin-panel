@@ -33,7 +33,7 @@ export default function ArticulosPage() {
     }, []);
 
     const handleArticulosSaved = (e: ArticulosEntity) => {
-        setArticulos(e);
+        setArticulos(prev => ({ ...e, articulo: e.articulo?.length ? e.articulo : (prev?.articulo ?? []) }));
     };
 
     const handleArticulosUpdated = (lista: ArticuloEntity[]) => {

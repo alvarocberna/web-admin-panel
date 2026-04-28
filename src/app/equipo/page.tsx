@@ -26,7 +26,7 @@ export default function EquipoPage() {
     }, []);
 
     const handleEquipoSaved = (e: EquipoEntity) => {
-        setEquipo(e);
+        setEquipo(prev => ({ ...e, empleado: e.empleado?.length ? e.empleado : (prev?.empleado ?? []) }));
     };
 
     const handleEmpleadosUpdated = (empleados: EmpleadoEntity[]) => {

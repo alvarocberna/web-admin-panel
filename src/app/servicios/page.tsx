@@ -25,7 +25,7 @@ export default function ServiciosPage() {
     }, []);
 
     const handleServiciosSaved = (s: ServiciosEntity) => {
-        setServicios(s);
+        setServicios(prev => ({ ...s, servicio: s.servicio?.length ? s.servicio : (prev?.servicio ?? []) }));
     };
 
     const handleServiciosUpdated = (lista: ServicioEntity[]) => {

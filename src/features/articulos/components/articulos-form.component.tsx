@@ -103,6 +103,9 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
                     register={register}
                     rules={{ required: false, maxLength: {value: 500, message: 'Máximo 500 caracteres'} }}
                 />
+                {errors.descripcion && (
+                    <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>
+                )}
 
                 <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">
                     <div>
