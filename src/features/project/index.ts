@@ -1,5 +1,6 @@
 //NAVBAR
 export * from './navbar/navbar.component';
+export * from './navbar/navbar-inner.component';
 //ARTICULOS
 export * from './articulos/components/sec-articulo.component';
 export * from './articulos/components/articulos.component';

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { EquipoEntity, ServiciosEntity, ArticulosEntity, TestimoniosEntity } from '@/features'
+import { EquipoEntity, ServiciosEntity, ArticulosEntity, TestimoniosEntity } from '@/features/project'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIGURACIÓN — modifica estas constantes para cambiar el comportamiento

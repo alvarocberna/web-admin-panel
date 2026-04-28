@@ -1,4 +1,4 @@
-import { EquipoService, ServiciosService, ArticulosService, TestimoniosService, NavbarInner } from '@/features';
+import { EquipoService, ServiciosService, ArticulosService, TestimoniosService, NavbarInner } from '@/features/project';
 
 export async function NavbarPublic(){
 
