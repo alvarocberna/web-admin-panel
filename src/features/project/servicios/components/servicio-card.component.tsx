@@ -4,13 +4,12 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 //REACT
 import { useState } from "react"
-import { createPortal } from "react-dom"
 //FONTAWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import * as solidIcons from "@fortawesome/free-solid-svg-icons"
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core"
 //FEATURES
-import { ServicioEntity } from "@/features/project"
+import { ServicioEntity, ServicioModal } from "@/features/project"
 
 interface IconColor {
     bg: string;
@@ -18,7 +17,7 @@ interface IconColor {
 }
 
 // ALTERNAR COMPORTAMIENTO: 'navegar' | 'modal'
-const COMPORTAMIENTO: 'navegar' | 'modal' = 'navegar';
+const COMPORTAMIENTO: 'navegar' | 'modal' = 'modal';
 
 // ALTERNAR ESTILO: 1 (imagen con overlay) | 2 (card con imagen superior y texto) | 3 (card con icono superior izquierdo)
 const ESTILO: 1 | 2 | 3 = 3;
@@ -159,105 +158,11 @@ export function ServicioCard({ iconColor, ...srv }: ServicioEntity & { iconColor
                 </div>
             )}
 
-            {/* ── Modal completo ────────────────────────────────────────────────── */}
-            {fullModalOpen && createPortal(
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-                    onClick={() => setFullModalOpen(false)}
-                >
-                    <div
-                        className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-4 shadow-xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {/* Cabecera: info izquierda 60% + imagen derecha 40% */}
-                        <div className="flex flex-row relative" style={{ minHeight: '220px' }}>
-                            {/* Columna info */}
-                            <div className="flex flex-col justify-center px-8 py-7 gap-1" style={{ width: srv.img_url ? '60%' : '100%' }}>
-                                <div className="flex items-center gap-2 flex-wrap">
-                                    <h2 className="text-xl font-bold text-zinc-900 leading-tight">
-                                        {srv.nombre_servicio}
-                                    </h2>
-                                    {srv.destacado && (
-                                        <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
-                                            Destacado
-                                        </span>
-                                    )}
-                                </div>
-                                {srv.valor && (
-                                    <p className="text-md font-semibold text-zinc-900 mt-1">{srv.valor}</p>
-                                )}
-                                {srv.nombre_promocion && (
-                                    <p className="text-md text-zinc-900">
-                                        {srv.nombre_promocion}
-                                        {srv.porcentaje_descuento ? ` — ${srv.porcentaje_descuento}% off` : ''}
-                                    </p>
-                                )}
-                                {srv.descripcion && (
-                                    <p className="text-sm text-zinc-700 mt-2">{srv.descripcion}</p>
-                                )}
-                            </div>
-
-                            {/* Columna imagen */}
-                            {srv.img_url && (
-                                <div className="relative flex-shrink-0" style={{ width: '40%' }}>
-                                    <Image
-                                        src={srv.img_url}
-                                        alt={srv.img_alt ?? 'image'}
-                                        fill
-                                        style={{ objectFit: 'cover', objectPosition: 'center', borderRadius: '0 16px 0 0' }}
-                                    />
-                                </div>
-                            )}
-
-                            {/* Botón cerrar */}
-                            <button
-                                onClick={() => setFullModalOpen(false)}
-                                className="absolute top-3 right-3 bg-white/80 hover:bg-white rounded-full w-8 h-8 flex items-center justify-center text-zinc-700 font-bold text-lg shadow cursor-pointer z-10"
-                            >
-                                ×
-                            </button>
-                        </div>
-
-                        {/* Secciones sec_servicio */}
-                        {srv.sec_servicio?.length > 0 && (
-                            <div className="px-8 pb-8 flex flex-col gap-6">
-                                <hr className="border-zinc-200" />
-                                {[...srv.sec_servicio]
-                                    .sort((a, b) => a.nro_seccion - b.nro_seccion)
-                                    .map((sec) => {
-                                        const imagePosition = sec.image_position;
-                                        const flex = imagePosition === 'left' ? 'flex flex-row-reverse' : 'flex';
-                                        const textW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[60%]' : 'w-full';
-                                        const imgW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[40%]' : 'w-full';
-                                        const textHidden = imagePosition === 'all' ? 'hidden' : '';
-                                        const imgHidden = (imagePosition === 'none' || !sec.image_url) ? 'hidden' : '';
-                                        return (
-                                            <div key={sec.id} className={`${flex} gap-4`}>
-                                                <div className={`${textW} ${textHidden} flex flex-col gap-1`}>
-                                                    {sec.titulo_sec && (
-                                                        <h3 className="text-md font-semibold text-zinc-900">{sec.titulo_sec}</h3>
-                                                    )}
-                                                    {sec.contenido_sec && (
-                                                        <p className="text-sm text-zinc-700">{sec.contenido_sec}</p>
-                                                    )}
-                                                </div>
-                                                <div className={`${imgW} min-h-40 ${imgHidden} relative`}>
-                                                    <Image
-                                                        src={sec.image_url || ''}
-                                                        alt={sec.image_alt || ''}
-                                                        fill
-                                                        style={{ objectFit: 'cover', borderRadius: '8px' }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                            </div>
-                        )}
-                    </div>
-                </div>,
-                document.body
-            )}
+            <ServicioModal
+                servicio={srv}
+                isOpen={fullModalOpen}
+                onClose={() => setFullModalOpen(false)}
+            />
         </>
     );
 }
