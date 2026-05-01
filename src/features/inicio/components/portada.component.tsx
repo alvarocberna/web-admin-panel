@@ -3,20 +3,8 @@ import { useState } from 'react'
 import Image from 'next/image'
 import {InicioSesionForm} from '@/features';
 
-const DEMO_CREDENTIALS = { email: 'demo@gmail.com', password: 'Demo12345678' };
 
 export function PortadaInicio() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [section, setSection] = useState<'A' | 'B'>('A');
-
-  function openModal() {
-    setSection('A');
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden flex items-center">
@@ -62,84 +50,9 @@ export function PortadaInicio() {
             de forma simple
           </h1>
 
-          {/* Botón Demo */}
-          {/* <div className="flex flex-col sm:flex-row gap-3 pt-1">
-            <button
-              className="
-                inline-flex items-center justify-center gap-2
-                px-6 py-3 rounded-xl
-                text-zinc-800 font-semibold text-sm
-                shadow-lg shadow-blue-900/40
-                transition-all duration-200
-              "
-              style={{ background: 'var(--gradient-primary)' }}
-              onClick={openModal}
-            >
-              Ver demo
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div> */}
         </div>
       </div>
 
-      {/* Modal */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-          onClick={closeModal}
-        >
-          <div
-            className="relative w-full max-w-md rounded-2xl bg-zinc-100 border border-white/10 shadow-2xl p-8"
-            onClick={e => e.stopPropagation()}
-          >
-            {/* Botón cerrar */}
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 text-zinc-900 hover:text-zinc-700 cursor-pointer transition-colors"
-              aria-label="Cerrar"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {section === 'A' && (
-              <div className="flex flex-col gap-6">
-                <div>
-                  <h2 className="text-lg font-bold text-zinc-900 mb-2">Prueba el demo</h2>
-                  <p className="text-zinc-700 text-sm leading-relaxed">
-                    Ingresa con el usuario Demo a un proyecto de prueba. Este usuario posee el rol 'user' por lo que solo tiene
-                    acceso al panel principal, sección articulos y perfil. Cualquier instancia de la entidad articulo creada 
-                    requiere aprovación para ser publicada, por lo que no será visible.
-                  </p>
-                </div>
-                <button
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-zinc-800 font-semibold text-sm shadow-lg transition-all duration-200"
-                  style={{ background: 'var(--gradient-primary)' }}
-                  onClick={() => setSection('B')}
-                >
-                  Continuar
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            )}
-
-            {section === 'B' && (
-              <div className="flex flex-col">
-                <div className='mb-3'>
-                  <h2 className="text-lg font-bold text-zinc-900 mb-1">Iniciar sesión</h2>
-                  <p className="text-zinc-700 text-xs">Credenciales de demo precargadas</p>
-                </div>
-                <InicioSesionForm defaultValues={DEMO_CREDENTIALS} />
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </section>
   )
 }

@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import * as solidIcons from "@fortawesome/free-solid-svg-icons"
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core"
 //FEATURES
-import { ServicioEntity } from "@/features"
+import { ServicioEntity } from "@/features/project"
 //COMPONENTS
 import { ServicioModal } from "./servicio-modal.component"
 
