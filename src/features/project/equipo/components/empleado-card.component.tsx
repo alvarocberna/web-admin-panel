@@ -4,15 +4,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 //REACT
 import { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 //FEATURES
-import { EmpleadoEntity } from '@/features/project';
+import { EmpleadoEntity, EmpleadoModal } from '@/features/project';
 
 // ALTERNAR COMPORTAMIENTO: 'navegar' | 'modal'
 const COMPORTAMIENTO: 'navegar' | 'modal' = 'modal';
 
 // ALTERNAR ESTILO: 'estilo1' | 'estilo2'
-const ESTILO: 'estilo1' | 'estilo2' = 'estilo2';
+const ESTILO: 'estilo1' | 'estilo2' = 'estilo1';
 
 export function EmpleadoCard(props: EmpleadoEntity){
     const router = useRouter();
@@ -37,14 +36,7 @@ export function EmpleadoCard(props: EmpleadoEntity){
 
     const onCardClick = COMPORTAMIENTO === 'modal'
         ? () => setFullModalOpen(true)
-        : () => router.push(`/project/equipo/${props.slug}`);
-
-    const nombreCompleto = [
-        props.nombre_primero,
-        props.nombre_segundo,
-        props.apellido_paterno,
-        props.apellido_materno,
-    ].filter(Boolean).join(' ');
+        : () => router.push(`/equipo/${props.slug}`);
 
     return (
         <>
@@ -143,87 +135,11 @@ export function EmpleadoCard(props: EmpleadoEntity){
                 </div>
             )}
 
-            {/* ── Modal completo ────────────────────────────────────────────────── */}
-            {fullModalOpen && createPortal(
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-                    onClick={() => setFullModalOpen(false)}
-                >
-                    <div
-                        className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-4 shadow-xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {/* Cabecera: info izquierda 60% + imagen derecha 40% */}
-                        <div className="flex flex-row relative" style={{ minHeight: '220px' }}>
-                            {/* Columna info */}
-                            <div className="flex flex-col justify-center px-8 py-7 gap-1" style={{ width: '60%' }}>
-                                <h2 className="text-xl font-bold text-zinc-900 leading-tight">
-                                    {nombreCompleto}
-                                </h2>
-                                {props.profesion && (
-                                    <p className="text-sm font-semibold text-zinc-900 mt-1">{props.profesion}</p>
-                                )}
-                                {props.especialidad && (
-                                    <p className="text-sm font-semibold text-zinc-900">{props.especialidad}</p>
-                                )}
-                                {props.descripcion && (
-                                    <p className="text-sm text-zinc-700 mt-2">{props.descripcion}</p>
-                                )}
-                            </div>
-
-                            {/* Columna imagen */}
-                            {props.img_url && (
-                                <div className="relative flex-shrink-0" style={{ width: '40%' }}>
-                                    <Image
-                                        src={props.img_url}
-                                        alt={props.img_alt ?? 'image'}
-                                        fill
-                                        style={{ objectFit: 'cover', objectPosition: 'top', borderRadius: '0 16px 0 0' }}
-                                    />
-                                </div>
-                            )}
-
-                            {/* Botón cerrar */}
-                            <button
-                                onClick={() => setFullModalOpen(false)}
-                                className="absolute top-3 right-3 bg-white/80 hover:bg-white rounded-full w-8 h-8 flex items-center justify-center text-zinc-700 font-bold text-lg shadow cursor-pointer z-10"
-                            >
-                                ×
-                            </button>
-                        </div>
-
-                        {/* Secciones sec_empleado */}
-                        {props.sec_empleado?.length > 0 && (
-                            <div className="px-8 pb-8 flex flex-col gap-6">
-                                <hr className="border-zinc-200" />
-                                {[...props.sec_empleado]
-                                    .sort((a, b) => a.nro_seccion - b.nro_seccion)
-                                    .map((sec) => (
-                                        <div key={sec.id} className="flex flex-col gap-2">
-                                            {sec.titulo_sec && (
-                                                <h3 className="text-md font-semibold text-zinc-900">{sec.titulo_sec}</h3>
-                                            )}
-                                            {sec.image_url && (
-                                                <div className="relative w-full h-44">
-                                                    <Image
-                                                        src={sec.image_url}
-                                                        alt={sec.image_alt ?? ''}
-                                                        fill
-                                                        style={{ objectFit: 'cover', borderRadius: '8px' }}
-                                                    />
-                                                </div>
-                                            )}
-                                            {sec.contenido_sec && (
-                                                <p className="text-sm text-zinc-700">{sec.contenido_sec}</p>
-                                            )}
-                                        </div>
-                                    ))}
-                            </div>
-                        )}
-                    </div>
-                </div>,
-                document.body
-            )}
+            <EmpleadoModal
+                empleado={props}
+                isOpen={fullModalOpen}
+                onClose={() => setFullModalOpen(false)}
+            />
         </>
     );
 }

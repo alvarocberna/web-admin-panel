@@ -21,6 +21,7 @@ export * from './equipo/entities/sec-empleado.entity';
 export * from './equipo/services/equipo.service';
 export * from './equipo/components/equipo.component';
 export * from './equipo/components/empleado-card.component';
+export * from './equipo/components/empleado-modal.component';
 export * from './equipo/components/sec-empleado.component';
 //TESTIMONIOS
 export * from './testimonios/components/testimonios.component';
@@ -40,5 +41,6 @@ export * from './servicios/entities/servicios.entity';
 export * from './servicios/services/servicios.service';
 export * from './servicios/components/servicios.component';
 export * from './servicios/components/servicio-card.component';
+export * from './servicios/components/servicio-modal.component';
 export * from './servicios/components/sec-servicio.component';
 export * from './servicios/components/servicio.component';

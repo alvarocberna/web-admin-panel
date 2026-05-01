@@ -49,7 +49,7 @@ export default function ActividadPage() {
 									</span>{' '}
 									{actividad.accion} por{' '}
 									<span className="font-medium text-zinc-800">
-										{actividad.usuario.nombre} {actividad.usuario.apellido}
+										{actividad.responsable}  
 									</span>
 								</p>
 							</div>
