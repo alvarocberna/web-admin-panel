@@ -9,7 +9,7 @@ export default async function ProjectEquipoPage() {
 
     return (
         <div className="flex flex-col">
-            <EquipoPublic dataEquipo={equipo}/>
+                <EquipoPublic equipo={equipo} comportamiento='navegar'/>
         </div>
     );
 }

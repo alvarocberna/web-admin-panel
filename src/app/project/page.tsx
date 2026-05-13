@@ -16,8 +16,8 @@ export default async function Project(){
         <div className='flex flex-col'>
             <NavbarPublic/>
             <div className='h-20'></div>
-            <ServiciosPublic dataServicios={servicios}/>
-            <EquipoPublic dataEquipo={equipo}/>
+            <ServiciosPublic servicios={servicios}/>
+            <EquipoPublic equipo={equipo}/>
             <TestimoniosPublic dataTestimonios={testimonios}/>
             <ArticulosPublic dataArticulos={articulos}/>
         </div>
