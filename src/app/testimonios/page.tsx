@@ -1,47 +1,30 @@
-'use client'
-//REACT
-import { useState, useEffect } from 'react';
+import { Suspense } from 'react'
 //SHARED
-import { ContenedorAdmin, TitleSec } from '@/shared';
-//FEATURES
-import { TestimoniosService, TestimoniosEntity, TestimoniosForm, TestimonioList } from '@/features';
+import { ContenedorAdmin, TitleSec } from '@/shared'
+//FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
+import { TestimoniosService } from '@/features/testimonios/services/testimonios.server.service'
+import { TestimoniosContent } from '@/features/testimonios/components/testimonios-content.component'
 
 export default function TestimoniosPage() {
-    const [testimonios, setTestimonios] = useState<TestimoniosEntity | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchTestimonios = async () => {
-            try {
-                const data = await TestimoniosService.getTestimonios();
-                setTestimonios(data);
-            } catch (error) {
-                console.error('Error obteniendo testimonios:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTestimonios();
-    }, []);
+    const testimoniosPromise = TestimoniosService.getTestimonios()
 
     return (
         <ContenedorAdmin>
             <TitleSec title="Testimonios" />
-
-            {loading ? (
-                <div className="py-16 text-center text-zinc-400 text-sm">Cargando...</div>
-            ) : (
-                <div className="mt-4">
-                    <TestimoniosForm
-                        testimonios={testimonios}
-                        onSaved={(t) => setTestimonios(prev => ({ ...t, testimonio: t.testimonio?.length ? t.testimonio : (prev?.testimonio ?? []) }))}
-                    />
-                    {testimonios && (
-                        ''
-                    )}
-                    <TestimonioList/>
-                </div>
-            )}
+            <div className="mt-4">
+                <Suspense fallback={<TestimoniosSkeleton />}>
+                    <TestimoniosContent promise={testimoniosPromise} />
+                </Suspense>
+            </div>
         </ContenedorAdmin>
-    );
+    )
+}
+
+function TestimoniosSkeleton() {
+    return (
+        <div className="space-y-8">
+            <div className="card px-6 py-6 max-w-lg animate-pulse h-64" />
+            <div className="card py-14 animate-pulse h-40 mt-8" />
+        </div>
+    )
 }

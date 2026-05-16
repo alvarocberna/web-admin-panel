@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 //FEATURES
 import { ProyectoEntity, EquipoEntity, ServiciosEntity, ArticulosEntity, TestimoniosEntity } from '@/features';
-import { EquipoService, ServiciosService, ArticulosService, TestimoniosService, UsuarioList } from '@/features';
+import { EquipoService, ServiciosService, ArticulosService, TestimoniosService, UsuarioList, UsuarioService } from '@/features';
+import { UsuarioEntity } from '../../usuarios/entities/usuario.entity';
 
 
 interface SectionState {
@@ -44,15 +45,17 @@ function Toggle({ checked, onChange }: ToggleProps) {
 export function Proyecto({ proyecto, onBack }: Props) {
     const [loading, setLoading] = useState(true);
     const [sections, setSections] = useState<SectionState>({ equipo: null, servicios: null, articulos: null, testimonios: null });
+    const [usuarios, setUsuarios] = useState<UsuarioEntity[]>([]);
 
     useEffect(() => {
         const fetchSections = async () => {
             setLoading(true);
-            const [equipoRes, serviciosRes, articulosRes, testimoniosRes] = await Promise.allSettled([
+            const [equipoRes, serviciosRes, articulosRes, testimoniosRes, usuariosRes] = await Promise.allSettled([
                 EquipoService.getEquipo(proyecto.id),
                 ServiciosService.getServicios(proyecto.id),
                 ArticulosService.getArticulos(proyecto.id),
                 TestimoniosService.getTestimonios(proyecto.id),
+                UsuarioService.getUsuariosAdmin(proyecto.id),
             ]);
             setSections({
                 equipo: equipoRes.status === 'fulfilled' ? equipoRes.value : null,
@@ -60,6 +63,7 @@ export function Proyecto({ proyecto, onBack }: Props) {
                 articulos: articulosRes.status === 'fulfilled' ? articulosRes.value : null,
                 testimonios: testimoniosRes.status === 'fulfilled' ? testimoniosRes.value : null,
             });
+            setUsuarios(usuariosRes.status === 'fulfilled' ? usuariosRes.value : []);
             setLoading(false);
         };
         fetchSections();
@@ -204,7 +208,7 @@ export function Proyecto({ proyecto, onBack }: Props) {
             {/* Usuarios */}
             <div>
                 <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mb-3">Usuarios</p>
-                <UsuarioList proyectoId={proyecto.id} />
+                <UsuarioList usuarios={usuarios} proyectoId={proyecto.id} />
             </div>
         </div>
     );

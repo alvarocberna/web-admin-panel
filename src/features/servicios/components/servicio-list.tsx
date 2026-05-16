@@ -1,8 +1,13 @@
 'use client'
+//REACT
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+//NEXT
+import { useRouter } from 'next/navigation';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash, faPlus, faGripVertical } from '@fortawesome/free-solid-svg-icons';
+//DROP AND DRAG
 import {
     DndContext, closestCenter, DragEndEvent,
     PointerSensor, useSensor, useSensors,
@@ -12,14 +17,12 @@ import {
     useSortable, arrayMove,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ServiciosService } from '../services/servicios.service';
-import { ServicioEntity } from '../entities/servicio.entity';
-import { ServicioForm } from './servicio-form';
+//FEATURES
+import {ServiciosService, ServicioEntity, ServicioForm } from '@/features'
+
 
 interface Props {
-    serviciosId: string;
     servicios: ServicioEntity[];
-    onUpdated: (servicios: ServicioEntity[]) => void;
 }
 
 interface CardProps {
@@ -28,6 +31,8 @@ interface CardProps {
     onDelete: () => void;
 }
 
+
+//card servicio
 function SortableCard({ srv, onEdit, onDelete }: CardProps) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: srv.id });
 
@@ -41,6 +46,7 @@ function SortableCard({ srv, onEdit, onDelete }: CardProps) {
         <div ref={setNodeRef} style={style} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
             <div className="card px-5 py-5 h-full flex flex-col hover-btn">
                 <div className="flex items-start justify-between mb-2">
+                    {/* btn arrastrar */}
                     <button
                         {...attributes}
                         {...listeners}
@@ -51,30 +57,32 @@ function SortableCard({ srv, onEdit, onDelete }: CardProps) {
                         <FontAwesomeIcon icon={faGripVertical} style={{ width: '11px', height: '11px' }} />
                     </button>
                     <div className="flex-1 min-w-0">
+                        {/* nombre servicio */}
                         <p className="text-sm font-semibold text-zinc-900 truncate">{srv.nombre_servicio}</p>
+                        {/* valor servicio */}
                         {srv.valor && (
                             <p className="text-xs text-zinc-500 truncate">{srv.valor}</p>
                         )}
+                        {/* destacado */}
                         {srv.destacado && (
                             <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700 mt-1 inline-block">
                                 Destacado
                             </span>
                         )}
                     </div>
+                    {/* activo */}
                     <span className={`ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${srv.activo === true ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-500'}`}>
                         {srv.activo === true ? 'Activo' : 'Inactivo'}
                     </span>
                 </div>
 
+                {/* descripcion */}
                 {srv.descripcion && (
                     <p className="text-xs text-zinc-600 flex-1 line-clamp-2 mb-3">{srv.descripcion}</p>
                 )}
 
-                {/* {srv.orden && (
-                    <p className="text-xs text-zinc-400 mb-2">Orden: {srv.orden}</p>
-                )} */}
-
                 <div className="flex items-center justify-end gap-2 mt-auto pt-3 border-t border-zinc-100">
+                    {/* btn editar */}
                     <button
                         onClick={onEdit}
                         className="btn btn-outline h-8 text-xs px-3"
@@ -82,6 +90,7 @@ function SortableCard({ srv, onEdit, onDelete }: CardProps) {
                     >
                         <FontAwesomeIcon icon={faPencil} style={{ width: '11px', height: '11px' }} />
                     </button>
+                    {/* btn eliminar */}
                     <button
                         onClick={onDelete}
                         className="btn btn-ghost-destructive h-8 text-xs px-3"
@@ -95,7 +104,9 @@ function SortableCard({ srv, onEdit, onDelete }: CardProps) {
     );
 }
 
-export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
+
+export function ServicioList({ servicios }: Props) {
+    const router = useRouter(); //router para hacer refresh al actualizar la list
     const [items, setItems] = useState<ServicioEntity[]>(servicios);
     const [modalOpen, setModalOpen] = useState(false);
     const [editingServicio, setEditingServicio] = useState<ServicioEntity | null>(null);
@@ -132,16 +143,14 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
             i === newIndex ? { ...s, orden: newOrden.toString() } : s
         );
         setItems(optimistic);
-        onUpdated(optimistic);
 
         ServiciosService.updateServicioOrden(active.id as string, newOrden)
             .then(saved => {
                 setItems(curr => curr.map(s => s.id === saved.id ? saved : s));
-                onUpdated(optimistic.map(s => s.id === saved.id ? saved : s));
+                router.refresh();
             })
             .catch(() => {
                 setItems(items);
-                onUpdated(items);
                 toast.error('Error al actualizar el orden');
             });
     };
@@ -171,14 +180,25 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
         setDeleteModalOpen(false);
     };
 
+    const handleSaved = (saved: ServicioEntity, wasEditing: boolean) => {
+        if (wasEditing) {
+            setItems(curr => curr.map(s => s.id === saved.id ? saved : s));
+        } else {
+            setItems(curr => [...curr, saved]);
+        }
+        router.refresh();
+        closeModal();
+    };
+
     const confirmDelete = async () => {
         if (!servicioToDelete) return;
         setIsDeleting(true);
         try {
             await ServiciosService.deleteServicio(servicioToDelete);
-            onUpdated(items.filter(s => s.id !== servicioToDelete));
+            setItems(curr => curr.filter(s => s.id !== servicioToDelete));
             toast.success('Servicio eliminado correctamente');
             closeDeleteModal();
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el servicio');
             closeDeleteModal();
@@ -221,8 +241,7 @@ export function ServicioList({ serviciosId, servicios, onUpdated }: Props) {
             {modalOpen && (
                 <ServicioForm
                     editingServicio={editingServicio}
-                    servicios={items}
-                    onUpdated={onUpdated}
+                    onSaved={handleSaved}
                     onClose={closeModal}
                 />
             )}

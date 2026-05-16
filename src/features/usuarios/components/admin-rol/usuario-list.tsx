@@ -1,4 +1,6 @@
 'use client'
+//NEXT
+import { useRouter } from 'next/navigation';
 //REACT
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -8,40 +10,22 @@ import { faPencil, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 //FEATURES
 import { UsuarioService, UsuarioEntity, UsuarioAdminForm } from '@/features';
 
-interface ListaUsuariosProps {
-    proyectoId?: string;
+interface Props {
+    usuarios: UsuarioEntity[];
+    proyectoId: string;
 }
 
-export function UsuarioList({ proyectoId: proyectoIdProp }: ListaUsuariosProps = {}) {
-    const [proyectoId, setProyectoId] = useState<string | null>(proyectoIdProp ?? null);
-    const [usuarios, setUsuarios] = useState<UsuarioEntity[]>([]);
-    const [loading, setLoading] = useState(true);
-
+export function UsuarioList({ usuarios, proyectoId }: Props) {
+    const router = useRouter();
+    const [items, setItems] = useState<UsuarioEntity[]>(usuarios);
     const [modalOpen, setModalOpen] = useState(false);
     const [editingUsuario, setEditingUsuario] = useState<UsuarioEntity | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [usuarioToDelete, setUsuarioToDelete] = useState<UsuarioEntity | null>(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let pid = proyectoIdProp ?? null;
-                if (!pid) {
-                    const yo = await UsuarioService.getUsuario();
-                    pid = yo.proyecto_id;
-                }
-                setProyectoId(pid);
-                const lista = await UsuarioService.getUsuariosAdmin(pid);
-                setUsuarios(lista);
-            } catch (error) {
-                console.error('Error cargando usuarios:', error);
-                toast.error('Error al cargar los usuarios');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [proyectoIdProp]);
+        setItems(usuarios);
+    }, [usuarios]);
 
     const openCreate = () => {
         setEditingUsuario(null);
@@ -69,33 +53,30 @@ export function UsuarioList({ proyectoId: proyectoIdProp }: ListaUsuariosProps =
     };
 
     const confirmDelete = async () => {
-        if (!usuarioToDelete || !proyectoId) return;
+        if (!usuarioToDelete) return;
         try {
             await UsuarioService.deleteUsuarioAdmin(usuarioToDelete.id, proyectoId);
-            setUsuarios(prev => prev.filter(u => u.id !== usuarioToDelete.id));
+            setItems(curr => curr.filter(u => u.id !== usuarioToDelete.id));
             toast.success('Usuario eliminado correctamente');
             closeDeleteModal();
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el usuario');
             closeDeleteModal();
         }
     };
 
-    if (loading) {
-        return <div className="py-16 text-center text-zinc-400 text-sm">Cargando...</div>;
-    }
-
     return (
         <div>
             <div className="flex items-center justify-between mb-4">
-                <p className="text-sm text-zinc-500">{usuarios.length} {usuarios.length === 1 ? 'usuario' : 'usuarios'}</p>
+                <p className="text-sm text-zinc-500">{items.length} {items.length === 1 ? 'usuario' : 'usuarios'}</p>
                 <button type="button" onClick={openCreate} className="btn btn-primary h-8 text-xs px-3 flex items-center gap-1.5">
                     <FontAwesomeIcon icon={faPlus} style={{ width: '11px', height: '11px' }} />
                     Nuevo usuario
                 </button>
             </div>
 
-            {usuarios.length === 0 ? (
+            {items.length === 0 ? (
                 <div className="card py-14 text-center text-zinc-400 text-sm">
                     No hay usuarios registrados en este proyecto.
                 </div>
@@ -111,7 +92,7 @@ export function UsuarioList({ proyectoId: proyectoIdProp }: ListaUsuariosProps =
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-zinc-50">
-                            {usuarios.map(u => (
+                            {items.map(u => (
                                 <tr key={u.id} className="hover:bg-zinc-50 transition-colors">
                                     <td className="px-5 py-3.5 font-medium text-zinc-900">
                                         {u.nombre} {u.apellido}
@@ -147,18 +128,18 @@ export function UsuarioList({ proyectoId: proyectoIdProp }: ListaUsuariosProps =
                 </div>
             )}
 
-            {proyectoId && (
-                <UsuarioAdminForm
-                    open={modalOpen}
-                    editingUsuario={editingUsuario}
-                    proyectoId={proyectoId}
-                    onClose={closeModal}
-                    onCreated={setUsuarios}
-                    onUpdated={actualizado => setUsuarios(prev => prev.map(u => u.id === actualizado.id ? actualizado : u))}
-                />
-            )}
+            <UsuarioAdminForm
+                open={modalOpen}
+                editingUsuario={editingUsuario}
+                proyectoId={proyectoId}
+                onClose={closeModal}
+                onCreated={(lista) => { setItems(lista); router.refresh(); }}
+                onUpdated={(actualizado) => {
+                    setItems(curr => curr.map(u => u.id === actualizado.id ? actualizado : u));
+                    router.refresh();
+                }}
+            />
 
-            {/* Modal confirmación eliminar */}
             {deleteModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeDeleteModal} />

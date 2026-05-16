@@ -1,8 +1,13 @@
 'use client'
+//NEXT
+import { useRouter } from 'next/navigation';
+//REACT
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//SHARED
 import { Input, TextAreaArt, stripTags } from '@/shared';
+//FEATURES
 import { ArticulosService, ArticulosEntity } from '@/features';
 
 interface ArticulosForm {
@@ -14,12 +19,14 @@ interface ArticulosForm {
 
 interface Props {
     articulos: ArticulosEntity | null;
-    onSaved: (e: ArticulosEntity) => void;
     rol?: string;
 }
 
-export function ArticulosForm({ articulos, onSaved, rol }: Props) {
+export function ArticulosForm({ articulos, rol }: Props) {
+    const router = useRouter();
+
     if (rol !== 'ADMIN' && rol !== 'SUPERADMIN') return null;
+
     const {
         register,
         handleSubmit,
@@ -47,9 +54,8 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
 
     const onSubmit = async (data: ArticulosForm) => {
         try {
-            let resultado: ArticulosEntity;
             if (articulos) {
-                resultado = await ArticulosService.updateArticulos({
+                await ArticulosService.updateArticulos({
                     titulo: stripTags(data.titulo),
                     descripcion: stripTags(data.descripcion),
                     activo: data.activo,
@@ -57,9 +63,9 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
                     notificacion: false,
                     habilitado: true,
                 });
-                toast.success('Equipo actualizado correctamente');
+                toast.success('Sección de artículos actualizada correctamente');
             } else {
-                resultado = await ArticulosService.createArticulos({
+                await ArticulosService.createArticulos({
                     titulo: stripTags(data.titulo),
                     descripcion: stripTags(data.descripcion),
                     activo: data.activo,
@@ -67,23 +73,23 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
                     notificacion: false,
                     habilitado: true,
                 });
-                toast.success('Equipo creado correctamente');
+                toast.success('Sección de artículos creada correctamente');
             }
-            onSaved(resultado);
+            router.refresh();
         } catch (error: any) {
-            toast.error(error?.message || 'Error al guardar el articulos');
+            toast.error(error?.message || 'Error al guardar la sección de artículos');
         }
     };
 
     return (
         <div className="card px-6 py-6 max-w-lg">
             <h2 className=" text-md font-semibold text-zinc-900 mb-1">
-                {articulos ? 'Editar articulos' : 'Crear articulos'}
+                {articulos ? 'Editar sección de artículos' : 'Crear sección de artículos'}
             </h2>
             <p className="text-sm text-zinc-500 mb-5">
                 {articulos
-                    ? 'Actualiza el título y descripción del articulos.'
-                    : 'Configura la sección de articulos de tu proyecto.'}
+                    ? 'Actualiza el título y descripción de la sección.'
+                    : 'Configura la sección de artículos de tu proyecto.'}
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -126,12 +132,8 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
 
                 <div className="flex items-center justify-between py-3 border-t border-zinc-100">
                     <div>
-                        <p className="text-sm font-medium text-zinc-800">
-                            Aprobar
-                        </p>
-                        <p className="text-xs text-zinc-400">
-                            Articulos escritos por otros usuarios requieren aprobación.
-                        </p>
+                        <p className="text-sm font-medium text-zinc-800">Aprobar</p>
+                        <p className="text-xs text-zinc-400">Artículos escritos por otros usuarios requieren aprobación.</p>
                     </div>
                     <button
                         type="button"
@@ -147,7 +149,7 @@ export function ArticulosForm({ articulos, onSaved, rol }: Props) {
 
                 <div className="mt-5 flex justify-end">
                     <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                        {isSubmitting ? 'Guardando...' : articulos ? 'Guardar cambios' : 'Crear articulos'}
+                        {isSubmitting ? 'Guardando...' : articulos ? 'Guardar cambios' : 'Crear sección'}
                     </button>
                 </div>
             </form>

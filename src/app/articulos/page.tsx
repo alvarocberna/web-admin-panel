@@ -1,65 +1,32 @@
-'use client'
-//REACT
-import { useState, useEffect } from 'react';
-//FEATURES
-import { ArticulosEntity, ArticuloEntity, UsuarioEntity } from '@/features';
-import { ArticulosService, ArticulosForm, ArticuloList } from '@/features';
-import { UsuarioService } from '@/features';
+import { Suspense } from 'react'
 //SHARED
-import { ContenedorAdmin, TitleSec } from '@/shared';
-
+import { ContenedorAdmin, TitleSec } from '@/shared'
+//FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
+import { ArticulosService } from '@/features/articulos/services/articulos.server.service'
+import { UsuarioService } from '@/features/usuarios/services/usuario.server.service'
+import { ArticulosContent } from '@/features/articulos/components/articulos-content.component'
 
 export default function ArticulosPage() {
-    const [articulos, setArticulos] = useState<ArticulosEntity | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [usuario, setUsuario] = useState<UsuarioEntity | null>(null);
-
-    useEffect(() => {
-        const fetchArticulos = async () => {
-            try {
-                const [data, usuarioData] = await Promise.all([
-                    ArticulosService.getArticulos(),
-                    UsuarioService.getUsuario().catch(() => null),
-                ]);
-                setArticulos(data);
-                setUsuario(usuarioData);
-            } catch (error) {
-                console.error('Error obteniendo artículos:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchArticulos();
-    }, []);
-
-    const handleArticulosSaved = (e: ArticulosEntity) => {
-        setArticulos(prev => ({ ...e, articulo: e.articulo?.length ? e.articulo : (prev?.articulo ?? []) }));
-    };
-
-    const handleArticulosUpdated = (lista: ArticuloEntity[]) => {
-        if (!articulos) return;
-        setArticulos({ ...articulos, articulo: lista });
-    };
+    const articulosPromise = ArticulosService.getArticulos()
+    const usuarioPromise = UsuarioService.getUsuario()
 
     return (
         <ContenedorAdmin>
             <TitleSec title="Artículos" />
-
-            {loading ? (
-                <div className="py-16 text-center text-zinc-400 text-sm">Cargando...</div>
-            ) : (
-                <div className="mt-4">
-                    <ArticulosForm articulos={articulos} onSaved={handleArticulosSaved} rol={usuario?.rol} />
-
-                    {articulos && (
-                        <ArticuloList
-                            articulos={articulos.articulo ?? []}
-                            onUpdated={handleArticulosUpdated}
-                            rol={usuario?.rol}
-                        />
-                    )}
-                </div>
-            )}
+            <div className="mt-4">
+                <Suspense fallback={<ArticulosSkeleton />}>
+                    <ArticulosContent articulosPromise={articulosPromise} usuarioPromise={usuarioPromise} />
+                </Suspense>
+            </div>
         </ContenedorAdmin>
-    );
+    )
+}
+
+function ArticulosSkeleton() {
+    return (
+        <div className="space-y-8">
+            <div className="card px-6 py-6 max-w-lg animate-pulse h-72" />
+            <div className="card py-14 animate-pulse h-40 mt-8" />
+        </div>
+    )
 }

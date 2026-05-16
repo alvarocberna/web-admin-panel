@@ -1,12 +1,15 @@
 'use client'
+//NEXT
+import { useRouter } from 'next/navigation';
 //REACT
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 //SHARED
 import { Input, stripTags, trimOnly } from '@/shared';
 //FEATURES
 import { UpdateUsuarioDto, UsuarioService } from '@/features';
+import { UsuarioEntity } from '../../entities/usuario.entity';
 
 interface InfoForm {
     nombre: string;
@@ -14,25 +17,21 @@ interface InfoForm {
     email: string;
 }
 
-export function UsuarioFormUserUpdate() {
-    const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<InfoForm>();
+interface Props {
+    usuario: UsuarioEntity;
+}
+
+export function UsuarioFormUserUpdate({ usuario }: Props) {
+    const router = useRouter();
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<InfoForm>({
+        defaultValues: { nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email },
+    });
 
     useEffect(() => {
-        const fetchUsuario = async () => {
-            try {
-                const data = await UsuarioService.getUsuario();
-                reset({ nombre: data.nombre, apellido: data.apellido, email: data.email });
-            } catch (error) {
-                console.error('Error obteniendo usuario:', error);
-                toast.error('Error al cargar los datos del usuario');
-            }
-        };
-        fetchUsuario();
-    }, [reset]);
+        reset({ nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email });
+    }, [usuario, reset]);
 
     const onSubmit = async (formData: InfoForm) => {
-        setLoading(true);
         try {
             const payload: UpdateUsuarioDto = {
                 nombre: stripTags(formData.nombre),
@@ -41,11 +40,10 @@ export function UsuarioFormUserUpdate() {
             };
             await UsuarioService.updateUsuarioInfo(payload);
             toast.success('Información actualizada correctamente');
+            router.refresh();
         } catch (error) {
             console.error('Error actualizando información:', error);
             toast.error('Error al actualizar la información');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -94,9 +92,9 @@ export function UsuarioFormUserUpdate() {
                     <button
                         type="submit"
                         className="btn btn-primary"
-                        disabled={loading}
+                        disabled={isSubmitting}
                     >
-                        {loading ? 'Guardando...' : 'Guardar cambios'}
+                        {isSubmitting ? 'Guardando...' : 'Guardar cambios'}
                     </button>
                 </div>
             </form>
