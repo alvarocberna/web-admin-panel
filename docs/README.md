@@ -7,7 +7,7 @@ Panel de administración web construido con Next.js 16, React 19 y TypeScript. P
 ### Arquitectura
 - [Visión general](./architecture/overview.md) — Stack, módulos, flujo de datos
 - [Renderizado](./architecture/rendering.md) — SSR vs CSR, estrategias por ruta
-- [Enrutamiento](./architecture/routing.md) — App Router, rutas protegidas, middleware
+- [Enrutamiento](./architecture/routing.md) — App Router, rutas protegidas, proxy
 
 ### Frontend
 - [Estructura de carpetas](./frontend/folder-structure.md) — Árbol de directorios y convenciones
@@ -24,11 +24,13 @@ Panel de administración web construido con Next.js 16, React 19 y TypeScript. P
 
 ## Stack rápido
 
-| Capa | Tecnología |
-|------|-----------|
-| Framework | Next.js 16.1.1 (App Router) |
-| UI | React 19 + Tailwind CSS 4 |
-| Lenguaje | TypeScript 5 |
-| Formularios | React Hook Form 7 |
-| Notificaciones | React Toastify 11 |
-| Iconos | FontAwesome 6 |
+| Capa             | Tecnología                  |
+|------------------|-----------------------------|
+| Framework        | Next.js 16.1.1 (App Router) |
+| UI               | React 19 + Tailwind CSS 4   |
+| Lenguaje         | TypeScript 5                |
+| Formularios      | React Hook Form 7           |
+| Notificaciones   | React Toastify 11           |
+| Iconos           | FontAwesome 6               |
+| Animaciones      | GSAP 3                      |
+| Drop & Drag      | DND Kit                     |

@@ -1,7 +1,35 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// verifica 1) la auth mediante los jwt y 2) extrae el rol del payload para controlar el acceso a UX
+// Responsabilidades Proxy
+// 1) Verifica la auth mediante JWT 
+// 2) extrae el rol del payload para controlar el acceso a UX
+// 3) Maneja res status 401
+
+// Funciones auxiliares
+// | Función                   | Descripción                                                                                     |
+// |---------------------------|-------------------------------------------------------------------------------------------------|
+// | `decodeJwtPayload(token)` | Decodifica el payload Base64 del JWT sin verificar firma — solo para leer claims (`rol`, `exp`) |
+// | `isTokenExpired(token)`   | Retorna `true` si el JWT expiró o es inválido (con margen de 10 s)                              |
+// | `attemptRefresh(request)` | Llama a `POST /auth/refresh` desde el servidor, fusiona las cookies nuevas con las existentes y devuelve un `NextResponse` que actualiza el header `Cookie` para Server Components y envía `Set-Cookie` al browser |
+
+// Flujo de decisión por request
+// ```
+// 1. Ruta termina en "/" (no raíz ni _next/) → 404
+// 2. Ruta pública (/) + access_token válido y no expirado → redirect /dashboard
+// 3. Ruta pública sin sesión válida → permitir (mostrar login)
+// 4. Ruta protegida sin ningún token → redirect /
+// 5. Ruta protegida sin access_token pero con refresh_token → attemptRefresh()
+//      ├─ éxito → continuar con sesión renovada
+//      └─ fallo → redirect /
+// 6. Ruta protegida con access_token expirado + refresh_token → attemptRefresh() preventivo
+//      ├─ éxito → continuar con sesión renovada
+//      └─ fallo → redirect /
+// 7. Guard de rol (UX):
+//      • /superadmin, /project → solo SUPERADMIN (USER/ADMIN → redirect /dashboard)
+//      • /equipo, /servicios, /usuarios, /historial → mínimo ADMIN (USER → redirect /dashboard)
+// 8. Todo OK → NextResponse.next()
+
 
 /** Decodifica el payload de un JWT sin verificar firma (solo lectura de claims). */
 function decodeJwtPayload(token: string): Record<string, unknown> | null {

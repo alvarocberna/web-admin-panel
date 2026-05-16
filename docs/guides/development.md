@@ -41,6 +41,7 @@ export default function MiSeccionPage() {
    ```
    <dominio>/
    ├── services/<dominio>.service.ts
+   ├── services/<dominio>.server.service.ts
    ├── entities/<dominio>.entity.ts
    ├── dtos/<dominio>.dto.ts
    └── components/<componente>.tsx

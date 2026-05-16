@@ -6,6 +6,14 @@ Todos los nombres de components, dtos, entities, services y métodos están en i
 
 ## Componentes React
 
+### Server Components (Pages)
+
+Los `page.tsx` son Server Components: no tienen `'use client'`, pueden importar servicios server-side directamente y se ejecutan en el servidor.
+
+El patrón estándar es iniciar los fetches como `Promise` sin `await` y pasarlos como prop a los componentes hijos envueltos en `<Suspense>`:
+
+Los servicios server-side viven en `services/*.server.service.ts` y usan `apiFetchServer` (que reenvía las cookies del request actual vía `next/headers`). **No** se importan desde el barrel `@/features` para evitar que `next/headers` llegue al bundle cliente — se importan con ruta directa.
+
 ### Client Components
 
 Todo componente que use estado, efectos o eventos debe tener la directiva en la primera línea:
@@ -14,54 +22,12 @@ Todo componente que use estado, efectos o eventos debe tener la directiva en la 
 'use client'
 ```
 
-Los Server Components (layouts y pages que no tienen lógica) no necesitan la directiva.
-
-### Estructura típica de un componente
-
-```tsx
-'use client'
-
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
-import { EquipoService, type EquipoEntity } from '@/features'
-
-export function EmpleadosClient() {
-  const [equipo, setEquipo] = useState<EquipoEntity | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    EquipoService.getEquipo()
-      .then(setEquipo)
-      .catch(() => toast.error('Error al cargar el equipo'))
-      .finally(() => setLoading(false))
-  }, [])
-
-  if (loading) return <p>Cargando...</p>
-
-  return (/* JSX */)
-}
-```
+Los layouts no necesitan la directiva.
 
 ## Servicios
 
 Los servicios son **clases con métodos estáticos** que encapsulan las llamadas al API:
 
-```ts
-export class EquipoService {
-  static async getEquipo(proyecto_id?: string): Promise<EquipoEntity | null> {
-    const query = proyecto_id ? `?proyecto_id=${proyecto_id}` : ''
-    const data = await apiFetch<EquipoEntity>(`equipo/ver-todo${query}`)
-    return data ?? null
-  }
-
-  static async createEmpleado(data: EmpleadoFormInput): Promise<EmpleadoEntity> {
-    const formData = new FormData()
-    // ...build formData
-    return apiFetchFormData<EmpleadoEntity>('equipo/empleado/crear', formData)
-  }
-}
-```
 
 No se instancian — siempre se usan como `EquipoService.getEquipo()`.
 
