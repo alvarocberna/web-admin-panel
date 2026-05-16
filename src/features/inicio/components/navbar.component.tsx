@@ -39,10 +39,10 @@ export function NavbarInicio() {
 
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 flex-shrink-0">
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm transition-colors duration-300 ${scrolled ? 'bg-zinc-900 text-white' : 'bg-white text-zinc-900'}`}>
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm transition-colors duration-300 bg-zinc-900 text-white`}>
               L 
             </div>
-            <span className={`font-semibold text-sm tracking-tight transition-colors duration-300 ${scrolled ? 'text-zinc-900' : 'text-white'}`}>
+            <span className={`font-semibold text-sm tracking-tight transition-colors duration-300 text-zinc-900`}>
               Logo
             </span>
           </a>
@@ -52,14 +52,10 @@ export function NavbarInicio() {
             <button
               onClick={() => setModalOpen(true)}
               className={`
-                hidden md:inline-flex items-center px-4 py-1.5 rounded-lg text-sm font-medium
-                transition-all duration-200 cursor-pointer
-                ${scrolled
-                  ? ' text-gray-800 hover:text-white'
-                  : 'text-gray-800 hover:text-violet-800'
-                }
+                hidden md:inline-flex items-center px-4 py-1.5 rounded-xl text-sm font-medium
+                transition-all duration-200 cursor-pointer text-white hover:opacity-80
               `}
-              style={{background: 'var(--gradient-primary)',}}
+              style={{background: 'var(--gradient-primary',}}
             >
               Iniciar sesión
             </button>

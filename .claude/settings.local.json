@@ -9,7 +9,9 @@
       "Bash(npx eslint *)",
       "Bash(xargs grep *)",
       "Bash(npx tsc *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(npx next *)",
+      "Bash(del *)"
     ]
   }
 }

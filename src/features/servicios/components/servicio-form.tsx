@@ -1,15 +1,20 @@
 'use client'
+//REACT
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import * as solidIcons from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+//NEXT
 import Image from 'next/image';
+//SHARED
 import { Input, TextAreaArt, InputFile } from '@/shared';
-import { ServiciosService } from '../services/servicios.service';
-import { ServicioEntity } from '../entities/servicio.entity';
+//FEATURES
+import {ServiciosService, ServicioEntity} from '@/features'
+
 
 const ALL_SOLID_ICONS: IconDefinition[] = Object.values(solidIcons).filter(
     (v): v is IconDefinition =>
@@ -42,13 +47,12 @@ interface ServicioFormFields {
 
 interface Props {
     editingServicio: ServicioEntity | null;
-    servicios: ServicioEntity[];
-    onUpdated: (servicios: ServicioEntity[]) => void;
+    onSaved: (saved: ServicioEntity, wasEditing: boolean) => void;
     onClose: () => void;
 }
 
 
-export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }: Props) {
+export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
     const [addSec, setAddSec] = useState(true);
     const [iconPickerOpen, setIconPickerOpen] = useState(false);
     const [iconSearch, setIconSearch] = useState('');
@@ -122,11 +126,11 @@ export function ServicioForm({ editingServicio, servicios, onUpdated, onClose }:
 
             if (editingServicio) {
                 const actualizado = await ServiciosService.updateServicio(editingServicio.id, payload);
-                onUpdated(servicios.map(s => s.id === actualizado.id ? actualizado : s));
+                onSaved(actualizado, true);
                 toast.success('Servicio actualizado correctamente');
             } else {
                 const nuevo = await ServiciosService.createServicio(payload);
-                onUpdated([...servicios, nuevo]);
+                onSaved(nuevo, false);
                 toast.success('Servicio creado correctamente');
             }
             onClose();

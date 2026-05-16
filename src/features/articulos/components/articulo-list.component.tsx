@@ -1,26 +1,36 @@
 'use client'
-import { useState } from 'react';
+//NEXT
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+//REACT
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPencil, faTrash, faPlus, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+//FEATURES
 import { ArticulosService } from '../services/articulos.service';
 import { ArticuloEntity } from '../entities/articulo.entity';
-import { toast } from 'react-toastify';
 
 interface Props {
     articulos: ArticuloEntity[];
-    onUpdated: (articulos: ArticuloEntity[]) => void;
     rol?: string;
 }
 
-export function ArticuloList({ articulos, onUpdated, rol }: Props) {
+export function ArticuloList({ articulos, rol }: Props) {
+    const router = useRouter();
+    const [items, setItems] = useState<ArticuloEntity[]>(articulos);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [approvingId, setApprovingId] = useState<string | null>(null);
 
-    const pending = articulos.filter(a => a.status === 'pending');
-    const approved = articulos.filter(a => a.status === 'approved');
+    useEffect(() => {
+        setItems(articulos);
+    }, [articulos]);
+
+    const pending = items.filter(a => a.status === 'pending');
+    const approved = items.filter(a => a.status === 'approved');
 
     const openDeleteModal = (id: string) => {
         setArticleToDelete(id);
@@ -37,9 +47,10 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
         setIsDeleting(true);
         try {
             await ArticulosService.deleteArticulo(articleToDelete);
-            onUpdated(articulos.filter(a => a.id !== articleToDelete));
+            setItems(curr => curr.filter(a => a.id !== articleToDelete));
             toast.success('Artículo eliminado correctamente');
             closeDeleteModal();
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el artículo');
             closeDeleteModal();
@@ -52,8 +63,9 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
         setApprovingId(id);
         try {
             await ArticulosService.approveArticulo(id);
-            onUpdated(articulos.map(a => a.id === id ? { ...a, status: 'approved' } as ArticuloEntity : a));
+            setItems(curr => curr.map(a => a.id === id ? { ...a, status: 'approved' } as ArticuloEntity : a));
             toast.success('Artículo aprobado');
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al aprobar el artículo');
         } finally {
@@ -140,7 +152,6 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
                 </Link>
             </div>
 
-            {/* Pendientes */}
             {(rol === 'ADMIN' || rol === 'SUPERADMIN') && (
                 <div className="mb-8">
                     <h4 className="text-sm font-medium text-zinc-500 mb-3">Pendientes de aprobación</h4>
@@ -156,7 +167,6 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
                 </div>
             )}
 
-            {/* Aprobados */}
             <div>
                 <h4 className="text-sm font-medium text-zinc-500 mb-3">Aprobados</h4>
                 {approved.length === 0 ? (
@@ -170,7 +180,6 @@ export function ArticuloList({ articulos, onUpdated, rol }: Props) {
                 )}
             </div>
 
-            {/* Modal confirmación eliminar/rechazar */}
             {deleteModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeDeleteModal} />

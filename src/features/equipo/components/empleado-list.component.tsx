@@ -1,4 +1,6 @@
 'use client'
+//NEXT
+import { useRouter } from 'next/navigation';
 //REACT
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -21,7 +23,6 @@ import { EquipoService, EmpleadoEntity, EmpleadoForm } from '@/features';
 
 interface Props {
     empleados: EmpleadoEntity[];
-    onUpdated: (empleados: EmpleadoEntity[]) => void;
 }
 
 interface CardProps {
@@ -30,6 +31,7 @@ interface CardProps {
     onDelete: () => void;
 }
 
+//card con info de empleado
 function SortableCard({ emp, onEdit, onDelete }: CardProps) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: emp.id });
 
@@ -70,10 +72,6 @@ function SortableCard({ emp, onEdit, onDelete }: CardProps) {
                     <p className="text-xs text-zinc-600 flex-1 line-clamp-2 mb-3">{emp.descripcion}</p>
                 )}
 
-                {/* {emp.orden && (
-                    <p className="text-xs text-zinc-400 mb-2">Orden: {emp.orden}</p>
-                )} */}
-
                 <div className="flex items-center justify-end gap-2 mt-auto pt-3 border-t border-zinc-100">
                     <button
                         onClick={onEdit}
@@ -96,8 +94,9 @@ function SortableCard({ emp, onEdit, onDelete }: CardProps) {
 }
 
 
-export function EmpleadoList({ empleados, onUpdated }: Props) {
-    const [items, setItems] = useState<EmpleadoEntity[]>(empleados);
+export function EmpleadoList({ empleados }: Props) {
+    const router = useRouter(); //router para hacer refresh al actualizar el orden de los card
+    const [items, setItems] = useState<EmpleadoEntity[]>(empleados); 
     const [modalOpen, setModalOpen] = useState(false);
     const [modalKey, setModalKey] = useState(0);
     const [editingEmpleado, setEditingEmpleado] = useState<EmpleadoEntity | null>(null);
@@ -110,9 +109,12 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
     }, [empleados]);
 
     const sensors = useSensors(
-        useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
+        useSensor(PointerSensor, { //evento de puntero activa el movimiento
+            activationConstraint: { distance: 8 } //se mueve cuando el puntero se mueve al menos 8px
+        })
     );
 
+    //handler que se ejecuta cuando el usuario suelta el elemento dps de arrastrarlo
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
@@ -134,16 +136,14 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
             i === newIndex ? { ...e, orden: newOrden.toString() } : e
         );
         setItems(optimistic);
-        onUpdated(optimistic);
 
         EquipoService.updateEmpleadoOrden(active.id as string, newOrden)
             .then(saved => {
                 setItems(curr => curr.map(e => e.id === saved.id ? saved : e));
-                onUpdated(optimistic.map(e => e.id === saved.id ? saved : e));
+                router.refresh();
             })
             .catch(() => {
                 setItems(items);
-                onUpdated(items);
                 toast.error('Error al actualizar el orden');
             });
     };
@@ -167,10 +167,11 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
 
     const handleSaved = (saved: EmpleadoEntity, wasEditing: boolean) => {
         if (wasEditing) {
-            onUpdated(items.map(e => e.id === saved.id ? saved : e));
+            setItems(curr => curr.map(e => e.id === saved.id ? saved : e));
         } else {
-            onUpdated([...items, saved]);
+            setItems(curr => [...curr, saved]);
         }
+        router.refresh();
     };
 
     const openDeleteModal = (id: string) => {
@@ -188,9 +189,10 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
         setIsDeleting(true);
         try {
             await EquipoService.deleteEmpleado(empleadoToDelete);
-            onUpdated(items.filter(e => e.id !== empleadoToDelete));
+            setItems(curr => curr.filter(e => e.id !== empleadoToDelete));
             toast.success('Empleado eliminado correctamente');
             closeDeleteModal();
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el empleado');
             closeDeleteModal();
@@ -202,7 +204,9 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
     return (
         <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
+                {/* titulo */}
                 <h3 className="text-md font-semibold text-zinc-900">Miembros del equipo</h3>
+                {/* boton para crear empleado */}
                 <button type="button" onClick={openCreate} className="btn btn-primary h-8 text-xs px-3 flex items-center gap-1.5">
                     <FontAwesomeIcon icon={faPlus} style={{ width: '11px', height: '11px' }} />
                     Nuevo empleado
@@ -217,6 +221,7 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                     <SortableContext items={items.map(e => e.id)} strategy={rectSortingStrategy}>
                         <div className="flex flex-wrap -mx-2">
+                            {/* lista de cards empleados */}
                             {items.map(emp => (
                                 <SortableCard
                                     key={emp.id}
@@ -230,6 +235,7 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
                 </DndContext>
             )}
 
+            {/* form para crear / editar empleado */}
             <EmpleadoForm
                 key={modalKey}
                 open={modalOpen}
@@ -238,7 +244,7 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
                 onSaved={handleSaved}
             />
 
-            {/* Modal confirmación eliminar */}
+            {/* modal para eliminar cards empleado */}
             {deleteModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeDeleteModal} />
@@ -256,6 +262,7 @@ export function EmpleadoList({ empleados, onUpdated }: Props) {
                     </div>
                 </div>
             )}
+            
         </div>
     );
 }

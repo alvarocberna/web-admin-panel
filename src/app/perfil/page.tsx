@@ -1,13 +1,28 @@
+import { Suspense } from 'react'
 //SHARED
-import { ContenedorAdmin, TitleSec } from '@/shared';
-//FEATURES
-import { PerfilUsuario } from '@/features';
+import { ContenedorAdmin, TitleSec } from '@/shared'
+//FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
+import { UsuarioService } from '@/features/usuarios/services/usuario.server.service'
+import { PerfilContent } from '@/features/usuarios/components/perfil-content.component'
 
-export default function Usuario() {
+export default function PerfilPage() {
+    const usuarioPromise = UsuarioService.getUsuario()
+
     return (
         <ContenedorAdmin>
             <TitleSec title="Mi perfil" />
-            <PerfilUsuario />
+            <Suspense fallback={<PerfilSkeleton />}>
+                <PerfilContent promise={usuarioPromise} />
+            </Suspense>
         </ContenedorAdmin>
-    );
+    )
+}
+
+function PerfilSkeleton() {
+    return (
+        <div className="flex flex-col gap-6 max-w-lg">
+            <div className="card px-6 py-6 animate-pulse h-56" />
+            <div className="card px-6 py-6 animate-pulse h-40" />
+        </div>
+    )
 }

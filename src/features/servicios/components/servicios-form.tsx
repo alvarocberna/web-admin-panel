@@ -1,8 +1,13 @@
 'use client'
+//NEXT
+import { useRouter } from 'next/navigation';
+//REACT
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//SHARED
 import { Input, TextAreaArt, stripTags } from '@/shared';
+//FEATURES
 import { ServiciosService } from '../services/servicios.service';
 import { ServiciosEntity } from '../entities/servicios.entity';
 
@@ -15,10 +20,10 @@ interface ServiciosForm {
 
 interface Props {
     servicios: ServiciosEntity | null;
-    onSaved: (s: ServiciosEntity) => void;
 }
 
-export function ServiciosForm({ servicios, onSaved }: Props) {
+export function ServiciosForm({ servicios }: Props) {
+    const router = useRouter(); //router para hacer refresh al actualizar el form
     const {
         register,
         handleSubmit,
@@ -37,7 +42,6 @@ export function ServiciosForm({ servicios, onSaved }: Props) {
             reset({
                 titulo: servicios.titulo,
                 descripcion: servicios.descripcion ?? '',
-                // icono: servicios.icono ?? '',
                 activo: servicios.activo,
             });
         }
@@ -53,15 +57,14 @@ export function ServiciosForm({ servicios, onSaved }: Props) {
                 notificacion: false,
                 habilitado: true,
             };
-            let resultado: ServiciosEntity;
             if (servicios) {
-                resultado = await ServiciosService.updateServicios(payload);
+                await ServiciosService.updateServicios(payload);
                 toast.success('Sección de servicios actualizada correctamente');
             } else {
-                resultado = await ServiciosService.createServicios(payload);
+                await ServiciosService.createServicios(payload);
                 toast.success('Sección de servicios creada correctamente');
             }
-            onSaved(resultado);
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al guardar la sección de servicios');
         }
@@ -83,10 +86,10 @@ export function ServiciosForm({ servicios, onSaved }: Props) {
                     label="Título"
                     name="titulo"
                     register={register}
-                    rules={{ 
+                    rules={{
                         required: 'El título es requerido',
                         minLength: {value: 1, message: 'Mínimo 1 caracter'},
-                        maxLength: {value: 200, message: 'Máximo 200 caracteres'} 
+                        maxLength: {value: 200, message: 'Máximo 200 caracteres'}
                     }}
                 />
                 {errors.titulo && (
@@ -97,21 +100,14 @@ export function ServiciosForm({ servicios, onSaved }: Props) {
                     label="Descripción"
                     name="descripcion"
                     register={register}
-                    rules={{ 
+                    rules={{
                         required: false,
-                        maxLength: {value: 500, message: 'Máximo 500 caracteres'} 
+                        maxLength: {value: 500, message: 'Máximo 500 caracteres'}
                     }}
                 />
                 {errors.descripcion && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>
                 )}
-
-                {/* <Input
-                    label="Icono"
-                    name="icono"
-                    register={register}
-                    rules={{ required: false }}
-                /> */}
 
                 <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">
                     <div>

@@ -1,8 +1,13 @@
 'use client'
+//NEXT
+import { useRouter } from 'next/navigation';
+//REACT
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+//SHARED
 import { Input, TextAreaArt, stripTags } from '@/shared';
+//FEATURES
 import { TestimoniosService } from '../services/testimonios.service';
 import { TestimoniosEntity } from '../entities/testimonios.entity';
 
@@ -15,10 +20,10 @@ interface TestimoniosForm {
 
 interface Props {
     testimonios: TestimoniosEntity | null;
-    onSaved: (t: TestimoniosEntity) => void;
 }
 
-export function TestimoniosForm({ testimonios, onSaved }: Props) {
+export function TestimoniosForm({ testimonios }: Props) {
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -54,15 +59,14 @@ export function TestimoniosForm({ testimonios, onSaved }: Props) {
                 notificacion: false,
                 habilitado: true,
             };
-            let resultado: TestimoniosEntity;
             if (testimonios) {
-                resultado = await TestimoniosService.updateTestimonios(payload);
+                await TestimoniosService.updateTestimonios(payload);
                 toast.success('Sección de testimonios actualizada correctamente');
             } else {
-                resultado = await TestimoniosService.createTestimonios(payload);
+                await TestimoniosService.createTestimonios(payload);
                 toast.success('Sección de testimonios creada correctamente');
             }
-            onSaved(resultado);
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al guardar la sección de testimonios');
         }
@@ -84,10 +88,10 @@ export function TestimoniosForm({ testimonios, onSaved }: Props) {
                     label="Título"
                     name="titulo"
                     register={register}
-                    rules={{ 
+                    rules={{
                         required: 'El título es requerido',
                         minLength: {value: 1, message: 'Mínimo 1 caracter'},
-                        maxLength: {value: 200, message: 'Máximo 200 caracteres'} 
+                        maxLength: {value: 200, message: 'Máximo 200 caracteres'}
                     }}
                 />
                 {errors.titulo && (
@@ -98,16 +102,15 @@ export function TestimoniosForm({ testimonios, onSaved }: Props) {
                     label="Descripción"
                     name="descripcion"
                     register={register}
-                    rules={{ 
+                    rules={{
                         required: false,
-                        maxLength: {value: 500, message: 'Máximo 500 caracteres'} 
+                        maxLength: {value: 500, message: 'Máximo 500 caracteres'}
                     }}
                 />
                 {errors.descripcion && (
                     <p className="text-xs text-red-500 mt-1 ml-1">{errors.descripcion.message}</p>
                 )}
 
-                {/* Toggle activo */}
                 <div className="flex items-center justify-between mt-4 py-3 border-t border-zinc-100">
                     <div>
                         <p className="text-sm font-medium text-zinc-800">Sección activa</p>
@@ -125,7 +128,6 @@ export function TestimoniosForm({ testimonios, onSaved }: Props) {
                     </button>
                 </div>
 
-                {/* Toggle aprobar */}
                 <div className="flex items-center justify-between py-3 border-t border-zinc-100">
                     <div>
                         <p className="text-sm font-medium text-zinc-800">Aprobar</p>

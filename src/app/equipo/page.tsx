@@ -1,57 +1,31 @@
-'use client'
 //REACT
-import { useState, useEffect } from 'react';
+import { Suspense } from 'react'
 //SHARED
-import { ContenedorAdmin, TitleSec } from '@/shared';
-//FEATURES
-import { EquipoService, EquipoEntity, EmpleadoEntity, EquipoForm, EmpleadoList } from '@/features';
-
+import { ContenedorAdmin, TitleSec } from '@/shared'
+//FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
+import { EquipoService } from '@/features/equipo/services/equipo.server.service'
+import { EquipoContent } from '@/features/equipo/components/equipo-content.component'
 
 export default function EquipoPage() {
-    const [equipo, setEquipo] = useState<EquipoEntity | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchEquipo = async () => {
-            try {
-                const data = await EquipoService.getEquipo();
-                setEquipo(data);
-            } catch (error) {
-                console.error('Error obteniendo equipo:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchEquipo();
-    }, []);
-
-    const handleEquipoSaved = (e: EquipoEntity) => {
-        setEquipo(prev => ({ ...e, empleado: e.empleado?.length ? e.empleado : (prev?.empleado ?? []) }));
-    };
-
-    const handleEmpleadosUpdated = (empleados: EmpleadoEntity[]) => {
-        if (!equipo) return;
-        setEquipo({ ...equipo, empleado: empleados });
-    };
+    const equipoPromise = EquipoService.getEquipo()
 
     return (
         <ContenedorAdmin>
             <TitleSec title="Equipo" />
-
-            {loading ? (
-                <div className="py-16 text-center text-zinc-400 text-sm">Cargando...</div>
-            ) : (
-                <div className="mt-4">
-                    <EquipoForm equipo={equipo} onSaved={handleEquipoSaved} />
-
-                    {equipo && (
-                        <EmpleadoList
-                            empleados={equipo.empleado ?? []}
-                            onUpdated={handleEmpleadosUpdated}
-                        />
-                    )}
-                </div>
-            )}
+            <div className="mt-4">
+                <Suspense fallback={<EquipoSkeleton />}>
+                    <EquipoContent promise={equipoPromise} />
+                </Suspense>
+            </div>
         </ContenedorAdmin>
-    );
+    )
+}
+
+function EquipoSkeleton() {
+    return (
+        <div className="space-y-8">
+            <div className="card px-6 py-6 max-w-lg animate-pulse h-64" />
+            <div className="card py-14 animate-pulse h-40 mt-8" />
+        </div>
+    )
 }

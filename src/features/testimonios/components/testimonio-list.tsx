@@ -1,34 +1,34 @@
 'use client'
+//NEXT
+import { useRouter } from 'next/navigation';
+//REACT
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faStar, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { TestimonioService, TestimoniosService } from '@/features';
+//FEATURES
+import { TestimonioService } from '@/features';
 import { TestimonioEntity } from '../entities/testimonio.entity';
 
-export function TestimonioList() {
-    const [testimonios, setTestimonios] = useState<TestimonioEntity[]>([]);
+interface Props {
+    testimonios: TestimonioEntity[];
+}
+
+export function TestimonioList({ testimonios }: Props) {
+    const router = useRouter();
+    const [items, setItems] = useState<TestimonioEntity[]>(testimonios);
     const [modalOpen, setModalOpen] = useState(false);
     const [testimonioToDelete, setTestimonioToDelete] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [approvingId, setApprovingId] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchTestimonios = async () => {
-            try {
-                const res = await TestimoniosService.getTestimonios();
-                const data = res?.testimonio;
-                console.log('getTestimonios response:', res);
-                setTestimonios(data ?? []);
-            } catch (error) {
-                console.error('Error obteniendo testimonios:', error);
-            }
-        };
-        fetchTestimonios();
-    }, []);
+        setItems(testimonios);
+    }, [testimonios]);
 
-    const pending = testimonios.filter(t => t.status === 'pending');
-    const approved = testimonios.filter(t => t.status === 'approved');
+    const pending = items.filter(t => t.status === 'pending');
+    const approved = items.filter(t => t.status === 'approved');
 
     const openModal = (id: string) => { setTestimonioToDelete(id); setModalOpen(true); };
     const closeModal = () => { setTestimonioToDelete(null); setModalOpen(false); };
@@ -38,9 +38,10 @@ export function TestimonioList() {
         setIsDeleting(true);
         try {
             await TestimonioService.deleteTestimonio(testimonioToDelete);
-            setTestimonios(prev => prev.filter(t => t.id !== testimonioToDelete));
+            setItems(curr => curr.filter(t => t.id !== testimonioToDelete));
             toast.success('Testimonio eliminado correctamente');
             closeModal();
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al eliminar el testimonio');
             closeModal();
@@ -53,8 +54,9 @@ export function TestimonioList() {
         setApprovingId(id);
         try {
             await TestimonioService.approveTestimonio(id);
-            setTestimonios(prev => prev.map(t => t.id === id ? { ...t, status: 'approved' } as TestimonioEntity : t));
+            setItems(curr => curr.map(t => t.id === id ? { ...t, status: 'approved' } as TestimonioEntity : t));
             toast.success('Testimonio aprobado');
+            router.refresh();
         } catch (error: any) {
             toast.error(error?.message || 'Error al aprobar el testimonio');
         } finally {
@@ -137,7 +139,6 @@ export function TestimonioList() {
         <div className="mt-8">
             <h3 className="text-md font-semibold text-zinc-900 mb-6">Testimonios recibidos</h3>
 
-            {/* Pendientes */}
             <div className="mb-8">
                 <h4 className="text-sm font-medium text-zinc-500 mb-3">Pendientes de aprobación</h4>
                 {pending.length === 0 ? (
@@ -151,7 +152,6 @@ export function TestimonioList() {
                 )}
             </div>
 
-            {/* Aprobados */}
             <div>
                 <h4 className="text-sm font-medium text-zinc-500 mb-3">Aprobados</h4>
                 {approved.length === 0 ? (
@@ -165,13 +165,9 @@ export function TestimonioList() {
                 )}
             </div>
 
-            {/* Modal de confirmación */}
             {modalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div
-                        className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
-                        onClick={closeModal}
-                    />
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeModal} />
                     <div className="relative card p-6 w-full max-w-sm shadow-xl">
                         <h3 className="text-base font-semibold text-zinc-900 mb-1">Eliminar testimonio</h3>
                         <p className="text-sm text-zinc-500 mb-6">

@@ -4,62 +4,52 @@
 
 Este proyecto usa el **App Router de Next.js 16**. Por defecto, todos los componentes son **Server Components** a menos que incluyan la directiva `'use client'`.
 
-En la práctica, casi toda la lógica de datos y estado ocurre en el cliente porque:
-- La autenticación es completamente basada en cookies del navegador
-- Los datos se obtienen desde el cliente con `apiFetch()` que requiere acceso a cookies
-- Los formularios interactivos usan `react-hook-form`
+Los datos de lectura (GET) se obtienen en el servidor usando `apiFetchServer`, que lee las cookies de sesión desde los `headers()` de Next.js. Los Client Components quedan reservados para operaciones mutantes y UI interactiva.
 
 ## Por tipo de componente
 
 ### Server Components (sin directiva)
 
-Usados solo para:
-- **Layouts** (`app/layout.tsx`, `app/dashboard/layout.tsx`, etc.) — definen estructura HTML
-- **Pages sin datos dinámicos** — envuelven el componente de cliente correspondiente
+Hay dos roles distintos:
 
-Los layouts no buscan datos; delegan el fetch a los componentes cliente hijos.
+**`page.tsx`** — inicia el fetch como promesas y las delega a componentes anidados:
+- Llama a los servicios de servidor (`*.server.service.ts`) para obtener promesas
+- Envuelve los componentes de contenido en `<Suspense>` con un skeleton como fallback
+- No hace `await` directamente — pasa las promesas hacia abajo como props
+
+**Componentes de contenido** (`*-content.component.tsx`, `card-*.component.tsx`, etc.) — son async y resuelven los datos:
+- Reciben promesas como props y las resuelven con `await`
+- Pasan los datos ya resueltos a los Client Components hijos
+- Sin directiva `'use client'`
 
 ### Client Components (`'use client'`)
 
-Toda la lógica real vive aquí:
-- Llamadas a `apiFetch()` dentro de `useEffect` o handlers
-- Formularios con `react-hook-form`
-- Gestión de estado local con `useState`
-- Hooks como `useAuth`, `useRouter`
+Usados exclusivamente para:
+- **Formularios con mutaciones** — POST, PUT, DELETE a través de `react-hook-form`
+- **Estado interactivo local** — `useState`, `useEffect`, `useRouter`
+- Reciben datos ya resueltos como props (nunca promesas)
+- Llaman a `router.refresh()` tras una mutación para que el Server Component padre vuelva a fetchear
 
-### Patrón típico de una página
 
-```tsx
-// app/equipo/page.tsx  (Server Component — solo estructura)
-import { EmpleadosClient } from '@/features'
+## Servicios: servidor vs. cliente
 
-export default function EquipoPage() {
-  return <EmpleadosClient />
-}
+Cada dominio tiene dos archivos de servicio:
 
-// features/equipo/components/empleados.tsx  (Client Component)
-'use client'
-export function EmpleadosClient() {
-  const [equipo, setEquipo] = useState<EquipoEntity | null>(null)
+| Archivo | Contexto | Función de fetch |
+|---------|----------|-----------------|
+| `*.server.service.ts` | Server Component | `apiFetchServer` (lee cookies desde `headers()`) |
+| `*.service.ts` | Client Component | `apiFetch` (cookies vía `credentials: 'include'`) |
 
-  useEffect(() => {
-    EquipoService.getEquipo().then(setEquipo)
-  }, [])
-
-  // ...render
-}
-```
+Los imports de servicios de servidor se hacen directamente (sin pasar por el barrel `src/features/index.ts`) para evitar que `next/headers` llegue al bundle del cliente.
 
 ## Fetch de datos
 
 | Escenario | Método |
 |-----------|--------|
-| Lectura inicial de una página | `useEffect` + `apiFetch` en el cliente |
-| Mutaciones (crear/editar/eliminar) | Handler del formulario + `apiFetch` |
-| Archivos e imágenes | `apiFetchFormData` con `FormData` |
-| Usuario autenticado actual | `useAuth()` hook (llama a `GET /usuario/user/authenticated`) |
-
-No se usa `fetch` del servidor ni `cache` de Next.js porque el backend requiere las cookies de sesión, que solo están disponibles en el contexto del navegador con `credentials: 'include'`.
+| Lectura inicial de una página | Server Component → `*.server.service.ts` → `apiFetchServer` |
+| Mutaciones (crear/editar/eliminar) | Client Component → `*.service.ts` → `apiFetch` |
+| Archivos e imágenes | Client Component → `apiFetchFormData` con `FormData` |
+| Revalidar tras mutación | `router.refresh()` en el Client Component |
 
 ## Imágenes
 

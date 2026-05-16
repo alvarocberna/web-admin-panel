@@ -10,7 +10,7 @@ export default async function ProjectServiciosPage() {
 
     return (
         <div className="flex flex-col">
-            <ServiciosPublic dataServicios={servicios}/>
+            <ServiciosPublic servicios={servicios} comportamiento='navegar'/>
         </div>
     );
 }

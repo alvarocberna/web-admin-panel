@@ -1,6 +1,6 @@
 
 //shared
-import {apiFetch} from '@/shared/api/client';
+import {apiFetch} from '@/shared';
 //features
 import { UsuarioEntity } from '../entities/usuario.entity';
 import { UpdateUsuarioInfoDto, UpdateUsuarioPasswordDto, CreateUsuarioDto, UpdateUsuarioDto } from '../dtos/usuario.dto';
