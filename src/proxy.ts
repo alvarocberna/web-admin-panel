@@ -13,6 +13,80 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
   }
 }
 
+/** Devuelve true si el JWT está expirado o es inválido (con 10s de margen). */
+function isTokenExpired(token: string): boolean {
+  const payload = decodeJwtPayload(token);
+  if (!payload || typeof payload.exp !== 'number') return true;
+  return Date.now() / 1000 > payload.exp - 10;
+}
+
+/**
+ * Llama a /auth/refresh desde el servidor usando las cookies de la request actual.
+ *
+ * Si tiene éxito devuelve un NextResponse que:
+ *   - actualiza el header Cookie de la request hacia los server components (cookies() lo ve)
+ *   - reenvía los Set-Cookie al browser para que persistan las nuevas cookies
+ *
+ * Si falla devuelve null.
+ */
+async function attemptRefresh(request: NextRequest): Promise<NextResponse | null> {
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+
+  let refreshRes: Response;
+  try {
+    refreshRes = await fetch(`${backendUrl}/auth/refresh`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': request.headers.get('cookie') || '',
+      },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!refreshRes.ok) return null;
+
+  // Extraer los Set-Cookie del backend (getSetCookie maneja múltiples cookies)
+  const setCookies: string[] =
+    typeof (refreshRes.headers as unknown as { getSetCookie?: () => string[] }).getSetCookie === 'function'
+      ? (refreshRes.headers as unknown as { getSetCookie: () => string[] }).getSetCookie()
+      : refreshRes.headers.get('set-cookie')
+        ? [refreshRes.headers.get('set-cookie')!]
+        : [];
+
+  if (setCookies.length === 0) return null;
+
+  // Combinar las cookies existentes con los nuevos valores del refresh
+  const merged: Record<string, string> = {};
+  (request.headers.get('cookie') || '').split(';').forEach(chunk => {
+    const eqIdx = chunk.indexOf('=');
+    if (eqIdx === -1) return;
+    merged[chunk.slice(0, eqIdx).trim()] = chunk.slice(eqIdx + 1).trim();
+  });
+  setCookies.forEach(raw => {
+    const [nameValue] = raw.split(';');
+    const eqIdx = nameValue.indexOf('=');
+    if (eqIdx === -1) return;
+    merged[nameValue.slice(0, eqIdx).trim()] = nameValue.slice(eqIdx + 1).trim();
+  });
+
+  const updatedCookieHeader = Object.entries(merged)
+    .map(([k, v]) => `${k}=${v}`)
+    .join('; ');
+
+  // Pasar las cookies actualizadas a los server components vía request headers
+  const newHeaders = new Headers(request.headers);
+  newHeaders.set('cookie', updatedCookieHeader);
+
+  const response = NextResponse.next({ request: { headers: newHeaders } });
+
+  // Reenviar Set-Cookie al browser para que actualice sus cookies
+  setCookies.forEach(raw => response.headers.append('Set-Cookie', raw));
+
+  return response;
+}
+
 /** Rutas que requieren rol ADMIN o SUPERADMIN (solo UX, la seguridad real está en el backend). */
 const superadminRoutes = ['/superadmin', '/project'];
 const adminRoutes = ['/equipo', '/servicios', '/usuarios', '/historial'];
@@ -28,7 +102,7 @@ const proxyLog = (msg: string) => {
 };
 
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Bloquear directory browsing - denegar acceso a rutas que terminan en /
@@ -52,31 +126,46 @@ export function proxy(request: NextRequest) {
 
   proxyLog(`${pathname} | access_token: ${accessToken ? '✓' : '✗'} | refresh_token: ${refreshToken ? '✓' : '✗'}`);
 
-  // Si es la ruta de login (/) y el usuario YA está autenticado, redirigir al dashboard
-  if (isPublicRoute && accessToken) {
-    proxyLog(`ruta pública con access_token activo → redirect /dashboard`);
-    const dashboardUrl = new URL('/dashboard', request.url);
-    return NextResponse.redirect(dashboardUrl);
+  // Ruta pública (login): redirigir al dashboard solo si la sesión es realmente válida
+  if (isPublicRoute && accessToken && !isTokenExpired(accessToken.value)) {
+    proxyLog(`ruta pública con access_token válido → redirect /dashboard`);
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // Si es una ruta pública y no está autenticado, permitir el acceso
+  // Si es una ruta pública y no hay sesión válida, permitir el acceso
   if (isPublicRoute) {
-    proxyLog(`ruta pública sin sesión → permitido`);
+    proxyLog(`ruta pública → permitido`);
     return NextResponse.next();
   }
 
   // Para rutas protegidas: si no hay ningún token, redirigir al login
   if (!accessToken && !refreshToken) {
     proxyLog(`ruta protegida sin tokens → redirect /`);
-    const loginUrl = new URL('/', request.url);
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // Si solo falta el access_token pero hay refresh_token, dejar pasar:
-  // client.ts recibirá un 401 y ejecutará el refresh automáticamente
+  // access_token ausente pero refresh_token presente → intentar refresh
   if (!accessToken && refreshToken) {
-    proxyLog(`access_token ausente pero refresh_token presente → permitido para que client.ts refresque`);
-    return NextResponse.next();
+    proxyLog(`access_token ausente → intentando refresh`);
+    const refreshed = await attemptRefresh(request);
+    if (refreshed) {
+      proxyLog(`refresh exitoso → sesión renovada`);
+      return refreshed;
+    }
+    proxyLog(`refresh fallido → redirect /`);
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  // access_token presente pero expirado → intentar refresh preventivo
+  if (accessToken && isTokenExpired(accessToken.value) && refreshToken) {
+    proxyLog(`access_token expirado → intentando refresh preventivo`);
+    const refreshed = await attemptRefresh(request);
+    if (refreshed) {
+      proxyLog(`refresh preventivo exitoso → sesión renovada`);
+      return refreshed;
+    }
+    proxyLog(`refresh preventivo fallido → redirect /`);
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   // Verificar restricción por rol (solo UX, la seguridad real está en el backend)
