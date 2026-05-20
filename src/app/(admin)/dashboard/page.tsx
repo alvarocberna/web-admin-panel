@@ -1,7 +1,4 @@
-
 import { Suspense } from 'react'
-//SHARED
-import { ContenedorAdmin } from '@/shared'
 //FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
 import { CardBienvenida }  from '@/features/dashboard/components/card-bienvenida.component'
 import { CardProyecto }    from '@/features/dashboard/components/card-proyecto.component'
@@ -24,29 +21,27 @@ export default function Dashboard() {
     const testimoniosPromise = TestimoniosService.getTestimonios()
 
     return (
-        <ContenedorAdmin>
-            <div className="flex flex-col gap-4">
-                <Suspense fallback={<div className="card px-6 py-7 w-full animate-pulse h-20" />}>
-                    <CardBienvenida promise={usuarioPromise} />
+        <div className="flex flex-col gap-4">
+            <Suspense fallback={<div className="card px-6 py-7 w-full animate-pulse h-20" />}>
+                <CardBienvenida promise={usuarioPromise} />
+            </Suspense>
+            <Suspense fallback={<div className="card px-6 py-5 w-full animate-pulse h-24" />}>
+                <CardProyecto promise={usuarioPromise} />
+            </Suspense>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
+                    <CardEquipo promise={equipoPromise} />
                 </Suspense>
-                <Suspense fallback={<div className="card px-6 py-5 w-full animate-pulse h-24" />}>
-                    <CardProyecto promise={usuarioPromise} />
+                <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
+                    <CardServicios promise={serviciosPromise} />
                 </Suspense>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
-                        <CardEquipo promise={equipoPromise} />
-                    </Suspense>
-                    <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
-                        <CardServicios promise={serviciosPromise} />
-                    </Suspense>
-                    <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
-                        <CardArticulos usuarioPromise={usuarioPromise} articulosPromise={articulosPromise} />
-                    </Suspense>
-                    <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
-                        <CardTestimonios usuarioPromise={usuarioPromise} testimoniosPromise={testimoniosPromise} />
-                    </Suspense>
-                </div>
+                <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
+                    <CardArticulos usuarioPromise={usuarioPromise} articulosPromise={articulosPromise} />
+                </Suspense>
+                <Suspense fallback={<div className="card px-6 py-6 animate-pulse h-20" />}>
+                    <CardTestimonios usuarioPromise={usuarioPromise} testimoniosPromise={testimoniosPromise} />
+                </Suspense>
             </div>
-        </ContenedorAdmin>
+        </div>
     )
 }
