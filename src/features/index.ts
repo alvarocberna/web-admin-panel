@@ -19,8 +19,10 @@ export * from './articulos/interfaces/articulo.interface';
 export * from './articulos/types/articulo.types';
 //AUTH
 export * from './auth/components/inicio-sesion-form.component';
+export * from './auth/components/auth-provider.component';
 export * from './auth/services/auth.service';
 export * from './auth/hooks/use-auth';
+export * from './auth/store/auth.store';
 //PROYECTOS
 export * from './proyectos/entities/proyecto.entity';
 export * from './proyectos/services/proyecto.service';

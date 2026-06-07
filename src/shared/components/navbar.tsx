@@ -1,13 +1,20 @@
 'use client'
+//NEXT
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
+//REACT
 import { useState } from "react";
+//FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faNewspaper, faClockRotateLeft, faSignOutAlt, faHouse, faPeopleGroup, faGear, faUsers, faLayerGroup } from '@fortawesome/free-solid-svg-icons'
 import { faMessage, faFile, faUser } from "@fortawesome/free-regular-svg-icons";
-import Link from "next/link";
-import { AuthService } from "@/features/auth/services/auth.service";
+//TOASTIFY
 import { toast } from 'react-toastify';
+//FEATURRES
+import { AuthService } from "@/features/auth/services/auth.service";
 import { useAuth } from "@/features/auth/hooks/use-auth";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+
 
 const navItems = [
   { nombre: "Inicio",      ruta: "/dashboard",  icon: faHouse,           match: (p: string) => p === '/dashboard',         roles: ['USER', 'ADMIN', 'SUPERADMIN'] },
@@ -23,12 +30,16 @@ const navItems = [
 ];
 
 export function NavbarAdmin() {
+  //estados
   const [open, setOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  //variables
   const router = useRouter();
   const pathname = usePathname();
   const { user } = useAuth();
+  const clearAuth = useAuthStore((s) => s.clearAuth);
 
+  //filtra los navItems segun rol
   const visibleItems = navItems.filter(item =>
     user?.rol ? item.roles.includes(user.rol) : false
   );
@@ -38,9 +49,11 @@ export function NavbarAdmin() {
     setIsLoggingOut(true);
     try {
       await AuthService.logout();
+      clearAuth();
       toast.success('Sesión cerrada exitosamente');
       router.push('/');
     } catch (error: any) {
+      clearAuth();
       toast.error(error.message || 'Error al cerrar sesión');
       router.push('/');
     } finally {
@@ -48,6 +61,7 @@ export function NavbarAdmin() {
     }
   }
 
+  //componente NavLink
   const NavLink = ({ info, onClick }: { info: typeof navItems[0], onClick?: () => void }) => {
     const isActive = info.match(pathname);
     return (
@@ -73,6 +87,7 @@ export function NavbarAdmin() {
     );
   };
 
+  //componente btn logout
   const LogoutItem = ({ onClick }: { onClick?: () => void }) => (
     <div
       onClick={() => { onClick?.(); logout(); }}
@@ -88,13 +103,15 @@ export function NavbarAdmin() {
 
   return (
     <div>
-      {/* ── Sidebar Escritorio ─────────────────────────── */}
+      {/* ── Barra lateal (escritorio) ─────────────────────────── */}
       <aside className="hidden md:flex flex-col w-[280px] h-screen bg-white border-r border-zinc-200 fixed left-0 top-0 z-20">
+        {/* dashboard - lo muestra siemprre si o si */}
         <div className="px-5 py-5 border-b border-zinc-100">
           <Link href="/dashboard" className="block">
             <span className="text-sm font-semibold text-zinc-900 tracking-tight">Panel Admin</span>
           </Link>
         </div>
+        {/* navlinks según rol */}
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
           <ul className="space-y-0.5 relative">
             {visibleItems.map((item) => (
@@ -102,16 +119,19 @@ export function NavbarAdmin() {
             ))}
           </ul>
         </nav>
+        {/* logount button */}
         <div className="px-3 py-4 border-t border-zinc-100">
           <LogoutItem />
         </div>
       </aside>
 
-      {/* ── Topbar Móvil (cerrado) ─────────────────────── */}
+      {/* ── Navbar Móvil (cerrado) ─────────────────────── */}
       <div className="flex md:hidden items-center justify-between bg-white border-b border-zinc-200 px-4 py-3 fixed top-0 left-0 right-0 z-30">
+        {/* dashboard */}
         <Link href="/dashboard">
           <span className="text-sm font-semibold text-zinc-900">Panel Admin</span>
         </Link>
+        {/* button abrir menu */}
         <button
           className="p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-300"
           onClick={() => setOpen((o) => !o)}
@@ -139,6 +159,7 @@ export function NavbarAdmin() {
           ${open ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
+        {/* header del navbar vista movil */}
         <div className="px-5 py-4 border-b border-zinc-100 flex items-center justify-between">
           <span className="text-sm font-semibold text-zinc-900">Panel Admin</span>
           <button
@@ -151,6 +172,7 @@ export function NavbarAdmin() {
             </svg>
           </button>
         </div>
+        {/* navlink según rol */}
         <nav className="px-3 py-4 relative">
           <ul className="space-y-0.5">
             {visibleItems.map((item) => (
@@ -158,6 +180,7 @@ export function NavbarAdmin() {
             ))}
           </ul>
         </nav>
+        {/* logount button */}
         <div className="px-3 py-4 border-t border-zinc-100 absolute bottom-0 left-0 right-0">
           <LogoutItem onClick={() => setOpen(false)} />
         </div>

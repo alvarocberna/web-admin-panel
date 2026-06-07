@@ -8,6 +8,7 @@ Panel de administración web construido con Next.js 16, React 19 y TypeScript. P
 - [Visión general](./architecture/overview.md) — Stack, módulos, flujo de datos
 - [Renderizado](./architecture/rendering.md) — SSR vs CSR, estrategias por ruta
 - [Enrutamiento](./architecture/routing.md) — App Router, rutas protegidas, proxy
+- [authStore](./architecture/auth-store.md) — Estado global de autenticación (Zustand)
 
 ### Frontend
 - [Estructura de carpetas](./frontend/folder-structure.md) — Árbol de directorios y convenciones
@@ -34,3 +35,4 @@ Panel de administración web construido con Next.js 16, React 19 y TypeScript. P
 | Iconos           | FontAwesome 6               |
 | Animaciones      | GSAP 3                      |
 | Drop & Drag      | DND Kit                     |
+| Estado global    | Zustand 5                   |

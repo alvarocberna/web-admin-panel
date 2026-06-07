@@ -13,6 +13,7 @@
 | Iconos          | FontAwesome          | 6       |
 | Animaciones     | GSAP                 | 3       |
 | Drop & Drag     | DND Kit              |         |
+| Estado global   | Zustand              | 5       |
 
 ## Estructura de alto nivel
 
@@ -49,7 +50,7 @@ Todos los módulos se exportan desde `src/features/index.ts`.
 
 | Dominio | Descripción |
 |---------|------------|
-| `auth` | Login, logout, refresh, hook `useAuth` |
+| `auth` | Login, logout, refresh, `useAuth`, `authStore`, `AuthProvider` |
 | `usuarios` | Gestión de usuarios (perfil propio + admin) |
 | `articulos` | CRUD de artículos con secciones e imágenes |
 | `equipo` | Gestión de empleados del equipo |
@@ -108,9 +109,13 @@ Cada decisión se registra en consola vía `proxyLog` con timestamp local (`[pro
 1. Usuario envía credenciales → POST /auth/login
 2. Backend establece cookies HttpOnly: access_token + refresh_token
 3. Middleware verifica access_token en cada request
-4. apiFetch detecta 401 → POST /auth/refresh → reintenta
-5. Si el refresh falla → lanza 'Sesión expirada' → useAuth redirige a /
+4. AuthProvider (montado en el admin layout) llama GET /usuario/authenticated → hidrata authStore
+5. apiFetch detecta 401 → POST /auth/refresh → reintenta
+6. Si el refresh falla → lanza 'Sesión expirada' → AuthProvider redirige a /
+7. Al cerrar sesión → clearAuth() limpia el store + cookies
 ```
+
+Ver [authStore](./auth-store.md) para detalles del estado global de autenticación.
 
 ## Variables de entorno
 

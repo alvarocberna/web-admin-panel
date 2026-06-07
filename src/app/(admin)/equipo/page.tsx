@@ -1,9 +1,11 @@
+//REACT
 import { Suspense } from 'react'
 //SHARED
 import { TitleSec } from '@/shared'
 //FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
 import { EquipoService } from '@/features/equipo/services/equipo.server.service'
 import { EquipoContent } from '@/features/equipo/components/equipo-content.component'
+
 
 export default function EquipoPage() {
     const equipoPromise = EquipoService.getEquipo()
