@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 //SHARED
-import { ContenedorAdmin, TitleSec } from '@/shared'
+import { TitleSec } from '@/shared'
 //FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
 import { ArticulosService } from '@/features/articulos/services/articulos.server.service'
 import { UsuarioService } from '@/features/usuarios/services/usuario.server.service'
@@ -11,14 +11,14 @@ export default function ArticulosPage() {
     const usuarioPromise = UsuarioService.getUsuario()
 
     return (
-        <ContenedorAdmin>
+        <>
             <TitleSec title="Artículos" />
             <div className="mt-4">
                 <Suspense fallback={<ArticulosSkeleton />}>
                     <ArticulosContent articulosPromise={articulosPromise} usuarioPromise={usuarioPromise} />
                 </Suspense>
             </div>
-        </ContenedorAdmin>
+        </>
     )
 }
 

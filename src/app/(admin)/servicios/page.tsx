@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 //SHARED
-import { ContenedorAdmin, TitleSec } from '@/shared'
+import { TitleSec } from '@/shared'
 //FEATURES - imports directos para evitar que next/headers llegue al bundle cliente via barrel
 import { ServiciosService } from '@/features/servicios/services/servicios.server.service'
 import { ServiciosContent } from '@/features/servicios/components/servicios-content.component'
@@ -9,14 +9,14 @@ export default function ServiciosPage() {
     const serviciosPromise = ServiciosService.getServicios()
 
     return (
-        <ContenedorAdmin>
+        <>
             <TitleSec title="Servicios" />
             <div className="mt-4">
                 <Suspense fallback={<ServiciosSkeleton />}>
                     <ServiciosContent promise={serviciosPromise} />
                 </Suspense>
             </div>
-        </ContenedorAdmin>
+        </>
     )
 }
 

@@ -56,22 +56,25 @@ El middleware genera un token UUID con `crypto.randomUUID()` y lo almacena en la
 
 ```
 app/
-├── layout.tsx          # Root layout: html, body, fuentes, ToastProvider
-├── page.tsx            # / (login)
-├── dashboard/
-│   ├── layout.tsx      # Envuelve con ContenedorAdmin (navbar + sidebar)
-│   └── page.tsx
-├── articulos/
-│   ├── layout.tsx
-│   ├── page.tsx
-│   ├── crear/page.tsx
-│   └── [articuloId]/
-│       ├── ver/page.tsx
-│       └── modificar/page.tsx
-└── ...
+├── layout.tsx           # Root layout: html, body, fuentes, ToastProvider
+├── page.tsx             # / (login)
+└── (admin)/             # Route group — no afecta las URLs
+    ├── layout.tsx       # Layout compartido: NavbarAdmin + shell de página
+    ├── dashboard/page.tsx
+    ├── articulos/page.tsx
+    ├── articulos/crear/page.tsx
+    ├── articulos/[articuloId]/ver/page.tsx
+    ├── articulos/[articuloId]/modificar/page.tsx
+    ├── equipo/page.tsx
+    ├── servicios/page.tsx
+    ├── testimonios/page.tsx
+    ├── usuarios/page.tsx
+    ├── actividad/page.tsx
+    ├── perfil/page.tsx
+    └── superadmin/page.tsx
 ```
 
-Los layouts intermedios (bajo `/dashboard`) incluyen `ContenedorAdmin`, que renderiza el `NavbarAdmin` con la navegación lateral.
+Todas las rutas protegidas viven dentro del route group `(admin)`. Su `layout.tsx` monta `NavbarAdmin` una sola vez y lo preserva entre navegaciones — el navbar no se desmonta al cambiar de ruta. El componente `ContenedorAdmin` fue eliminado.
 
 ## Parámetros de ruta
 
