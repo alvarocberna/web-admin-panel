@@ -9,9 +9,7 @@ export default function Home() {
       <div className="w-full flex flex-col m-auto">
           <NavbarInicio/>
           <PortadaInicio/>
-          {/* <div className='h-20 bg-white'></div> */}
           {/* <ContenidoInicio/> */}
-          {/* <div className='h-100 w-full bg-white' ></div> */}
           <Footer/>
       </div>
     </div>

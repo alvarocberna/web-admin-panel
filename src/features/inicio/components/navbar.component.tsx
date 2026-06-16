@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import {InicioSesionForm} from '@/features';
-import Image from 'next/image'
 
 export function NavbarInicio() {
   const [scrolled, setScrolled] = useState(false)
@@ -50,6 +49,7 @@ export function NavbarInicio() {
           <div className="flex items-center gap-2">
             {/* Botón Iniciar Sesion */}
             <button
+              id='btn-login'
               onClick={() => setModalOpen(true)}
               className={`
                 hidden md:inline-flex items-center px-4 py-1.5 rounded-xl text-sm font-medium
