@@ -23,6 +23,9 @@ Panel de administración web construido con Next.js 16, React 19 y TypeScript. P
 - [Sistema de diseño](./ui/design-system.md) — Colores, tipografía, utilitarios CSS
 - [Componentes](./ui/components.md) — Catálogo de componentes compartidos
 
+### Testing
+- [Tests E2E](./testing/e2e.md) — Playwright: configuración, suites, patrones y ejecución
+
 ## Stack rápido
 
 | Capa             | Tecnología                  |
