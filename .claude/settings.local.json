@@ -15,7 +15,8 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\cbern\\\\OneDrive\\\\Desktop\\\\PROYECTOS\\\\PRODUCTOS\\\\web-core-root\\\\web-admin-panel\\\\src\" -Recurse -Directory)",
       "Bash(Select-Object -First 30)",
       "Bash(Format-Table FullName)",
-      "PowerShell(New-Item *)"
+      "PowerShell(New-Item *)",
+      "Bash(git rm *)"
     ]
   }
 }
