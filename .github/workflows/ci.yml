@@ -40,8 +40,8 @@ jobs:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
     needs: validate
-    # Solo corre si los secrets están disponibles (evita fallos en forks/PRs externos)
-    if: ${{ secrets.TEST_E2E_USER != '' }}
+    # Solo corre en pushes directos a main/dev (no en PRs, donde los secrets no están disponibles)
+    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v4
