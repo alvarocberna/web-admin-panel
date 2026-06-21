@@ -82,8 +82,8 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
             await ArticulosService.updateArticulo(id_articulo, { ...data, activo });
             toast.success("Articulo actualizado");
             router.push('/articulos');
-        }catch(error: any){
-            toast.error(error.message || "Error al actualizar articulo");
+        }catch(error){
+            toast.error(error instanceof Error ? error.message : "Error al actualizar articulo");
         }
     }
 
@@ -133,7 +133,7 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
                 {errors.subtitulo && <span className="text-red-600 text-xs mt-1 block">{errors.subtitulo.message}</span>}
                 <InputFile
                     label="Imagen de portada"
-                    name={"image_file" as any}
+                    name="image_file"
                     register={register}
                     rules={{ required: false }}
                     accept="image/*"
@@ -141,7 +141,7 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
                 />
                 <InputArt
                     label="Texto alternativo de la imagen (Alt)"
-                    name={"image_alt" as any}
+                    name="image_alt"
                     type="text"
                     register={register}
                     rules={{ required: false, maxLength: {value: 100, message: 'Máximo 100 caracteres'} }}

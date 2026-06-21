@@ -47,8 +47,8 @@ export function ArticuloFormCreate(){
             toast.success("Articulo creado");
             router.push('/articulos');
             router.refresh();
-        }catch(error: any){
-            toast.error(error.message || "Error al crear articulo");
+        }catch(error){
+            toast.error(error instanceof Error ? error.message : "Error al crear articulo");
         }
     }
 
@@ -76,14 +76,14 @@ export function ArticuloFormCreate(){
                 {errors.subtitulo && <span className="text-red-600 text-xs mt-1 block">{errors.subtitulo.message}</span>}
                 <InputFile
                     label="Imagen de portada"
-                    name={"image_file" as any}
+                    name="image_file"
                     register={register}
                     rules={{ required: false }}
                     accept="image/*"
                 />
                 <InputArt
                     label="Texto alternativo de la imagen (Alt)"
-                    name={"image_alt" as any}
+                    name="image_alt"
                     type="text"
                     register={register}
                     rules={{ required: false, maxLength: {value: 100, message: 'Máximo 100 caracteres'} }}

@@ -25,8 +25,6 @@ interface Props {
 export function ArticulosForm({ articulos, rol }: Props) {
     const router = useRouter();
 
-    if (rol !== 'ADMIN' && rol !== 'SUPERADMIN') return null;
-
     const {
         register,
         handleSubmit,
@@ -51,6 +49,8 @@ export function ArticulosForm({ articulos, rol }: Props) {
             });
         }
     }, [articulos, reset]);
+
+    if (rol !== 'ADMIN' && rol !== 'SUPERADMIN') return null;
 
     const onSubmit = async (data: ArticulosForm) => {
         try {
