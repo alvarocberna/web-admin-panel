@@ -51,8 +51,8 @@ export function ArticuloList({ articulos, rol }: Props) {
             toast.success('Artículo eliminado correctamente');
             closeDeleteModal();
             router.refresh();
-        } catch (error: any) {
-            toast.error(error?.message || 'Error al eliminar el artículo');
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : 'Error al eliminar el artículo');
             closeDeleteModal();
         } finally {
             setIsDeleting(false);
@@ -66,8 +66,8 @@ export function ArticuloList({ articulos, rol }: Props) {
             setItems(curr => curr.map(a => a.id === id ? { ...a, status: 'approved' } as ArticuloEntity : a));
             toast.success('Artículo aprobado');
             router.refresh();
-        } catch (error: any) {
-            toast.error(error?.message || 'Error al aprobar el artículo');
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : 'Error al aprobar el artículo');
         } finally {
             setApprovingId(null);
         }

@@ -5,11 +5,11 @@ import { useParams } from "next/navigation"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 //FEATURES
-import { ArticulosService, SecArticuloEntity } from "@/features"
+import { ArticulosService, ArticuloEntity, SecArticuloEntity } from "@/features"
 
 export default function VerArticulo() {
     const id_articulo = useParams<{ articuloId: string }>().articuloId
-    const [articulo, setArticulo] = useState<any>(null)
+    const [articulo, setArticulo] = useState<ArticuloEntity | null>(null)
 
     useEffect(() => {
         const fetchArticulo = async () => {
