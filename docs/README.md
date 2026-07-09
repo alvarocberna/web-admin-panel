@@ -26,6 +26,10 @@ Panel de administración web construido con Next.js 16, React 19 y TypeScript. P
 ### Testing
 - [Tests E2E](./testing/e2e.md) — Playwright: configuración, suites, patrones y ejecución
 
+### CI/CD
+- [Workflow de GitHub Actions](./ci-cd/github-actions.md) — Jobs `validate` y `e2e`, secrets, artifacts
+- [Git Hooks (Husky)](./ci-cd/git-hooks.md) — `pre-commit` y `pre-push`, equivalentes locales de los jobs de CI
+
 ## Stack rápido
 
 | Capa             | Tecnología                  |
