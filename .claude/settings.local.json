@@ -18,7 +18,9 @@
       "PowerShell(New-Item *)",
       "Bash(git rm *)",
       "Bash(npx husky *)",
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(git status *)",
+      "Bash(xargs -0 sed -i -E 's/\\\\bContenedorSec\\\\b/ContenedorSecPublic/g; s/\\\\bContenedorPage\\\\b/ContenedorPagePublic/g')"
     ]
   }
 }

@@ -1,0 +1,13 @@
+export class TestimonioEntityPublic {
+    constructor(
+        public id: string,
+        public nombre: string,
+        public apellido: string,
+        public correo: string,
+        public descripcion: string,
+        public calificacion: number,
+        public status: string,
+        public fecha_creacion: Date,
+        public testimonios_id: string,
+    ){}
+}

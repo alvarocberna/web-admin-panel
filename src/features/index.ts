@@ -71,3 +71,5 @@ export * from './servicios/services/servicios.service';
 export * from './servicios/components/servicios-form';
 export * from './servicios/components/servicio-form';
 export * from './servicios/components/servicio-list';
+//INTEGRATION
+export * from './integration';

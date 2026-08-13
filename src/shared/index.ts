@@ -15,3 +15,5 @@ export * from './components/input-file';
 export * from './components/textarea';
 //UTILS
 export * from './utils/sanitize';
+//INTEGRATION
+export * from './integration';

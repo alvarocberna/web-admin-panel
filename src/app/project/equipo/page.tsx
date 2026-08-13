@@ -1,10 +1,10 @@
-import { EquipoPublic } from '@/features/project';
-import { EquipoService } from '@/features/project';
+import { EquipoPublic } from '@/features';
+import { EquipoServicePublic } from '@/features';
 
 export default async function ProjectEquipoPage() {
 
     const [equipo] = await Promise.all([
-        EquipoService.getEquipo()
+        EquipoServicePublic.getEquipo()
     ])
 
     return (

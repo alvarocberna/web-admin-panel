@@ -1,15 +1,15 @@
-import { ArticulosPublic, TestimoniosPublic, EquipoPublic, ServiciosPublic, NavbarPublic } from '@/features/project';
-import { EquipoService, ServiciosService, ArticulosService, TestimoniosService } from '@/features/project';
+import { ArticulosPublic, TestimoniosPublic, EquipoPublic, ServiciosPublic, NavbarPublic } from '@/features';
+import { EquipoServicePublic, ServiciosServicePublic, ArticulosServicePublic, TestimoniosServicePublic } from '@/features';
 
 export const revalidate = 300;
 
 export default async function Project(){
 
     const [equipo, servicios, articulos, testimonios] = await Promise.all([
-        EquipoService.getEquipo(),
-        ServiciosService.getServicios(),
-        ArticulosService.getArticulos(),
-        TestimoniosService.getTestimonios(),
+        EquipoServicePublic.getEquipo(),
+        ServiciosServicePublic.getServicios(),
+        ArticulosServicePublic.getArticulos(),
+        TestimoniosServicePublic.getTestimonios(),
     ])
 
     return(

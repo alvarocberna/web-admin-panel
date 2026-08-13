@@ -1,11 +1,10 @@
 //FEATURES
-import { ServiciosPublic } from '@/features/project';
-import { ServiciosService } from '@/features/project';
+import { ServiciosPublic, ServiciosServicePublic } from '@/features';
 
 export default async function ProjectServiciosPage() {
 
     const [servicios] = await Promise.all([
-        ServiciosService.getServicios()
+        ServiciosServicePublic.getServicios()
     ])
 
     return (

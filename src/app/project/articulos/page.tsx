@@ -1,9 +1,9 @@
-import { ArticulosAllPublic, ArticulosService } from '@/features/project';
+import { ArticulosAllPublic, ArticulosServicePublic } from '@/features';
 
 export default async function ArticulosPage() {
 
     const [articulos] = await Promise.all([
-        ArticulosService.getArticulos()
+        ArticulosServicePublic.getArticulos()
     ])
     
     return (
