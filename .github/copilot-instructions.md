@@ -2,7 +2,7 @@
 
 Summary
 - Next.js (App Router) TypeScript project (Next 16 + React 19). App sources live under `src/app` with domain features in `src/features` and shared components in `src/shared`.
-- API calls are centralized in `src/shared/api/client.ts` and rely on `process.env.NEXT_PUBLIC_BACKEND_URL` + `credentials: 'include'` (cookie-based auth).
+- API calls are centralized in `src/shared/api/client.ts` and rely on `process.env.NEXT_PUBLIC_BACKEND_CMS_URL` + `credentials: 'include'` (cookie-based auth).
 - Protected routes implemented via `src/middleware.ts` - only authenticated users (with `access_token` cookie) can access routes other than `/` (login).
 
 Key patterns & how to work here
@@ -12,7 +12,7 @@ Key patterns & how to work here
 
 - API client behavior (important): `src/shared/api/client.ts`
   - Use `apiFetch<T>(endpoint, method?, data?, credentials = 'include')` to call the backend.
-  - Reads `NEXT_PUBLIC_BACKEND_URL` and sends requests to `${url}/${endpoint}`.
+  - Reads `NEXT_PUBLIC_BACKEND_CMS_URL` and sends requests to `${url}/${endpoint}`.
   - Built-in handling:
     - 401 → calls `POST ${url}/auth/refresh` (refresh flow) and retries the original request once; if refresh fails it throws `Error('Sesión expirada')`.
     - Non-ok 4xx/5xx → attempts `res.json()` and throws with `errorData.message` or fallback to HTTP status.
@@ -43,7 +43,7 @@ Developer workflow (how to run / debug)
 - Start dev server: `npm run dev` (also supports `yarn/pnpm/bun dev` from README)
 - Build: `npm run build`  — run and test production build locally with `npm start`.
 - Lint: `npm run lint` (eslint configured via `eslint-config-next`).
-- Environment: set `NEXT_PUBLIC_BACKEND_URL` to the backend base URL before starting the dev server.
+- Environment: set `NEXT_PUBLIC_BACKEND_CMS_URL` to the backend base URL before starting the dev server.
 - Debugging tips: watch network requests in the browser (the app uses `fetch` + cookies). If you see 401, `apiFetch` will attempt `auth/refresh` per the client logic.
 
 Project specifics & constraints

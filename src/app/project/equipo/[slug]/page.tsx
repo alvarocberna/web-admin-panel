@@ -1,11 +1,11 @@
-import { EquipoService, EmpleadoPublic } from '@/features/project';
+import { EquipoServicePublic, EmpleadoPublic } from '@/features';
 
 export default async function EmpleadoPage({ params }: { params: Promise<{ slug: string }> }) {
 
     const { slug } = await params;
 
     const [empleado] = await Promise.all([
-        EquipoService.getEmpleadoBySlug(slug)
+        EquipoServicePublic.getEmpleadoBySlug(slug)
     ])
     
     return (

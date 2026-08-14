@@ -58,7 +58,7 @@ function isTokenExpired(token: string): boolean {
  * Si falla devuelve null.
  */
 async function attemptRefresh(request: NextRequest): Promise<NextResponse | null> {
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_CMS_URL || 'http://localhost:3001';
 
   let refreshRes: Response;
   try {

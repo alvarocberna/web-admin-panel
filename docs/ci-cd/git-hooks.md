@@ -50,7 +50,7 @@ TEST_E2E_USER=admin@ejemplo.com
 TEST_E2E_PASS=tu_contraseña
 ```
 
-Además, `NEXT_PUBLIC_BACKEND_URL` debe apuntar a un backend accesible, y la aplicación debe poder levantarse (`npm run dev` o el `webServer` configurado en `playwright.config.ts`).
+Además, `NEXT_PUBLIC_BACKEND_CMS_URL` debe apuntar a un backend accesible, y la aplicación debe poder levantarse (`npm run dev` o el `webServer` configurado en `playwright.config.ts`).
 
 ## Saltar los hooks
 

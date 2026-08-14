@@ -64,7 +64,7 @@ Todos los módulos se exportan desde `src/features/index.ts`.
 
 Función central `apiFetch<T>(endpoint, method?, data?, credentials?, isRetry?)`:
 
-- Envía a `${NEXT_PUBLIC_BACKEND_URL}/${endpoint}` con `credentials: 'include'`
+- Envía a `${NEXT_PUBLIC_BACKEND_CMS_URL}/${endpoint}` con `credentials: 'include'`
 - **401 → auto-refresh**: llama `POST /auth/refresh` y reintenta una vez (`isRetry` flag)
 - **Refresh falla**: lanza `Error('Sesión expirada')`
 - **204**: retorna `undefined`
@@ -121,4 +121,4 @@ Ver [authStore](./auth-store.md) para detalles del estado global de autenticaci�
 
 | Variable | Descripción | Default |
 |----------|------------|---------|
-| `NEXT_PUBLIC_BACKEND_URL` | URL base del backend | `http://localhost:3001` |
+| `NEXT_PUBLIC_BACKEND_CMS_URL` | URL base del backend | `http://localhost:3001` |

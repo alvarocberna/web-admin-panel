@@ -87,7 +87,7 @@ const { articuloId } = useParams<{ articuloId: string }>()
 ## Rewrites (next.config.ts)
 
 ```ts
-'/api/:path*'  →  '${NEXT_PUBLIC_BACKEND_URL}/:path*'
+'/api/:path*'  →  '${NEXT_PUBLIC_BACKEND_CMS_URL}/:path*'
 ```
 
 Esto permite llamar al backend desde el cliente usando `/api/...` como alternativa, aunque el proyecto usa `apiFetch` directamente con la URL completa del backend.
