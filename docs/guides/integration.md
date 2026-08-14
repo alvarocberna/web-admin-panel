@@ -5,10 +5,14 @@
 # 2. Vamos a la sección Superadmin, donde creamos un nuevo proyecto en conjunto con un usuario admin para este proyecto
 
 # 3. Completamos las variables de .env
-## NEXT_PUBLIC_BACKEND_URL lo obtenemos de railway
+## NEXT_PUBLIC_BACKEND_CMS_URL lo obtenemos de railway
 ## NEXT_PUBLIC_PROYECTO_ID lo obtenemos de supabase
 
-# 4. Traspasamos el contenido de este proyecto al nuevo proyecto, para eso:
-## 4.1. Copiar y pegar el contenido de 'app/project' dentro de 'app' del nuevo proyecto.
-## 4.2. Copiar y pegar 'features/integration' dentro del src del nuevo proyecto. modificamos el nombre 'integration' por 'features'
-## 4.3. Copiar y pegar 'shared/integration' dentro del src del nuevo proyecto. modificamos el nombre 'integration' por 'shared'
+# 4. Copiar contenido de next.config, lo que importa es el rewrite, pero copiamos todo no más
+
+# 5. Traspasamos el contenido de este proyecto al nuevo proyecto, para eso:
+## 5.1. Copiar y pegar el contenido de 'app/project' dentro de 'app' del nuevo proyecto.
+## 5.2. Copiar y pegar el contenido de 'features/integration' dentro del features del nuevo proyecto
+## 5.3. Copiar y pegar el contenido de 'shared/integration' dentro del shared del nuevo proyecto
+
+# 6. Instalar dependencias que falten

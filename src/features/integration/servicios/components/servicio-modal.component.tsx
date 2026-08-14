@@ -17,11 +17,11 @@ export function ServicioModalPublic({ servicio, isOpen, onClose }: ServicioModal
 
     return createPortal(
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/50"
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-4 shadow-xl"
+                className="bg-superficie rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-4 shadow-xl"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Cabecera: info izquierda 60% + imagen derecha 40% */}
@@ -29,11 +29,11 @@ export function ServicioModalPublic({ servicio, isOpen, onClose }: ServicioModal
                     {/* Columna info */}
                     <div className="flex flex-col justify-center px-8 py-7 gap-1 w-full sm:w-[60%]">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <h2 className="text-xl font-bold text-zinc-900 leading-tight">
+                            <h2 className="text-xl font-bold text-texto leading-tight">
                                 {servicio.nombre_servicio}
                             </h2>
                             {servicio.destacado && (
-                                <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
+                                <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-destacado text-destacado-texto">
                                     Destacado
                                 </span>
                             )}
@@ -50,16 +50,16 @@ export function ServicioModalPublic({ servicio, isOpen, onClose }: ServicioModal
                             </div>
                         )}
                         {servicio.valor && (
-                            <p className="text-md font-semibold text-zinc-900 mt-1">{servicio.valor}</p>
+                            <p className="text-md font-semibold text-texto mt-1">{servicio.valor}</p>
                         )}
                         {servicio.nombre_promocion && (
-                            <p className="text-md text-zinc-900">
+                            <p className="text-md text-texto">
                                 {servicio.nombre_promocion}
                                 {servicio.porcentaje_descuento ? ` — ${servicio.porcentaje_descuento}% off` : ''}
                             </p>
                         )}
                         {servicio.descripcion && (
-                            <p className="text-sm text-zinc-700 mt-2">{servicio.descripcion}</p>
+                            <p className="text-sm text-gris-oscuro mt-2">{servicio.descripcion}</p>
                         )}
                     </div>
 
@@ -78,7 +78,7 @@ export function ServicioModalPublic({ servicio, isOpen, onClose }: ServicioModal
                     {/* Botón cerrar */}
                     <button
                         onClick={onClose}
-                        className="absolute top-3 right-3 bg-white/80 hover:bg-white rounded-full w-8 h-8 flex items-center justify-center text-zinc-700 font-bold text-lg shadow cursor-pointer z-10"
+                        className="absolute top-3 right-3 bg-superficie/80 hover:bg-superficie rounded-full w-8 h-8 flex items-center justify-center text-gris-oscuro font-bold text-lg shadow cursor-pointer z-10"
                     >
                         ×
                     </button>
@@ -87,7 +87,7 @@ export function ServicioModalPublic({ servicio, isOpen, onClose }: ServicioModal
                 {/* Secciones sec_servicio */}
                 {servicio.sec_servicio?.length > 0 && (
                     <div className="px-8 pb-8 flex flex-col gap-6">
-                        <hr className="border-zinc-200" />
+                        <hr className="border-gris-claro" />
                         {[...servicio.sec_servicio]
                             .sort((a, b) => a.nro_seccion - b.nro_seccion)
                             .map((sec) => {
@@ -101,7 +101,7 @@ export function ServicioModalPublic({ servicio, isOpen, onClose }: ServicioModal
                                     <div key={sec.id} className={`${flex} ${flexDirection} gap-4`}>
                                         <div className={`w-full sm:${textW}  flex flex-col gap-1`}>
                                             {sec.titulo_sec && (
-                                                <h3 className="text-md font-semibold text-zinc-900">{sec.titulo_sec}</h3>
+                                                <h3 className="text-md font-semibold text-texto">{sec.titulo_sec}</h3>
                                             )}
                                             {sec.image_url && (
                                                 <div className={`w-full min-h-40 ${imgHidden} relative sm:hidden`}>
@@ -114,7 +114,7 @@ export function ServicioModalPublic({ servicio, isOpen, onClose }: ServicioModal
                                                 </div>
                                             )}
                                             {sec.contenido_sec && (
-                                                <p className="text-sm text-zinc-700">{sec.contenido_sec}</p>
+                                                <p className="text-sm text-gris-oscuro">{sec.contenido_sec}</p>
                                             )}
                                         </div>
                                         {sec.image_url && (

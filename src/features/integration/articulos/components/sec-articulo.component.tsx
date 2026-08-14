@@ -19,8 +19,8 @@ export function SecArticuloPublic({data}: SecArticuloInterface){
     return(
         <div className={`flex flex-col ${flex} gap-6 mb-10`}>
             <div className={`w-full ${textW} ${textHidden}`}>
-                <h4 className="text-xl font-semibold text-zinc-900 tracking-tight mb-3">{data.titulo_sec}</h4>
-                <p className="text-base text-zinc-600 leading-relaxed">{data.contenido_sec}</p>
+                <h4 className="text-xl font-semibold text-texto tracking-tight mb-3">{data.titulo_sec}</h4>
+                <p className="text-base text-gris leading-relaxed">{data.contenido_sec}</p>
             </div>
             <div className={`w-full ${imgW} min-h-64 ${imgHidden} relative`}>
                 <Image

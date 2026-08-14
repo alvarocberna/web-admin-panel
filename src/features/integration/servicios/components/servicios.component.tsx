@@ -14,12 +14,12 @@ import { INTEGRATION_CONFIG, Comportamiento, EstiloTresVariantes as Estilo } fro
 
 
 const ICON_COLORS: { bg: string; icon: string }[] = [
-    { bg: '#c0ddef', icon: '#4a90b8' }, // violeta
-    { bg: '#faf0c0', icon: '#decc78' }, // rosa
-    { bg: '#fce4ec', icon: '#d47090' }, // azul
-    { bg: '#c8e6d4', icon: '#4f9a72' }, // verde
-    { bg: '#e8dff5', icon: '#c0a8dc' }, // ámbar
-    { bg: '#c8e6d4', icon: '#4f9a72' }, // verde
+    { bg: 'var(--pub-chip-1-bg)', icon: 'var(--pub-chip-1-icono)' }, // violeta
+    { bg: 'var(--pub-chip-2-bg)', icon: 'var(--pub-chip-2-icono)' }, // rosa
+    { bg: 'var(--pub-chip-3-bg)', icon: 'var(--pub-chip-3-icono)' }, // azul
+    { bg: 'var(--pub-chip-4-bg)', icon: 'var(--pub-chip-4-icono)' }, // verde
+    { bg: 'var(--pub-chip-5-bg)', icon: 'var(--pub-chip-5-icono)' }, // ámbar
+    { bg: 'var(--pub-chip-4-bg)', icon: 'var(--pub-chip-4-icono)' }, // verde
 ];
 
 interface ServiciosProps {
@@ -63,10 +63,10 @@ export function ServiciosPublic({servicios, comportamiento = INTEGRATION_CONFIG.
                 servicios.activo &&
                 <ContenedorSecPublic>
                     <div className="head-element text-center mb-12">
-                        <h2 className="title-element font-mono text-5xl text-white mb-4">
+                        <h2 className="title-element font-mono text-5xl text-texto-invertido mb-4">
                             {servicios.titulo}
                         </h2>
-                        <p className="description-element text-white text-md max-w-xl mx-auto">
+                        <p className="description-element text-texto-invertido text-md max-w-xl mx-auto">
                             {servicios.descripcion}
                         </p>
                     </div>
@@ -83,7 +83,7 @@ export function ServiciosPublic({servicios, comportamiento = INTEGRATION_CONFIG.
                             ))}
                         </div>
                     ) : (
-                        <div className="card py-10 text-center text-zinc-400 text-sm">
+                        <div className="card py-10 text-center text-gris-suave text-sm">
                             No hay servicios disponibles.
                         </div>
                     )}

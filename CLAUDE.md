@@ -11,7 +11,7 @@ npm start         # Start production server (after build)
 npm run lint      # Run ESLint
 ```
 
-Set `NEXT_PUBLIC_BACKEND_URL` before starting the dev server (default: `http://localhost:3001`).
+Set `NEXT_PUBLIC_BACKEND_CMS_URL` before starting the dev server (default: `http://localhost:3001`).
 
 There is no test harness configured. If adding tests, follow TypeScript + Next.js patterns and add scripts to `package.json`.
 
@@ -43,7 +43,7 @@ All feature exports are indexed in `src/features/index.ts` — add new exports t
 ### API Client (`src/shared/api/client.ts`)
 
 `apiFetch<T>(endpoint, method?, data?, credentials?)` is the core API function:
-- Sends to `${NEXT_PUBLIC_BACKEND_URL}/${endpoint}` with `credentials: 'include'`
+- Sends to `${NEXT_PUBLIC_BACKEND_CMS_URL}/${endpoint}` with `credentials: 'include'`
 - **401 → auto-refresh**: calls `POST /auth/refresh` and retries once (guarded by `isRetry` flag — preserve this)
 - **Refresh fail**: throws `Error('Sesión expirada')`
 - **204**: returns `undefined`

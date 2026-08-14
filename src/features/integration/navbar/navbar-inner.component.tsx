@@ -9,8 +9,8 @@ import { EquipoEntityPublic, ServiciosEntityPublic, ArticulosEntityPublic, Testi
 // ─────────────────────────────────────────────────────────────────────────────
 const STICKY_ON_SCROLL = true        // true: el menú queda fixed al hacer scroll | false: baja con la página
 const TRANSPARENT_DEFAULT = true     // true: el menú empieza transparente | false: siempre tiene fondo de color
-const SCROLL_BG_COLOR = 'bg-white'   // clase Tailwind del fondo al hacer scroll (ej: 'bg-white', 'bg-gray-900')
-const DEFAULT_BG_COLOR = 'bg-white'  // clase Tailwind del fondo cuando TRANSPARENT_DEFAULT = false
+const SCROLL_BG_COLOR = 'bg-superficie'   // clase Tailwind del fondo al hacer scroll (ej: 'bg-superficie', 'bg-superficie-oscura')
+const DEFAULT_BG_COLOR = 'bg-superficie'  // clase Tailwind del fondo cuando TRANSPARENT_DEFAULT = false
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface Props {
@@ -40,8 +40,8 @@ export function NavbarInnerPublic({ equipo, servicios, articulos, testimonios }:
         { label: 'Artículos',   href: '/#articulos',   activo: articulos?.activo },
     ].filter(link => link.activo)
 
-    const textColor = hasBg ? 'text-gray-700' : 'text-zinc-700'
-    const lineColor = hasBg ? 'bg-gray-700' : 'bg-zinc-700'
+    const textColor = 'text-gris-oscuro'
+    const lineColor = 'bg-gris-oscuro'
     const bgClass   = hasBg ? SCROLL_BG_COLOR : 'bg-transparent'
 
     return (
@@ -62,14 +62,14 @@ export function NavbarInnerPublic({ equipo, servicios, articulos, testimonios }:
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`text-sm font-medium transition-colors hover:text-blue-500 ${textColor}`}
+                                className={`text-sm font-medium transition-colors hover:text-lila ${textColor}`}
                             >
                                 {link.label}
                             </Link>
                         ))}
                         <Link
                             href="/#contacto"
-                            className="ml-2 px-5 py-2 rounded-full bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
+                            className="ml-2 px-5 py-2 rounded-full bg-lila text-texto-invertido text-sm font-medium hover:bg-lila-oscuro transition-colors"
                         >
                             Contacto
                         </Link>
@@ -96,7 +96,7 @@ export function NavbarInnerPublic({ equipo, servicios, articulos, testimonios }:
                             key={link.href}
                             href={link.href}
                             onClick={() => setMenuOpen(false)}
-                            className="block py-4 text-sm font-medium text-gray-700 hover:text-blue-500 border-b border-gray-100 last:border-0"
+                            className="block py-4 text-sm font-medium text-gris-oscuro hover:text-lila border-b border-gris-claro last:border-0"
                         >
                             {link.label}
                         </Link>
@@ -104,7 +104,7 @@ export function NavbarInnerPublic({ equipo, servicios, articulos, testimonios }:
                     <Link
                         href="/#contacto"
                         onClick={() => setMenuOpen(false)}
-                        className="block mt-3 px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-medium text-center hover:bg-blue-700 transition-colors"
+                        className="block mt-3 px-4 py-2 rounded-full bg-lila text-texto-invertido text-sm font-medium text-center hover:bg-lila-oscuro transition-colors"
                     >
                         Contacto
                     </Link>

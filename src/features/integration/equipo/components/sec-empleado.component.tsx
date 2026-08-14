@@ -20,10 +20,10 @@ export function SecEmpleadoPublic({ data }: SecEmpleadoProps) {
         <div className={`${flex} gap-6 mb-10`}>
             <div className={`${textW} ${textHidden}`}>
                 {data.titulo_sec && (
-                    <h4 className="text-xl font-semibold text-zinc-900 tracking-tight mb-3">{data.titulo_sec}</h4>
+                    <h4 className="text-xl font-semibold text-texto tracking-tight mb-3">{data.titulo_sec}</h4>
                 )}
                 {data.contenido_sec && (
-                    <p className="text-base text-zinc-600 leading-relaxed">{data.contenido_sec}</p>
+                    <p className="text-base text-gris leading-relaxed">{data.contenido_sec}</p>
                 )}
             </div>
             <div className={`${imgW} min-h-64 ${imgHidden} relative`}>

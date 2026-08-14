@@ -92,7 +92,7 @@ export function TestimoniosPublic({dataTestimonios}: Props) {
                 </div>
 
                 {aprobados.length === 0 ? (
-                    <div className="card py-14 text-center text-zinc-400 text-sm">
+                    <div className="card py-14 text-center text-gris-suave text-sm">
                         No hay testimonios registrados.
                     </div>
                 ) : (
@@ -123,19 +123,19 @@ export function TestimoniosPublic({dataTestimonios}: Props) {
 
             {modalAbierto && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/50 px-4"
                     onClick={() => setModalAbierto(false)}
                 >
                     <div
-                        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl"
+                        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-superficie shadow-xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
                             onClick={() => setModalAbierto(false)}
-                            className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 transition-colors"
+                            className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-gris-mas-claro hover:bg-gris-claro transition-colors"
                             aria-label="Cerrar"
                         >
-                            <FontAwesomeIcon icon={faXmark} style={{ width: '14px', height: '14px' }} className="text-zinc-600" />
+                            <FontAwesomeIcon icon={faXmark} style={{ width: '14px', height: '14px' }} className="text-gris" />
                         </button>
                         <TestimonioFormPublic sinContenedor />
                     </div>

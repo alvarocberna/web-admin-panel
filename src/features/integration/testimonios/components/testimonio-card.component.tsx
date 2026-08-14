@@ -17,13 +17,13 @@ export function TestimonioCardPublic({ testimonio }: TestimonioCardProps) {
             <div className="card px-5 py-5 h-full flex flex-col hover-btn">
                 <div className="flex items-center justify-start  mb-2">
                     <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold me-2"
-                    style={{ background: '#7c6fbf' }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-texto-invertido text-sm font-bold me-2"
+                    style={{ background: 'var(--color-lila)' }}
                     >
                         {testimonio.nombre[0]}{testimonio.apellido[0]}
                     </div>
                     <div>
-                        <p className="text-md font-semibold text-zinc-900">{testimonio.nombre} {testimonio.apellido}</p>
+                        <p className="text-md font-semibold text-texto">{testimonio.nombre} {testimonio.apellido}</p>
                     </div>
                 </div>
 
@@ -33,17 +33,17 @@ export function TestimonioCardPublic({ testimonio }: TestimonioCardProps) {
                             key={i}
                             icon={faStar}
                             style={{ width: '12px', height: '12px' }}
-                            className={i < testimonio.calificacion ? 'text-yellow-400' : 'text-zinc-200'}
+                            className={i < testimonio.calificacion ? 'text-rating' : 'text-gris-claro'}
                         />
                     ))}
                 </div>
 
-                <p className="text-sm text-zinc-700 flex-1 line-clamp-3">
+                <p className="text-sm text-gris-oscuro flex-1 line-clamp-3">
                     {testimonio.descripcion}
                 </p>
 
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-zinc-100">
-                    <p className="text-xs text-zinc-500">
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-gris-claro">
+                    <p className="text-xs text-gris-suave">
                         {fecha.toLocaleDateString('es-ES')}
                     </p>
                 </div>

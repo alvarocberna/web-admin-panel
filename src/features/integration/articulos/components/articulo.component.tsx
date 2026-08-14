@@ -22,7 +22,7 @@ export function ArticuloPublic({dataArticulo}: ArticuloPublicProps){
     return(
         <ContenedorPagePublic>
             {dataArticulo && (
-                <div className="text-black m-auto">
+                <div className="text-texto m-auto">
                     <h3 className="text-3xl mb-2">{dataArticulo.titulo}</h3>
                     <h4 className="text-xl mb-10">{dataArticulo.subtitulo}</h4>
                     <div>

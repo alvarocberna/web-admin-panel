@@ -15,14 +15,14 @@ export function EmpleadoPublic({dataEmpleado}: EmpleadoPublicProps) {
     if (!dataEmpleado) {
         return (
             <ContenedorPagePublic>
-                <p className="text-zinc-700">Empleado no encontrado.</p>
+                <p className="text-gris-oscuro">Empleado no encontrado.</p>
             </ContenedorPagePublic>
         );
     }
 
     return (
         <ContenedorPagePublic>
-            <div className="text-black">
+            <div className="text-texto">
                 {/* Cabecera */}
                 {dataEmpleado.img_url && (
                     <div className="relative w-40 h-40 rounded-full overflow-hidden mb-6">
@@ -42,13 +42,13 @@ export function EmpleadoPublic({dataEmpleado}: EmpleadoPublicProps) {
                     {dataEmpleado.apellido_materno ? ` ${dataEmpleado.apellido_materno}` : ''}
                 </h2>
                 {dataEmpleado.profesion && (
-                    <p className="text-lg font-medium text-zinc-700 mb-1">{dataEmpleado.profesion}</p>
+                    <p className="text-lg font-medium text-gris-oscuro mb-1">{dataEmpleado.profesion}</p>
                 )}
                 {dataEmpleado.especialidad && (
-                    <p className="text-md text-zinc-600 mb-4">{dataEmpleado.especialidad}</p>
+                    <p className="text-md text-gris mb-4">{dataEmpleado.especialidad}</p>
                 )}
                 {dataEmpleado.descripcion && (
-                    <p className="text-zinc-700 leading-relaxed mb-10">{dataEmpleado.descripcion}</p>
+                    <p className="text-gris-oscuro leading-relaxed mb-10">{dataEmpleado.descripcion}</p>
                 )}
 
                 {/* Secciones */}

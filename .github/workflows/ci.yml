@@ -34,7 +34,7 @@ jobs:
   #       run: npm run build
   #       env:
   #         # Valor de placeholder: solo verifica que compile, no hay runtime
-  #         NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001' }}
+  #         NEXT_PUBLIC_BACKEND_CMS_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_CMS_URL || 'http://localhost:3001' }}
 
   # ─── Job 2: E2E — requiere backend desplegado y secrets configurados ───────
   e2e:
@@ -62,7 +62,7 @@ jobs:
         run: npm run test:e2e
         env:
           CI: true
-          NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+          NEXT_PUBLIC_BACKEND_CMS_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_CMS_URL }}
           TEST_E2E_USER: ${{ secrets.TEST_E2E_USER }}
           TEST_E2E_PASS: ${{ secrets.TEST_E2E_PASS }}
 

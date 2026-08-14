@@ -24,7 +24,7 @@ const getBaseUrl = () => {
   }
 
   // En el servidor (SSR / server actions)
-  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+  return process.env.NEXT_PUBLIC_BACKEND_CMS_URL || 'http://localhost:3001';
 };
 
 const tokenLog = (msg: string) => {

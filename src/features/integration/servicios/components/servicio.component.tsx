@@ -12,14 +12,14 @@ export function ServicioPublic({dataServicio}: ServicioPublicProps) {
     if (!dataServicio) {
         return (
             <ContenedorPagePublic>
-                <p className="text-zinc-700">Servicio no encontrado.</p>
+                <p className="text-gris-oscuro">Servicio no encontrado.</p>
             </ContenedorPagePublic>
         );
     }
 
     return (
         <ContenedorPagePublic>
-            <div className="text-black">
+            <div className="text-texto">
                 {/* Cabecera */}
                 {dataServicio.img_url && (
                     <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6">
@@ -35,22 +35,22 @@ export function ServicioPublic({dataServicio}: ServicioPublicProps) {
                 <div className="flex items-center gap-3 mb-2">
                     <h2 className="text-3xl font-semibold">{dataServicio.nombre_servicio}</h2>
                     {dataServicio.destacado && (
-                        <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
+                        <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-destacado text-destacado-texto">
                             Destacado
                         </span>
                     )}
                 </div>
                 {dataServicio.valor && (
-                    <p className="text-xl font-medium text-zinc-800 mb-2">{dataServicio.valor}</p>
+                    <p className="text-xl font-medium text-texto mb-2">{dataServicio.valor}</p>
                 )}
                 {dataServicio.nombre_promocion && (
-                    <p className="text-md text-zinc-600 mb-4">
+                    <p className="text-md text-gris mb-4">
                         {dataServicio.nombre_promocion}
                         {dataServicio.porcentaje_descuento ? ` — ${dataServicio.porcentaje_descuento}% off` : ''}
                     </p>
                 )}
                 {dataServicio.descripcion && (
-                    <p className="text-zinc-700 leading-relaxed mb-10">{dataServicio.descripcion}</p>
+                    <p className="text-gris-oscuro leading-relaxed mb-10">{dataServicio.descripcion}</p>
                 )}
 
                 {/* Secciones */}

@@ -54,13 +54,13 @@ export function EquipoPublic({equipo, comportamiento = INTEGRATION_CONFIG.equipo
                 dataEquipo.activo ?
                 <ContenedorSecPublic>
                     <div className="head-element text-center mb-12">
-                        {/* <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest text-sky-800 bg-sky-100 mb-4">
+                        {/* <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest text-etiqueta-texto bg-etiqueta mb-4">
                             Tag
                         </span> */}
-                        <h2 className="text-5xl text-white font-mono mb-4">
+                        <h2 className="text-5xl text-texto-invertido font-mono mb-4">
                             {dataEquipo.titulo}
                         </h2>
-                        <p className="text-white text-md max-w-xl mx-auto">
+                        <p className="text-texto-invertido text-md max-w-xl mx-auto">
                             {dataEquipo.descripcion}
                         </p>
                     </div>
@@ -73,7 +73,7 @@ export function EquipoPublic({equipo, comportamiento = INTEGRATION_CONFIG.equipo
                             ))}
                         </div>
                     ) : (
-                        <div className="card py-10 text-center text-zinc-400 text-sm">
+                        <div className="card py-10 text-center text-gris-suave text-sm">
                             No hay miembros en el equipo.
                         </div>
                     )}

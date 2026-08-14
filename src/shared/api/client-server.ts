@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-const getBaseUrl = () => process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+const getBaseUrl = () => process.env.NEXT_PUBLIC_BACKEND_CMS_URL || 'http://localhost:3001';
 
 export async function apiFetchServer<T>(
     endpoint: string,

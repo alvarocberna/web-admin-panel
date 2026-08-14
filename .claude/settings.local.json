@@ -20,7 +20,9 @@
       "Bash(npx husky *)",
       "Bash(git config *)",
       "Bash(git status *)",
-      "Bash(xargs -0 sed -i -E 's/\\\\bContenedorSec\\\\b/ContenedorSecPublic/g; s/\\\\bContenedorPage\\\\b/ContenedorPagePublic/g')"
+      "Bash(xargs -0 sed -i -E 's/\\\\bContenedorSec\\\\b/ContenedorSecPublic/g; s/\\\\bContenedorPage\\\\b/ContenedorPagePublic/g')",
+      "Bash(git mv *)",
+      "Bash(cd \"c:\\\\Users\\\\cbern\\\\OneDrive\\\\Desktop\\\\PROYECTOS\\\\PRODUCTOS\\\\web-core-root\\\\web-admin-panel\" && ls src/features/__barrel_test__.ts 2>&1; rm -f /tmp/test-barrel-check.ts)"
     ]
   }
 }

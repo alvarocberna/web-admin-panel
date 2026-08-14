@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens (Integración pública) ──────────────────────
+   Estas son las ÚNICAS variables que hay que tocar para adaptar
+   los colores de los componentes de src/features/integration y
+   src/shared/integration al proyecto donde se integren.
+   ──────────────────────────────────────────────────────────── */
+:root {
+  /* Fondo / superficies */
+  --pub-fondo:              #fafafa;
+  --pub-superficie:         #ffffff;
+  --pub-superficie-rgb:     255, 255, 255; /* mismo color que --pub-superficie, en formato "r, g, b" para usar en rgba() */
+  --pub-superficie-oscura:  #18181b;
+  --pub-overlay:            #000000; /* fondos de modales/backdrops y scrims sobre imágenes */
+
+  /* Texto */
+  --pub-texto:             #18181b;
+  --pub-texto-invertido:   #ffffff; /* texto sobre superficies oscuras / de acento */
+  --pub-gris:              #52525b; /* texto secundario */
+  --pub-gris-oscuro:       #3f3f46; /* iconos, énfasis medio */
+  --pub-gris-suave:        #a1a1aa; /* texto terciario / meta / placeholders */
+
+  /* Bordes y rellenos suaves */
+  --pub-gris-mas-claro:    #f4f4f5;
+  --pub-gris-claro:        #e4e4e7;
+
+  /* Marca / acento */
+  --pub-lila:              #7c6fbf;
+  --pub-lila-oscuro:       #665a9e;
+  --pub-lila-claro:        #b7a8e8;
+
+  /* Semánticos */
+  --pub-destacado:         #fef9c3; /* badge "Destacado" — fondo */
+  --pub-destacado-texto:   #a16207; /* badge "Destacado" — texto */
+  --pub-etiqueta:          #e0f2fe; /* tag "Blog", etc — fondo */
+  --pub-etiqueta-texto:    #0c4a6e; /* tag "Blog", etc — texto */
+  --pub-rating:            #facc15; /* estrellas de calificación */
+  --pub-error:             #ef4444; /* mensajes de validación */
+
+  /* Chips de íconos de servicios (servicios.component.tsx) */
+  --pub-chip-1-bg: #c0ddef; --pub-chip-1-icono: #4a90b8;
+  --pub-chip-2-bg: #faf0c0; --pub-chip-2-icono: #decc78;
+  --pub-chip-3-bg: #fce4ec; --pub-chip-3-icono: #d47090;
+  --pub-chip-4-bg: #c8e6d4; --pub-chip-4-icono: #4f9a72;
+  --pub-chip-5-bg: #e8dff5; --pub-chip-5-icono: #c0a8dc;
+}
+
+/* ─── Mapeo a utilidades Tailwind (bg-*, text-*, border-*) ─────
+   Gracias a este bloque, clases como "text-texto", "bg-lila" o
+   "border-gris-claro" que ya usan los componentes de integración
+   quedan resueltas a los tokens de arriba.
+   ──────────────────────────────────────────────────────────── */
+@theme inline {
+  --color-fondo:             var(--pub-fondo);
+  --color-superficie:        var(--pub-superficie);
+  --color-superficie-oscura: var(--pub-superficie-oscura);
+  --color-overlay:           var(--pub-overlay);
+
+  --color-texto:             var(--pub-texto);
+  --color-texto-invertido:   var(--pub-texto-invertido);
+  --color-gris:              var(--pub-gris);
+  --color-gris-oscuro:       var(--pub-gris-oscuro);
+  --color-gris-suave:        var(--pub-gris-suave);
+  --color-gris-claro:        var(--pub-gris-claro);
+  --color-gris-mas-claro:    var(--pub-gris-mas-claro);
+
+  --color-lila:              var(--pub-lila);
+  --color-lila-oscuro:       var(--pub-lila-oscuro);
+  --color-lila-claro:        var(--pub-lila-claro);
+
+  --color-destacado:         var(--pub-destacado);
+  --color-destacado-texto:   var(--pub-destacado-texto);
+  --color-etiqueta:          var(--pub-etiqueta);
+  --color-etiqueta-texto:    var(--pub-etiqueta-texto);
+  --color-rating:            var(--pub-rating);
+  --color-error:             var(--pub-error);
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
+body {
+  background: var(--pub-fondo);
+  color: var(--pub-texto);
+}
+
+/* ─── Hover card lift ────────────────────────────────────────── */
+.hover-btn {
+  transition: box-shadow 0.15s ease;
+}
+.hover-btn:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  cursor: pointer;
+}
+
+/* ─── Button system ─────────────────────────────────────────────
+   .primary-btn / .secondary-btn son alias de .btn-primary / .btn-outline
+   (ambos nombres se usan indistintamente en los componentes de integration).
+   ──────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0 1.25rem;
+  height: 2.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+  line-height: 1;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary,
+.primary-btn {
+  background: var(--pub-lila);
+  color: var(--pub-texto-invertido);
+  border-color: var(--pub-lila);
+}
+.btn-primary:hover:not(:disabled),
+.primary-btn:hover:not(:disabled) { background: var(--pub-lila-oscuro); border-color: var(--pub-lila-oscuro); }
+
+.btn-outline,
+.secondary-btn {
+  background: transparent;
+  color: var(--pub-texto);
+  border-color: var(--pub-gris-claro);
+}
+.btn-outline:hover:not(:disabled),
+.secondary-btn:hover:not(:disabled) { background: var(--pub-gris-mas-claro); }
+
+/* ─── Card ───────────────────────────────────────────────────── */
+.card {
+  background: var(--pub-superficie);
+  border: 1px solid var(--pub-gris-claro);
+  border-radius: 0.75rem;
+}

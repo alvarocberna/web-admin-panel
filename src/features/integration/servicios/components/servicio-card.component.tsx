@@ -68,11 +68,11 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                             style={{ position: 'absolute', borderRadius: '12px' }}
                         />
                         <div
-                            className="w-full h-full absolute transition-all duration-300 ease-in-out bg-black"
+                            className="w-full h-full absolute transition-all duration-300 ease-in-out bg-overlay"
                             style={{ borderRadius: '12px', opacity: opacity / 100 }}
                         />
                         <div className="w-full h-full flex flex-col items-center justify-center" style={{ position: 'absolute' }}>
-                            <p className="text-white text-xl text-center">
+                            <p className="text-texto-invertido text-xl text-center">
                                 {servicio.nombre_servicio}
                             </p>
                         </div>
@@ -97,26 +97,26 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                         )}
                         <div className="px-4 py-3">
                             <div className="flex items-start justify-between mb-2">
-                                <p className="text-md font-semibold text-zinc-900">
+                                <p className="text-md font-semibold text-texto">
                                     {servicio.nombre_servicio}
                                 </p>
                                 {servicio.destacado && (
-                                    <span className="ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
+                                    <span className="ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium bg-destacado text-destacado-texto">
                                         Destacado
                                     </span>
                                 )}
                             </div>
                             {servicio.valor && (
-                                <p className="text-sm font-semibold text-zinc-900 mt-auto">{servicio.valor}</p>
+                                <p className="text-sm font-semibold text-texto mt-auto">{servicio.valor}</p>
                             )}
                             {servicio.nombre_promocion && (
-                                <p className="text-sm font-semibold text-zinc-900">
+                                <p className="text-sm font-semibold text-texto">
                                     {servicio.nombre_promocion}
                                     {servicio.porcentaje_descuento ? ` — ${servicio.porcentaje_descuento}% off` : ''}
                                 </p>
                             )}
                             {servicio.descripcion && (
-                                <p className="text-sm text-zinc-700 line-clamp-3 mt-2 mb-3">{servicio.descripcion}</p>
+                                <p className="text-sm text-gris-oscuro line-clamp-3 mt-2 mb-3">{servicio.descripcion}</p>
                             )}
                         </div>
                     </div>
@@ -134,31 +134,31 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                             <div
                                 className="mb-4 w-14 h-14 flex items-center justify-center rounded-2xl"
                                 style={{
-                                    backgroundColor: iconColor?.bg ?? '#F4F4F5',
-                                    color: iconColor?.icon ?? '#3F3F46',
+                                    backgroundColor: iconColor?.bg ?? 'var(--color-gris-claro)',
+                                    color: iconColor?.icon ?? 'var(--color-gris-oscuro)',
                                 }}
                             >
                                 <FontAwesomeIcon icon={iconDef} style={{ width: '22px', height: '22px' }} />
                             </div>
                         )}
                         <div className="flex items-start justify-between mb-1">
-                            <p className="text-md font-semibold text-zinc-900">
+                            <p className="text-md font-semibold text-texto">
                                 {servicio.nombre_servicio}
                             </p>
                             {servicio.destacado && (
-                                <span className="ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
+                                <span className="ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium bg-destacado text-destacado-texto">
                                     Destacado
                                 </span>
                             )}
                         </div>
                         {servicio.descripcion && (
-                            <p className="text-sm text-zinc-500 line-clamp-3 mt-1 mb-3">{servicio.descripcion}</p>
+                            <p className="text-sm text-gris-suave line-clamp-3 mt-1 mb-3">{servicio.descripcion}</p>
                         )}
                         {servicio.valor && (
-                            <p className="text-sm font-semibold text-zinc-900 mt-auto">{servicio.valor}</p>
+                            <p className="text-sm font-semibold text-texto mt-auto">{servicio.valor}</p>
                         )}
                         {servicio.nombre_promocion && (
-                            <p className="text-sm text-zinc-700">
+                            <p className="text-sm text-gris-oscuro">
                                 {servicio.nombre_promocion}
                                 {servicio.porcentaje_descuento ? ` — ${servicio.porcentaje_descuento}% off` : ''}
                             </p>

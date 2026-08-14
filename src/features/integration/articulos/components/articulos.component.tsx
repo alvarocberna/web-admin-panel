@@ -87,7 +87,7 @@ export function ArticulosPublic({ dataArticulos }: ArticulosPublicProps) {
 
                         {/* Encabezado */}
                         <div className="head-element mb-12 flex flex-col justify-start">
-                            <span className="inline-block self-start px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest mb-4 text-sky-900 bg-sky-100">
+                            <span className="inline-block self-start px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest mb-4 text-etiqueta-texto bg-etiqueta">
                                 Blog
                             </span>
                             <h2 className="text-4xl font-extrabold text-texto mb-4">
@@ -104,7 +104,7 @@ export function ArticulosPublic({ dataArticulos }: ArticulosPublicProps) {
                             {totalPaginas > 1 && (
                                 <button
                                     onClick={() => irA((pagina - 1 + totalPaginas) % totalPaginas)}
-                                    className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gris-claro shadow-sm hover:bg-fondo transition-colors"
+                                    className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-superficie border border-gris-claro shadow-sm hover:bg-fondo transition-colors"
                                     aria-label="Anterior"
                                 >
                                     <FontAwesomeIcon icon={faChevronLeft} className="text-gris-oscuro text-sm" />
@@ -122,7 +122,7 @@ export function ArticulosPublic({ dataArticulos }: ArticulosPublicProps) {
                             {totalPaginas > 1 && (
                                 <button
                                     onClick={() => irA((pagina + 1) % totalPaginas)}
-                                    className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gris-claro shadow-sm hover:bg-fondo transition-colors"
+                                    className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-superficie border border-gris-claro shadow-sm hover:bg-fondo transition-colors"
                                     aria-label="Siguiente"
                                 >
                                     <FontAwesomeIcon icon={faChevronRight} className="text-gris-oscuro text-sm" />
@@ -150,7 +150,7 @@ export function ArticulosPublic({ dataArticulos }: ArticulosPublicProps) {
                         <div className="body-element flex justify-center mt-10">
                             <Link
                                 href="/articulos"
-                                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-lila text-lila text-sm font-semibold hover:bg-lila hover:text-white transition-colors duration-200"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-lila text-lila text-sm font-semibold hover:bg-lila hover:text-texto-invertido transition-colors duration-200"
                             >
                                 Ver todos los artículos
                                 <FontAwesomeIcon icon={faArrowRight} />

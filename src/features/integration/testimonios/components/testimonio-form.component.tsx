@@ -50,8 +50,8 @@ export function TestimonioFormPublic({ sinContenedor }: { sinContenedor?: boolea
     if (enviado) {
         return (
             <div className="card px-6 py-10 text-center">
-                <p className="text-lg font-semibold text-zinc-800 mb-2">¡Testimonio enviado!</p>
-                <p className="text-sm text-zinc-500">Tu opinión será revisada antes de publicarse.</p>
+                <p className="text-lg font-semibold text-texto mb-2">¡Testimonio enviado!</p>
+                <p className="text-sm text-gris-suave">Tu opinión será revisada antes de publicarse.</p>
                 <button
                     type="button"
                     onClick={() => setEnviado(false)}
@@ -65,57 +65,57 @@ export function TestimonioFormPublic({ sinContenedor }: { sinContenedor?: boolea
 
     const form = (
         <form onSubmit={handleSubmit(onSubmit)} className="card px-6 py-6 space-y-4">
-            <h3 className="text-lg font-semibold text-zinc-900">Escribe tu testimonio</h3>
+            <h3 className="text-lg font-semibold text-texto">Escribe tu testimonio</h3>
 
             <div className="flex gap-3">
                 <div className="flex-1">
-                    <label className="block text-xs font-medium text-zinc-600 mb-1">Nombre</label>
+                    <label className="block text-xs font-medium text-gris mb-1">Nombre</label>
                     <input
                         type="text"
-                        className="w-full border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 outline-none focus:border-blue-400 transition-colors"
+                        className="w-full border border-gris-claro rounded-lg px-3 py-2 text-sm text-texto outline-none focus:border-lila transition-colors"
                         placeholder="Tu nombre"
                         {...register('nombre', {
                             required: 'Nombre requerido',
                             maxLength: { value: 100, message: 'Máximo 100 caracteres' },
                         })}
                     />
-                    {errors.nombre && <span className="text-red-500 text-xs mt-1 block">{errors.nombre.message}</span>}
+                    {errors.nombre && <span className="text-error text-xs mt-1 block">{errors.nombre.message}</span>}
                 </div>
 
                 <div className="flex-1">
-                    <label className="block text-xs font-medium text-zinc-600 mb-1">Apellido</label>
+                    <label className="block text-xs font-medium text-gris mb-1">Apellido</label>
                     <input
                         type="text"
-                        className="w-full border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 outline-none focus:border-blue-400 transition-colors"
+                        className="w-full border border-gris-claro rounded-lg px-3 py-2 text-sm text-texto outline-none focus:border-lila transition-colors"
                         placeholder="Tu apellido"
                         {...register('apellido', {
                             required: 'Apellido requerido',
                             maxLength: { value: 100, message: 'Máximo 100 caracteres' },
                         })}
                     />
-                    {errors.apellido && <span className="text-red-500 text-xs mt-1 block">{errors.apellido.message}</span>}
+                    {errors.apellido && <span className="text-error text-xs mt-1 block">{errors.apellido.message}</span>}
                 </div>
             </div>
 
             <div>
-                <label className="block text-xs font-medium text-zinc-600 mb-1">Correo electrónico</label>
+                <label className="block text-xs font-medium text-gris mb-1">Correo electrónico</label>
                 <input
                     type="email"
-                    className="w-full border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 outline-none focus:border-blue-400 transition-colors"
+                    className="w-full border border-gris-claro rounded-lg px-3 py-2 text-sm text-texto outline-none focus:border-lila transition-colors"
                     placeholder="tu@correo.com"
                     {...register('correo', {
                         required: 'Correo requerido',
                         pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Correo inválido' },
                     })}
                 />
-                {errors.correo && <span className="text-red-500 text-xs mt-1 block">{errors.correo.message}</span>}
+                {errors.correo && <span className="text-error text-xs mt-1 block">{errors.correo.message}</span>}
             </div>
 
             <div>
-                <label className="block text-xs font-medium text-zinc-600 mb-1">Testimonio</label>
+                <label className="block text-xs font-medium text-gris mb-1">Testimonio</label>
                 <textarea
                     rows={4}
-                    className="w-full border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 outline-none focus:border-blue-400 transition-colors resize-none"
+                    className="w-full border border-gris-claro rounded-lg px-3 py-2 text-sm text-texto outline-none focus:border-lila transition-colors resize-none"
                     placeholder="Comparte tu experiencia..."
                     {...register('descripcion', {
                         required: 'El testimonio es requerido',
@@ -123,11 +123,11 @@ export function TestimonioFormPublic({ sinContenedor }: { sinContenedor?: boolea
                         maxLength: { value: 1000, message: 'Máximo 1000 caracteres' },
                     })}
                 />
-                {errors.descripcion && <span className="text-red-500 text-xs mt-1 block">{errors.descripcion.message}</span>}
+                {errors.descripcion && <span className="text-error text-xs mt-1 block">{errors.descripcion.message}</span>}
             </div>
 
             <div>
-                <label className="block text-xs font-medium text-zinc-600 mb-2">Calificación</label>
+                <label className="block text-xs font-medium text-gris mb-2">Calificación</label>
                 <div className="flex gap-1">
                     {Array.from({ length: 5 }).map((_, i) => {
                         const valor = i + 1;
@@ -145,7 +145,7 @@ export function TestimonioFormPublic({ sinContenedor }: { sinContenedor?: boolea
                                 <FontAwesomeIcon
                                     icon={faStar}
                                     style={{ width: '20px', height: '20px' }}
-                                    className={activa ? 'text-yellow-400' : 'text-zinc-200'}
+                                    className={activa ? 'text-rating' : 'text-gris-claro'}
                                 />
                             </button>
                         );

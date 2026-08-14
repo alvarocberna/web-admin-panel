@@ -5,7 +5,7 @@ import Image from 'next/image';
 //FEATURES
 import { ArticuloEntityPublic } from '@/features';
 //CONFIG
-import { INTEGRATION_CONFIG } from '@/features/integration/config';
+import { INTEGRATION_CONFIG } from '@/features';
 //FONTAWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -38,22 +38,25 @@ export function ArticuloCardPublic({ articulo }: ArticuloCardProps){
                             </div>
                             {/* cuerpo */}
                             <div className='mx-5 my-5'>
-                                <h4 className='text-md font-semibold text-zinc-900'>{articulo.titulo}</h4>
+                                <h4 className='text-md font-semibold text-texto'>{articulo.titulo}</h4>
                                 {
                                     articulo.subtitulo &&
-                                    <div className='text-xs text-zinc-500'>
+                                    <div className='text-xs text-gris-suave'>
                                         {articulo.subtitulo}
                                     </div>
                                     
                                 }
                             </div>
                         </div>
-                        <div className='mx-5 mb-5 pt-5 text-xs text-zinc-500 border-t border-zinc-500 flex justify-between'>
+                        <div className='mx-5 mb-5 pt-5 text-xs text-gris-suave border-t border-gris-claro flex justify-between'>
                             <span>
                                 {fecha}
                             </span>
-                            <span className='text-cs font-semibold text-zinc-700'>
-                                Leer articulo <FontAwesomeIcon icon={faArrowRight} style={{fontSize: '12px'}}/>
+                            <span className='text-cs font-semibold text-gris-oscuro inline-flex items-center gap-1'>
+                                Leer articulo
+                                <span className='inline-flex items-center justify-center w-3 h-3'>
+                                    <FontAwesomeIcon icon={faArrowRight} style={{fontSize: '12px'}}/>
+                                </span>
                             </span>
                         </div>
                     </Link>
@@ -66,26 +69,29 @@ export function ArticuloCardPublic({ articulo }: ArticuloCardProps){
                         <div>
                             <div
                                 className="h-2 w-full"
-                                style={{ background: '#7c6fbf' }}
+                                style={{ background: 'var(--color-lila)' }}
                             /> 
                             {/* cuerpo */}
                             <div className='mx-6 my-6'>
-                                <h4 className='text-md font-semibold text-zinc-700'>{articulo.titulo}</h4>
+                                <h4 className='text-md font-semibold text-gris-oscuro'>{articulo.titulo}</h4>
                                 {
                                     articulo.subtitulo &&
-                                    <div className='text-xs text-zinc-500'>
+                                    <div className='text-xs text-gris-suave'>
                                         {articulo.subtitulo}
                                     </div>
                                     
                                 }
                             </div>
                         </div>
-                        <div className='mx-6 mb-6 pt-6 text-xs text-zinc-500 flex justify-between border-t border-zinc-500'>
+                        <div className='mx-6 mb-6 pt-6 text-xs text-gris-suave flex justify-between border-t border-gris-claro'>
                             <span>
                                 {fecha}
                             </span>
-                            <span className='text-cs font-semibold text-zinc-700'>
-                                Leer articulo <FontAwesomeIcon icon={faArrowRight} style={{fontSize: '12px'}}/>
+                            <span className='text-cs font-semibold text-gris-oscuro inline-flex items-center gap-1'>
+                                Leer articulo
+                                <span className='inline-flex items-center justify-center w-3 h-3'>
+                                    <FontAwesomeIcon icon={faArrowRight} style={{fontSize: '12px'}}/>
+                                </span>
                             </span>
                         </div>
                     </Link>

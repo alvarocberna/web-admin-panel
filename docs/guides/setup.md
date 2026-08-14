@@ -26,7 +26,7 @@ npm install
 Crear un archivo `.env.local` en la raíz del proyecto:
 
 ```env
-NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+NEXT_PUBLIC_BACKEND_CMS_URL=http://localhost:3001
 ```
 
 Ajustar la URL según el entorno donde corre el backend.
@@ -43,7 +43,7 @@ La aplicación quedará disponible en `http://localhost:3000`.
 
 | Variable | Requerida | Descripción | Default |
 |----------|-----------|------------|---------|
-| `NEXT_PUBLIC_BACKEND_URL` | Sí | URL base del backend | `http://localhost:3001` |
+| `NEXT_PUBLIC_BACKEND_CMS_URL` | Sí | URL base del backend | `http://localhost:3001` |
 
 Al ser una variable pública (`NEXT_PUBLIC_`), se embebe en el bundle del cliente. No colocar datos sensibles en esta variable.
 

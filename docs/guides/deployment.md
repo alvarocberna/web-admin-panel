@@ -14,7 +14,7 @@ npm start
 Definir antes del build:
 
 ```env
-NEXT_PUBLIC_BACKEND_URL=https://api.tu-dominio.com
+NEXT_PUBLIC_BACKEND_CMS_URL=https://api.tu-dominio.com
 ```
 
 Como la variable tiene el prefijo `NEXT_PUBLIC_`, se embebe en el bundle. Debe estar disponible **en tiempo de build**, no solo en runtime.
@@ -45,7 +45,7 @@ HSTS solo se activa automáticamente cuando el servidor corre sobre HTTPS. Confi
 ## Despliegue en Vercel
 
 1. Conectar el repositorio en vercel.com
-2. Configurar la variable de entorno `NEXT_PUBLIC_BACKEND_URL` en el panel de Vercel
+2. Configurar la variable de entorno `NEXT_PUBLIC_BACKEND_CMS_URL` en el panel de Vercel
 3. Vercel detecta Next.js automáticamente y ejecuta `npm run build`
 
 El middleware (`src/proxy.ts`) es compatible con el Edge Runtime de Vercel sin configuración adicional.
@@ -74,7 +74,7 @@ module.exports = {
     script: 'npm',
     args: 'start',
     env: {
-      NEXT_PUBLIC_BACKEND_URL: 'https://api.tu-dominio.com',
+      NEXT_PUBLIC_BACKEND_CMS_URL: 'https://api.tu-dominio.com',
       PORT: 3000
     }
   }]

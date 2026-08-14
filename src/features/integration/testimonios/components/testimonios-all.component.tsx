@@ -22,7 +22,7 @@ export function TestimoniosAllPublic({dataTestimonios}: Props) {
         <div>
             <ContenedorSecPublic>
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-2xl font-semibold text-zinc-900">
+                    <h3 className="text-2xl font-semibold text-texto">
                         {dataTestimonios.titulo}
                     </h3>
                     <button
@@ -34,11 +34,11 @@ export function TestimoniosAllPublic({dataTestimonios}: Props) {
                 </div>
 
                 {dataTestimonios.descripcion && (
-                    <p className="text-md text-zinc-700 mb-4">{dataTestimonios.descripcion}</p>
+                    <p className="text-md text-gris-oscuro mb-4">{dataTestimonios.descripcion}</p>
                 )}
 
                 {aprobados.length === 0 ? (
-                    <div className="card py-14 text-center text-zinc-400 text-sm">
+                    <div className="card py-14 text-center text-gris-suave text-sm">
                         No hay testimonios registrados.
                     </div>
                 ) : (
@@ -48,7 +48,7 @@ export function TestimoniosAllPublic({dataTestimonios}: Props) {
                             return (
                                 <div key={t.id} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
                                     <div className="card px-5 py-5 h-full flex flex-col hover-btn">
-                                        <p className="text-md font-semibold text-zinc-900 mb-1">
+                                        <p className="text-md font-semibold text-texto mb-1">
                                             {t.nombre} {t.apellido}
                                         </p>
                                         <div className="flex gap-0.5 mb-3">
@@ -57,15 +57,15 @@ export function TestimoniosAllPublic({dataTestimonios}: Props) {
                                                     key={i}
                                                     icon={faStar}
                                                     style={{ width: '12px', height: '12px' }}
-                                                    className={i < t.calificacion ? 'text-yellow-400' : 'text-zinc-200'}
+                                                    className={i < t.calificacion ? 'text-rating' : 'text-gris-claro'}
                                                 />
                                             ))}
                                         </div>
-                                        <p className="text-sm text-zinc-700 flex-1">
+                                        <p className="text-sm text-gris-oscuro flex-1">
                                             {t.descripcion}
                                         </p>
-                                        <div className="mt-4 pt-3 border-t border-zinc-100">
-                                            <p className="text-xs text-zinc-500">
+                                        <div className="mt-4 pt-3 border-t border-gris-claro">
+                                            <p className="text-xs text-gris-suave">
                                                 {fecha.toLocaleDateString('es-ES')}
                                             </p>
                                         </div>
@@ -79,19 +79,19 @@ export function TestimoniosAllPublic({dataTestimonios}: Props) {
 
             {modalAbierto && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/50 px-4"
                     onClick={() => setModalAbierto(false)}
                 >
                     <div
-                        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl"
+                        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-superficie shadow-xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
                             onClick={() => setModalAbierto(false)}
-                            className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 transition-colors"
+                            className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-gris-mas-claro hover:bg-gris-claro transition-colors"
                             aria-label="Cerrar"
                         >
-                            <FontAwesomeIcon icon={faXmark} style={{ width: '14px', height: '12px' }} className="text-zinc-600" />
+                            <FontAwesomeIcon icon={faXmark} style={{ width: '14px', height: '12px' }} className="text-gris" />
                         </button>
                         <TestimonioFormPublic sinContenedor />
                     </div>
