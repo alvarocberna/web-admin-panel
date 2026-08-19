@@ -4,18 +4,18 @@ import { CreateTestimoniosDto, UpdateTestimoniosDto } from '../dtos/testimonios.
 
 export class TestimoniosService {
 
-    public static async createTestimonios(data: CreateTestimoniosDto, proyecto_id?: string): Promise<TestimoniosEntity> {
-        const url = proyecto_id ? `testimonios/crear?proyecto_id=${proyecto_id}` : 'testimonios/crear';
+    public static async createTestimonios(data: CreateTestimoniosDto, proyectoId?: string): Promise<TestimoniosEntity> {
+        const url = proyectoId ? `testimonios/create?proyectoId=${proyectoId}` : 'testimonios/create';
         return await apiFetch<TestimoniosEntity>(url, 'POST', data);
     }
 
-    public static async getTestimonios(proyecto_id?: string): Promise<TestimoniosEntity | null> {
-        const url = proyecto_id ? `testimonios/ver-todo?proyecto_id=${proyecto_id}` : 'testimonios/ver-todo';
+    public static async getTestimonios(proyectoId?: string): Promise<TestimoniosEntity | null> {
+        const url = proyectoId ? `testimonios/all?proyectoId=${proyectoId}` : 'testimonios/all';
         return await apiFetch<TestimoniosEntity>(url, 'GET');
     }
 
-    public static async updateTestimonios(data: UpdateTestimoniosDto, proyecto_id?: string): Promise<TestimoniosEntity> {
-        const url = proyecto_id ? `testimonios/editar?proyecto_id=${proyecto_id}` : 'testimonios/editar';
+    public static async updateTestimonios(data: UpdateTestimoniosDto, proyectoId?: string): Promise<TestimoniosEntity> {
+        const url = proyectoId ? `testimonios/update?proyectoId=${proyectoId}` : 'testimonios/update';
         return await apiFetch<TestimoniosEntity>(url, 'PATCH', data);
     }
 

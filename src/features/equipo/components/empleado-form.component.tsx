@@ -14,27 +14,27 @@ import { Input, TextAreaArt, InputFile, stripTags } from '@/shared';
 import { EquipoService, EmpleadoEntity } from '@/features';
 
 interface SecEmpleadoForm {
-    id_sec?: string;
-    titulo_sec: string;
-    contenido_sec: string;
-    image_file?: FileList;
-    image_url?: string | null;
-    image_alt?: string;
-    image_position?: string;
+    idSec?: string;
+    tituloSec: string;
+    contenidoSec: string;
+    imageFile?: FileList;
+    imageUrl?: string | null;
+    imageAlt?: string;
+    imagePosition?: string;
 }
 
 interface EmpleadoForm {
-    nombre_primero: string;
-    nombre_segundo: string;
-    apellido_paterno: string;
-    apellido_materno: string;
+    nombrePrimero: string;
+    nombreSegundo: string;
+    apellidoPaterno: string;
+    apellidoMaterno: string;
     profesion: string;
     especialidad: string;
     descripcion: string;
     activo: boolean;
-    img_alt: string;
-    image_file?: FileList;
-    sec_empleado: SecEmpleadoForm[];
+    imgAlt: string;
+    imageFile?: FileList;
+    secEmpleado: SecEmpleadoForm[];
 }
 
 interface Props {
@@ -57,22 +57,22 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
         formState: { errors, isSubmitting },
     } = useForm<EmpleadoForm>({
         defaultValues: {
-            nombre_primero: '',
-            nombre_segundo: '',
-            apellido_paterno: '',
-            apellido_materno: '',
+            nombrePrimero: '',
+            nombreSegundo: '',
+            apellidoPaterno: '',
+            apellidoMaterno: '',
             profesion: '',
             especialidad: '',
             descripcion: '',
             activo: true,
-            img_alt: '',
-            sec_empleado: [],
+            imgAlt: '',
+            secEmpleado: [],
         },
     });
 
     const { fields: secFields, append: appendSec, remove: removeSec } = useFieldArray({
         control,
-        name: 'sec_empleado',
+        name: 'secEmpleado',
     });
 
     const activo = watch('activo');
@@ -80,38 +80,38 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
     useEffect(() => {
         if (!open) return;
         if (editingEmpleado) {
-            const sections = editingEmpleado.sec_empleado?.map(sec => ({
-                id_sec: sec.id,
-                titulo_sec: sec.titulo_sec ?? '',
-                contenido_sec: sec.contenido_sec ?? '',
-                image_url: sec.image_url ?? null,
-                image_alt: sec.image_alt ?? '',
-                image_position: sec.image_position ?? 'none',
+            const sections = editingEmpleado.secEmpleado?.map(sec => ({
+                idSec: sec.id,
+                tituloSec: sec.tituloSec ?? '',
+                contenidoSec: sec.contenidoSec ?? '',
+                imageUrl: sec.imageUrl ?? null,
+                imageAlt: sec.imageAlt ?? '',
+                imagePosition: sec.imagePosition ?? 'none',
             })) ?? [];
             reset({
-                nombre_primero: editingEmpleado.nombre_primero,
-                nombre_segundo: editingEmpleado.nombre_segundo ?? '',
-                apellido_paterno: editingEmpleado.apellido_paterno,
-                apellido_materno: editingEmpleado.apellido_materno ?? '',
+                nombrePrimero: editingEmpleado.nombrePrimero,
+                nombreSegundo: editingEmpleado.nombreSegundo ?? '',
+                apellidoPaterno: editingEmpleado.apellidoPaterno,
+                apellidoMaterno: editingEmpleado.apellidoMaterno ?? '',
                 profesion: editingEmpleado.profesion ?? '',
                 especialidad: editingEmpleado.especialidad ?? '',
                 descripcion: editingEmpleado.descripcion ?? '',
                 activo: editingEmpleado.activo,
-                img_alt: editingEmpleado.img_alt ?? '',
-                sec_empleado: sections,
+                imgAlt: editingEmpleado.imgAlt ?? '',
+                secEmpleado: sections,
             });
         } else {
             reset({
-                nombre_primero: '',
-                nombre_segundo: '',
-                apellido_paterno: '',
-                apellido_materno: '',
+                nombrePrimero: '',
+                nombreSegundo: '',
+                apellidoPaterno: '',
+                apellidoMaterno: '',
                 profesion: '',
                 especialidad: '',
                 descripcion: '',
                 activo: true,
-                img_alt: '',
-                sec_empleado: [],
+                imgAlt: '',
+                secEmpleado: [],
             });
         }
         setAddSec(true);
@@ -120,20 +120,20 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
     const onSubmit = async (data: EmpleadoForm) => {
         try {
             const payload = {
-                nombre_primero: stripTags(data.nombre_primero),
-                nombre_segundo: stripTags(data.nombre_segundo) || null,
-                apellido_paterno: stripTags(data.apellido_paterno),
-                apellido_materno: stripTags(data.apellido_materno) || null,
+                nombrePrimero: stripTags(data.nombrePrimero),
+                nombreSegundo: stripTags(data.nombreSegundo) || null,
+                apellidoPaterno: stripTags(data.apellidoPaterno),
+                apellidoMaterno: stripTags(data.apellidoMaterno) || null,
                 profesion: stripTags(data.profesion),
                 especialidad: stripTags(data.especialidad) || null,
                 descripcion: stripTags(data.descripcion) || null,
                 orden: null,
                 activo: data.activo,
-                img_url: editingEmpleado?.img_url ?? null,
-                img_alt: stripTags(data.img_alt) || null,
+                imgUrl: editingEmpleado?.imgUrl ?? null,
+                imgAlt: stripTags(data.imgAlt) || null,
                 slug: null,
-                image_file: data.image_file,
-                sec_empleado: data.sec_empleado,
+                imageFile: data.imageFile,
+                secEmpleado: data.secEmpleado,
             };
 
             if (editingEmpleado) {
@@ -171,7 +171,7 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                         <div>
                             <Input
                                 label="Primer nombre"
-                                name="nombre_primero"
+                                name="nombrePrimero"
                                 register={register}
                                 rules={{
                                     required: 'El primer nombre es requerido',
@@ -179,14 +179,14 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                                     maxLength: {value: 50, message: 'Máximo 50 caracteres'}
                                  }}
                             />
-                            {errors.nombre_primero && (
-                                <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_primero.message}</p>
+                            {errors.nombrePrimero && (
+                                <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombrePrimero.message}</p>
                             )}
                         </div>
                         <div>
                             <Input
                                 label="Segundo nombre"
-                                name="nombre_segundo"
+                                name="nombreSegundo"
                                 register={register}
                                 rules={{
                                     required: false,
@@ -197,7 +197,7 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                         <div>
                             <Input
                                 label="Apellido paterno"
-                                name="apellido_paterno"
+                                name="apellidoPaterno"
                                 register={register}
                                 rules={{
                                     required: 'El apellido paterno es requerido',
@@ -205,14 +205,14 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                                     maxLength: {value: 50, message: 'Máximo 50 caracteres'}
                                 }}
                             />
-                            {errors.apellido_paterno && (
-                                <p className="text-xs text-red-500 mt-1 ml-1">{errors.apellido_paterno.message}</p>
+                            {errors.apellidoPaterno && (
+                                <p className="text-xs text-red-500 mt-1 ml-1">{errors.apellidoPaterno.message}</p>
                             )}
                         </div>
                         <div>
                             <Input
                                 label="Apellido materno"
-                                name="apellido_materno"
+                                name="apellidoMaterno"
                                 register={register}
                                 rules={{
                                     required: false,
@@ -248,15 +248,15 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                         <div className="sm:col-span-2">
                             <InputFile
                                 label="Imagen del empleado"
-                                name="image_file"
+                                name="imageFile"
                                 register={register}
-                                currentImageUrl={editingEmpleado?.img_url}
+                                currentImageUrl={editingEmpleado?.imgUrl}
                             />
                         </div>
                         <div className="sm:col-span-2">
                             <Input
                                 label="Texto alternativo de la imagen (alt)"
-                                name="img_alt"
+                                name="imgAlt"
                                 register={register}
                                 rules={{
                                     required: false,
@@ -310,34 +310,34 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                                     <p className="text-xs font-semibold text-zinc-500 mb-2">Sección {index + 1}</p>
                                     <Input
                                         label="Título"
-                                        name={`sec_empleado.${index}.titulo_sec` as any}
+                                        name={`secEmpleado.${index}.tituloSec` as any}
                                         register={register}
                                         rules={{ required: false, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
                                     />
                                     <TextAreaArt
                                         label="Contenido"
-                                        name={`sec_empleado.${index}.contenido_sec` as any}
+                                        name={`secEmpleado.${index}.contenidoSec` as any}
                                         register={register}
                                         rules={{ required: false, maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
                                     />
-                                    {field.image_position !== 'none' && (
+                                    {field.imagePosition !== 'none' && (
                                         <InputFile
                                             label="Imagen"
-                                            name={`sec_empleado.${index}.image_file` as any}
+                                            name={`secEmpleado.${index}.imageFile` as any}
                                             register={register}
-                                            currentImageUrl={field.image_url}
+                                            currentImageUrl={field.imageUrl}
                                         />
                                     )}
-                                    {field.image_position !== 'none' && (
+                                    {field.imagePosition !== 'none' && (
                                         <Input
                                             label="Texto alternativo de la imagen (alt)"
-                                            name={`sec_empleado.${index}.image_alt` as any}
+                                            name={`secEmpleado.${index}.imageAlt` as any}
                                             register={register}
                                             rules={{ required: false, maxLength: { value: 100, message: 'Máximo 100 caracteres' } }}
                                         />
                                     )}
-                                    <input type="hidden" {...register(`sec_empleado.${index}.image_position` as any)} />
-                                    <input type="hidden" {...register(`sec_empleado.${index}.id_sec` as any)} />
+                                    <input type="hidden" {...register(`secEmpleado.${index}.imagePosition` as any)} />
+                                    <input type="hidden" {...register(`secEmpleado.${index}.idSec` as any)} />
                                 </div>
                             ))}
                         </div>
@@ -381,7 +381,7 @@ export function EmpleadoForm({ open, editingEmpleado, onClose, onSaved }: Props)
                                             type="button"
                                             onClick={() => {
                                                 setAddSec(true);
-                                                appendSec({ id_sec: '', titulo_sec: '', contenido_sec: '', image_file: undefined, image_alt: '', image_position: position });
+                                                appendSec({ idSec: '', tituloSec: '', contenidoSec: '', imageFile: undefined, imageAlt: '', imagePosition: position });
                                             }}
                                             className="flex-1 flex flex-col items-center gap-1.5 group"
                                             title={label}

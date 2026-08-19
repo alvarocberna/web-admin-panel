@@ -3,40 +3,40 @@ import { ServiciosEntity } from '../entities/servicios.entity';
 import { ServicioEntity } from '../entities/servicio.entity';
 
 export interface SecServicioFormInput {
-    id_sec?: string;
-    titulo_sec: string;
-    contenido_sec: string;
-    image_file?: FileList;
-    image_url?: string | null;
-    image_alt?: string;
-    image_position?: string;
+    idSec?: string;
+    tituloSec: string;
+    contenidoSec: string;
+    imageFile?: FileList;
+    imageUrl?: string | null;
+    imageAlt?: string;
+    imagePosition?: string;
 }
 
 export interface ServicioFormInput {
-    nombre_servicio: string;
+    nombreServicio: string;
     descripcion: string | null;
     valor: number | null;
-    nombre_promocion: string | null;
-    porcentaje_descuento: number | null;
+    nombrePromocion: string | null;
+    porcentajeDescuento: number | null;
     destacado: boolean | null;
     icono: string | null;
     orden: string | null;
     activo: boolean;
-    img_url?: string | null;
-    img_alt?: string | null;
-    image_file?: FileList;
-    sec_servicio?: SecServicioFormInput[];
+    imgUrl?: string | null;
+    imgAlt?: string | null;
+    imageFile?: FileList;
+    secServicio?: SecServicioFormInput[];
 }
 
 export class ServiciosService {
 
-    public static async getServicios(proyecto_id?: string): Promise<ServiciosEntity | null> {
-        const url = proyecto_id ? `servicios/ver-todo?proyecto_id=${proyecto_id}` : 'servicios/ver-todo';
+    public static async getServicios(proyectoId?: string): Promise<ServiciosEntity | null> {
+        const url = proyectoId ? `servicios/all?proyectoId=${proyectoId}` : 'servicios/all';
         return await apiFetchServer<ServiciosEntity>(url, 'GET');
     }
 
-    public static async getServicio(id_servicio: string): Promise<ServicioEntity> {
-        return await apiFetchServer<ServicioEntity>(`servicios/servicio/ver/${id_servicio}`, 'GET');
+    public static async getServicio(servicioId: string): Promise<ServicioEntity> {
+        return await apiFetchServer<ServicioEntity>(`servicios/servicio/view/${servicioId}`, 'GET');
     }
 
 }

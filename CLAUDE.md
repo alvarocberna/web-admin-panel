@@ -61,7 +61,7 @@ This client is browser-only (cookie-based). For server-side fetching, cookies/he
 
 **Auth flow**: credentials → backend sets HttpOnly cookies (`access_token`, `refresh_token`) → middleware gates routes → `apiFetch` handles 401 refresh automatically.
 
-**`useAuth()` hook** (from `@/features`): fetches current user via `GET /usuario/authenticated`, redirects to login on session expiry.
+**`useAuth()` hook** (from `@/features`): fetches current user via `GET /usuario/user/authenticated`, redirects to login on session expiry.
 
 ### UI Patterns
 
@@ -73,9 +73,9 @@ This client is browser-only (cookie-based). For server-side fetching, cookies/he
 ### Key Backend Endpoints
 
 - `POST /auth/login` / `POST /auth/logout` / `POST /auth/refresh`
-- `GET /usuario/authenticated`
-- `GET /articulo/ver-todos`, `GET /articulo/ver/{id}`
-- `POST /articulo/crear`, `PUT /articulo/editar/{id}`, `DELETE /articulo/delete/{id}`
+- `GET /usuario/user/authenticated`
+- `GET /articulos/all`, `GET /articulos/articulo/view/{articuloId}`
+- `POST /articulos/articulo/create`, `PUT /articulos/articulo/update/{articuloId}`, `DELETE /articulos/articulo/delete/{articuloId}`
 
 ## Key Files
 

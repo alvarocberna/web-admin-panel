@@ -1,13 +1,13 @@
 
 export abstract class CreateProyectoDto {
-    abstract nombre_proyecto: string;
+    abstract nombreProyecto: string;
     abstract descripcion: string;
     abstract cliente: string;
     abstract activo: boolean;
-    abstract equipo_habilitado: boolean;
-    abstract servicios_habilitado: boolean;
-    abstract articulos_habilitado: boolean;
-    abstract testimonios_habilitado: boolean;
+    abstract equipoHabilitado: boolean;
+    abstract serviciosHabilitado: boolean;
+    abstract articulosHabilitado: boolean;
+    abstract testimoniosHabilitado: boolean;
     abstract nombre: string;
     abstract apellido: string;
     abstract email: string;
@@ -16,7 +16,7 @@ export abstract class CreateProyectoDto {
 }
 
 export abstract class UpdateProyectoDto {
-    abstract nombre_proyecto: string;
+    abstract nombreProyecto: string;
     abstract descripcion: string;
     abstract cliente: string;
     abstract activo: boolean;

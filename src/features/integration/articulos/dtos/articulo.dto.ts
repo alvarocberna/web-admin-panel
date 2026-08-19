@@ -3,35 +3,35 @@ import {CreateSecArticuloDtoPublic, UpdateSecArticuloDtoPublic} from './sec-arti
 
 export abstract class CreateArticuloFullDtoPublic {
         abstract articulo: CreateArticuloDtoPublic;
-        abstract sec_articulo: CreateSecArticuloDtoPublic[]
+        abstract secArticulo: CreateSecArticuloDtoPublic[]
 }
 
 export abstract class CreateArticuloDtoPublic{
         abstract titulo: string;
         abstract subtitulo: string;
         abstract autor: string;
-        abstract fecha_publicacion: Date;
-        abstract fecha_actualizacion: Date | null;
+        abstract fechaPublicacion: Date;
+        abstract fechaActualizacion: Date | null;
         abstract status: string;
         abstract activo: boolean;
         abstract slug: string;
-        abstract image_url: string | null;
-        abstract image_alt: string | null;
-        abstract image_position: string | null;
-        abstract sec_articulo: CreateSecArticuloDtoPublic[]
+        abstract imageUrl: string | null;
+        abstract imageAlt: string | null;
+        abstract imagePosition: string | null;
+        abstract secArticulo: CreateSecArticuloDtoPublic[]
 }
 
 export abstract class UpdateArticuloDtoPublic{
         abstract titulo: string;
         abstract subtitulo: string;
         abstract autor: string;
-        abstract fecha_publicacion: Date;
-        abstract fecha_actualizacion: Date | null;
+        abstract fechaPublicacion: Date;
+        abstract fechaActualizacion: Date | null;
         abstract status: string;
         abstract activo: boolean;
         abstract slug: string;
-        abstract image_url: string | null;
-        abstract image_alt: string | null;
-        abstract image_position: string | null;
-        abstract sec_articulo: UpdateSecArticuloDtoPublic[]
+        abstract imageUrl: string | null;
+        abstract imageAlt: string | null;
+        abstract imagePosition: string | null;
+        abstract secArticulo: UpdateSecArticuloDtoPublic[]
 }

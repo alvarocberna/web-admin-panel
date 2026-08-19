@@ -14,14 +14,14 @@ import {InputArt, InputFile} from '@/shared';
 import {toast} from 'react-toastify'
 
 
-export function ArticuloFormUpdate(props: {id_articulo: string}){
+export function ArticuloFormUpdate(props: {articuloId: string}){
     //definimos estados
     const [loading, setLoading] = useState<boolean>(true);
     const [addSec, setAddSec] = useState(true);
     const [articuloData, setArticuloData] = useState<ArticuloEntity | null>(null);
     const [activo, setActivo] = useState<boolean>(true);
     //definimos variables
-    const id_articulo = props.id_articulo;
+    const articuloId = props.articuloId;
     const router = useRouter();
 
     //destructuring de useForm 
@@ -35,30 +35,30 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
         defaultValues: {
             titulo: '',
             subtitulo: '',
-            image_file: undefined,
-            image_alt: '',
-            sec_articulo: []
+            imageFile: undefined,
+            imageAlt: '',
+            secArticulo: []
         }
     })
     //traemos los datos del articulo al cargar el componente
     useEffect(() => {
         const fetchArticulo = async () => {
             try{
-                const data = await ArticulosService.getArticuloById(id_articulo);
+                const data = await ArticulosService.getArticuloById(articuloId);
                 setArticuloData(data);
                 setActivo(data.activo ?? true);
                 reset({ //forma estandar para poblar un form con datos
                     titulo: data.titulo ?? '',
                     subtitulo: data.subtitulo ?? '',
-                    image_url: data.image_url ?? null,
-                    image_alt: data.image_alt ?? '',
-                    sec_articulo: data.sec_articulo?.map(sec => ({
-                        id_sec: sec.id,
-                        titulo_sec: sec.titulo_sec ?? '',
-                        contenido_sec: sec.contenido_sec ?? '',
-                        image_url: sec.image_url ?? null,
-                        image_alt: sec.image_alt ?? '',
-                        image_position: sec.image_position ?? 'left'
+                    imageUrl: data.imageUrl ?? null,
+                    imageAlt: data.imageAlt ?? '',
+                    secArticulo: data.secArticulo?.map(sec => ({
+                        idSec: sec.id,
+                        tituloSec: sec.tituloSec ?? '',
+                        contenidoSec: sec.contenidoSec ?? '',
+                        imageUrl: sec.imageUrl ?? null,
+                        imageAlt: sec.imageAlt ?? '',
+                        imagePosition: sec.imagePosition ?? 'left'
                     })) ?? []
                 });
             }catch(error){
@@ -68,18 +68,18 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
             }  
         }
         fetchArticulo();
-    }, [id_articulo, reset]);
+    }, [articuloId, reset]);
     //destructuring de useFieldArray
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "sec_articulo"
+        name: "secArticulo"
     });
 
     //fn onSubmit
     const onSubmit: SubmitHandler<UpdateArticuloForm> = async (data) => {
         try{
             console.log("intentando actualizar articulo")
-            await ArticulosService.updateArticulo(id_articulo, { ...data, activo });
+            await ArticulosService.updateArticulo(articuloId, { ...data, activo });
             toast.success("Articulo actualizado");
             router.push('/articulos');
         }catch(error){
@@ -133,15 +133,15 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
                 {errors.subtitulo && <span className="text-red-600 text-xs mt-1 block">{errors.subtitulo.message}</span>}
                 <InputFile
                     label="Imagen de portada"
-                    name="image_file"
+                    name="imageFile"
                     register={register}
                     rules={{ required: false }}
                     accept="image/*"
-                    currentImageUrl={articuloData?.image_url}
+                    currentImageUrl={articuloData?.imageUrl}
                 />
                 <InputArt
                     label="Texto alternativo de la imagen (Alt)"
-                    name="image_alt"
+                    name="imageAlt"
                     type="text"
                     register={register}
                     rules={{ required: false, maxLength: {value: 100, message: 'Máximo 100 caracteres'} }}
@@ -152,7 +152,7 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
             <div className="space-y-0">
                 {fields.map((field, index) => (
                     <div className="relative mt-3" key={field.id}>
-                        <SecArticulo field={field} index={index} register={register} currentImageUrl={field.image_url} />
+                        <SecArticulo field={field} index={index} register={register} currentImageUrl={field.imageUrl} />
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -206,7 +206,7 @@ export function ArticuloFormUpdate(props: {id_articulo: string}){
                                 type="button"
                                 onClick={() => {
                                     setAddSec(true);
-                                    append({ id_sec: "", titulo_sec: "", contenido_sec: "", image_file: undefined, image_alt: "", image_position: position });
+                                    append({ idSec: "", tituloSec: "", contenidoSec: "", imageFile: undefined, imageAlt: "", imagePosition: position });
                                 }}
                                 className="flex-1 flex flex-col items-center gap-1.5 group"
                                 title={label}

@@ -8,13 +8,13 @@ import Image from "next/image"
 import { ArticulosService, ArticuloEntity, SecArticuloEntity } from "@/features"
 
 export default function VerArticulo() {
-    const id_articulo = useParams<{ articuloId: string }>().articuloId
+    const articuloId = useParams<{ articuloId: string }>().articuloId
     const [articulo, setArticulo] = useState<ArticuloEntity | null>(null)
 
     useEffect(() => {
         const fetchArticulo = async () => {
             try {
-                const data = await ArticulosService.getArticuloById(id_articulo)
+                const data = await ArticulosService.getArticuloById(articuloId)
                 setArticulo(data)
             } catch (error) {
                 console.log("error: " + error)
@@ -23,7 +23,7 @@ export default function VerArticulo() {
         fetchArticulo()
     }, [])
 
-    const fecha = new Date(articulo?.fecha_publicacion)
+    const fecha = new Date(articulo?.fechaPublicacion)
     const anno = fecha.getFullYear()
     const mes = (fecha.getMonth() + 1).toString().padStart(2, "0")
     const dia = fecha.getDate().toString().padStart(2, "0")
@@ -35,7 +35,7 @@ export default function VerArticulo() {
                     <h3 className="text-3xl mb-2">{articulo.titulo}</h3>
                     <h4 className="text-xl mb-10">{articulo.subtitulo}</h4>
                     <div>
-                        {articulo.sec_articulo.map((data: SecArticuloEntity, index: number) => (
+                        {articulo.secArticulo.map((data: SecArticuloEntity, index: number) => (
                             <SecArticulo key={index} data={data} />
                         ))}
                     </div>
@@ -52,7 +52,7 @@ interface SecArticuloInterface {
 }
 
 function SecArticulo({ data }: SecArticuloInterface) {
-    const imagePosition = data.image_position
+    const imagePosition = data.imagePosition
     const flex = imagePosition === 'left' ? 'flex flex-row-reverse' : 'flex'
     const textW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[60%]' : 'w-full'
     const imgW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[40%]' : 'w-full'
@@ -61,13 +61,13 @@ function SecArticulo({ data }: SecArticuloInterface) {
     return (
         <div className={`${flex} justify-between mb-10`}>
             <div className={`${textW} ${textHidden} px-2`}>
-                <h4 className="text-2xl">{data.titulo_sec}</h4>
-                <p className="text-md">{data.contenido_sec}</p>
+                <h4 className="text-2xl">{data.tituloSec}</h4>
+                <p className="text-md">{data.contenidoSec}</p>
             </div>
             <div className={`${imgW} h-75 ${imgHidden} relative`}>
                 <Image
-                    src={data.image_url || ''}
-                    alt={data.image_alt || ''}
+                    src={data.imageUrl || ''}
+                    alt={data.imageAlt || ''}
                     fill unoptimized
                     className="object-cover rounded-lg"
                     sizes="(max-width: 768px) 100vw, 40vw"

@@ -65,8 +65,8 @@ export function UsuarioAdminForm({ open, editingUsuario, proyectoId, onClose, on
                     email: data.email,
                     password: data.password,
                     rol: data.rol,
-                    img_url: null,
-                    img_alt: null,
+                    imgUrl: null,
+                    imgAlt: null,
                 };
                 await UsuarioService.createUsuarioAdmin(payload, proyectoId);
                 const lista = await UsuarioService.getUsuariosAdmin(proyectoId);

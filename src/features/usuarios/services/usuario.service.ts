@@ -14,7 +14,7 @@ export class UsuarioService{
     }
 
     public static async updateUsuarioInfo(data: UpdateUsuarioDto): Promise<UsuarioEntity>{
-        return await apiFetch<UsuarioEntity>('usuario/user/editar', 'PATCH', data)
+        return await apiFetch<UsuarioEntity>('usuario/user/update', 'PATCH', data)
     }
 
     public static async updateUsuarioPassword(data: UpdateUsuarioPasswordDto): Promise<void>{
@@ -23,24 +23,24 @@ export class UsuarioService{
 
     // ── Admin ──────────────────────────────────────────────────────────────
 
-    public static async createUsuarioAdmin(data: CreateUsuarioDto, proyecto_id: string): Promise<UsuarioEntity> {
-        return await apiFetch<UsuarioEntity>(`usuario/admin/crear?proyecto_id=${proyecto_id}`, 'POST', data);
+    public static async createUsuarioAdmin(data: CreateUsuarioDto, proyectoId: string): Promise<UsuarioEntity> {
+        return await apiFetch<UsuarioEntity>(`usuario/admin/create?proyectoId=${proyectoId}`, 'POST', data);
     }
 
-    public static async getUsuariosAdmin(proyecto_id: string): Promise<UsuarioEntity[]> {
-        return await apiFetch<UsuarioEntity[]>(`usuario/admin/ver-todo?proyecto_id=${proyecto_id}`, 'GET');
+    public static async getUsuariosAdmin(proyectoId: string): Promise<UsuarioEntity[]> {
+        return await apiFetch<UsuarioEntity[]>(`usuario/admin/all?proyectoId=${proyectoId}`, 'GET');
     }
 
-    public static async getUsuarioAdmin(usuario_id: string): Promise<UsuarioEntity> {
-        return await apiFetch<UsuarioEntity>(`usuario/admin/ver/${usuario_id}`, 'GET');
+    public static async getUsuarioAdmin(usuarioId: string): Promise<UsuarioEntity> {
+        return await apiFetch<UsuarioEntity>(`usuario/admin/view/${usuarioId}`, 'GET');
     }
 
-    public static async updateUsuarioAdmin(usuario_id: string, data: UpdateUsuarioDto): Promise<UsuarioEntity> {
-        return await apiFetch<UsuarioEntity>(`usuario/admin/editar/${usuario_id}`, 'PATCH', data);
+    public static async updateUsuarioAdmin(usuarioId: string, data: UpdateUsuarioDto): Promise<UsuarioEntity> {
+        return await apiFetch<UsuarioEntity>(`usuario/admin/update/${usuarioId}`, 'PATCH', data);
     }
 
-    public static async deleteUsuarioAdmin(usuario_id: string, proyecto_id: string): Promise<void> {
-        return await apiFetch<void>(`usuario/admin/eliminar/${usuario_id}?proyecto_id=${proyecto_id}`, 'DELETE');
+    public static async deleteUsuarioAdmin(usuarioId: string, proyectoId: string): Promise<void> {
+        return await apiFetch<void>(`usuario/admin/delete/${usuarioId}?proyectoId=${proyectoId}`, 'DELETE');
     }
 
 }

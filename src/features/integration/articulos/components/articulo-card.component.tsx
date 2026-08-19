@@ -17,7 +17,7 @@ interface ArticuloCardProps {
 const ESTILO = INTEGRATION_CONFIG.articulo.estilo;
 
 export function ArticuloCardPublic({ articulo }: ArticuloCardProps){
-    let date = new Date(articulo.fecha_publicacion)
+    let date = new Date(articulo.fechaPublicacion)
     let fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '-');
 
     return(
@@ -29,8 +29,8 @@ export function ArticuloCardPublic({ articulo }: ArticuloCardProps){
                         <div>
                             <div className='w-full h-48 relative'>
                                 <Image
-                                    src={articulo.image_url || ''}
-                                    alt={articulo.image_alt!}
+                                    src={articulo.imageUrl || ''}
+                                    alt={articulo.imageAlt!}
                                     fill={true}
                                     unoptimized
                                     className='object-cover'

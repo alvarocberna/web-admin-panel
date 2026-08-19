@@ -5,8 +5,8 @@ import { EmpleadoEntityPublic } from '../entities/empleado.entity';
 export class EquipoServicePublic {
 
     public static async getEquipo(): Promise<EquipoEntityPublic | null> {
-        const id_proyecto = process.env.NEXT_PUBLIC_PROYECTO_ID;
-        return await apiFetchCMS<EquipoEntityPublic>(`equipo/project/ver-todo?proyecto_id=${id_proyecto}`, 'GET');
+        const proyectoId = process.env.NEXT_PUBLIC_PROYECTO_ID;
+        return await apiFetchCMS<EquipoEntityPublic>(`equipo/project/all?proyectoId=${proyectoId}`, 'GET');
     }
 
     public static async getEmpleadoBySlug(slug: string): Promise<EmpleadoEntityPublic | null> {

@@ -7,12 +7,12 @@ import { TitleSec } from '@/shared'
 import { ArticuloFormUpdate } from '@/features'
 
 export default function ModificarArticuloPage() {
-    const id_articulo = useParams<{ articuloId: string }>().articuloId
+    const articuloId = useParams<{ articuloId: string }>().articuloId
 
     return (
         <>
             <TitleSec title='Modificar Articulo' />
-            <ArticuloFormUpdate id_articulo={id_articulo} />
+            <ArticuloFormUpdate articuloId={articuloId} />
         </>
     )
 }

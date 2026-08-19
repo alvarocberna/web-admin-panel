@@ -3,41 +3,41 @@ import { EquipoEntity } from '../entities/equipo.entity';
 import { EmpleadoEntity } from '../entities/empleado.entity';
 
 export interface SecEmpleadoFormInput {
-    id_sec?: string;
-    titulo_sec: string;
-    contenido_sec: string;
-    image_file?: FileList;
-    image_url?: string | null;
-    image_alt?: string;
-    image_position?: string;
+    idSec?: string;
+    tituloSec: string;
+    contenidoSec: string;
+    imageFile?: FileList;
+    imageUrl?: string | null;
+    imageAlt?: string;
+    imagePosition?: string;
 }
 
 export interface EmpleadoFormInput {
-    nombre_primero: string;
-    nombre_segundo: string | null;
-    apellido_paterno: string;
-    apellido_materno: string | null;
+    nombrePrimero: string;
+    nombreSegundo: string | null;
+    apellidoPaterno: string;
+    apellidoMaterno: string | null;
     profesion: string;
     especialidad: string | null;
     descripcion: string | null;
     orden: string | null;
     activo: boolean;
-    img_url?: string | null;
-    img_alt?: string | null;
+    imgUrl?: string | null;
+    imgAlt?: string | null;
     slug?: string | null;
-    image_file?: FileList;
-    sec_empleado?: SecEmpleadoFormInput[];
+    imageFile?: FileList;
+    secEmpleado?: SecEmpleadoFormInput[];
 }
 
 export class EquipoService {
 
-    public static async getEquipo(proyecto_id?: string): Promise<EquipoEntity | null> {
-        const url = proyecto_id ? `equipo/ver-todo?proyecto_id=${proyecto_id}` : 'equipo/ver-todo';
+    public static async getEquipo(proyectoId?: string): Promise<EquipoEntity | null> {
+        const url = proyectoId ? `equipo/all?proyectoId=${proyectoId}` : 'equipo/all';
         return await apiFetchServer<EquipoEntity>(url, 'GET');
     }
 
-    public static async getEmpleado(id_empleado: string): Promise<EmpleadoEntity> {
-        return await apiFetchServer<EmpleadoEntity>(`equipo/empleado/ver/${id_empleado}`, 'GET');
+    public static async getEmpleado(empleadoId: string): Promise<EmpleadoEntity> {
+        return await apiFetchServer<EmpleadoEntity>(`equipo/empleado/view/${empleadoId}`, 'GET');
     }
 
 }

@@ -12,12 +12,12 @@ export class UsuarioService{
 
     // ── Admin ──────────────────────────────────────────────────────────────
 
-    public static async getUsuariosAdmin(proyecto_id: string): Promise<UsuarioEntity[]> {
-        return await apiFetchServer<UsuarioEntity[]>(`usuario/admin/ver-todo?proyecto_id=${proyecto_id}`, 'GET');
+    public static async getUsuariosAdmin(proyectoId: string): Promise<UsuarioEntity[]> {
+        return await apiFetchServer<UsuarioEntity[]>(`usuario/admin/all?proyectoId=${proyectoId}`, 'GET');
     }
 
-    public static async getUsuarioAdmin(usuario_id: string): Promise<UsuarioEntity> {
-        return await apiFetchServer<UsuarioEntity>(`usuario/admin/ver/${usuario_id}`, 'GET');
+    public static async getUsuarioAdmin(usuarioId: string): Promise<UsuarioEntity> {
+        return await apiFetchServer<UsuarioEntity>(`usuario/admin/view/${usuarioId}`, 'GET');
     }
 
 }

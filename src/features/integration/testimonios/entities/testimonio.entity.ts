@@ -7,7 +7,7 @@ export class TestimonioEntityPublic {
         public descripcion: string,
         public calificacion: number,
         public status: string,
-        public fecha_creacion: Date,
-        public testimonios_id: string,
+        public fechaCreacion: Date,
+        public testimoniosId: string,
     ){}
 }

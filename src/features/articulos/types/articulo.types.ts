@@ -2,37 +2,37 @@
 export class CreateArticuloForm{
     "titulo": string
     "subtitulo": string
-    "image_file"?: FileList
-    "image_alt"?: string
-    "sec_articulo": CreateSecArticuloForm[]  
+    "imageFile"?: FileList
+    "imageAlt"?: string
+    "secArticulo": CreateSecArticuloForm[]  
 
 }
 
 export class CreateSecArticuloForm{
-    "titulo_sec": string
-    "contenido_sec": string
-    "image_file"?: FileList
-    "image_alt"?: string
-    "image_position"?: string
+    "tituloSec": string
+    "contenidoSec": string
+    "imageFile"?: FileList
+    "imageAlt"?: string
+    "imagePosition"?: string
 }
 
 export class UpdateArticuloForm{
     "titulo": string
     "subtitulo": string
     "activo"?: boolean
-    "image_url"?: string | null
-    "image_file"?: FileList
-    "image_alt"?: string
-    "sec_articulo": UpdateSecArticuloForm[]
+    "imageUrl"?: string | null
+    "imageFile"?: FileList
+    "imageAlt"?: string
+    "secArticulo": UpdateSecArticuloForm[]
 
 }
 
 export class UpdateSecArticuloForm{
-    "id_sec": string
-    "titulo_sec": string
-    "contenido_sec": string
-    "image_url"?: string | null
-    "image_file"?: FileList
-    "image_alt"?: string
-    "image_position"?: string
+    "idSec": string
+    "tituloSec": string
+    "contenidoSec": string
+    "imageUrl"?: string | null
+    "imageFile"?: FileList
+    "imageAlt"?: string
+    "imagePosition"?: string
 }
