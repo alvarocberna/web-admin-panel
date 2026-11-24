@@ -23,11 +23,6 @@ export default function VerArticulo() {
         fetchArticulo()
     }, [])
 
-    const fecha = new Date(articulo?.fechaPublicacion)
-    const anno = fecha.getFullYear()
-    const mes = (fecha.getMonth() + 1).toString().padStart(2, "0")
-    const dia = fecha.getDate().toString().padStart(2, "0")
-
     return (
         <>
             {articulo && (
@@ -40,11 +35,21 @@ export default function VerArticulo() {
                         ))}
                     </div>
                     <p>Autor: {articulo.autor}</p>
-                    <p>Publicado el {dia}/{mes}/{anno}</p>
+                    {articulo.fechaPublicacion && (
+                        <p>Publicado el {formatFecha(articulo.fechaPublicacion)}</p>
+                    )}
                 </div>
             )}
         </>
     )
+}
+
+function formatFecha(value: Date | string): string {
+    const fecha = new Date(value)
+    const anno = fecha.getFullYear()
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, "0")
+    const dia = fecha.getDate().toString().padStart(2, "0")
+    return `${dia}/${mes}/${anno}`
 }
 
 interface SecArticuloInterface {
