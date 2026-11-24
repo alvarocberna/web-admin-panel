@@ -8,7 +8,7 @@ export class EquipoEntityPublic {
         public activo: boolean,
         public notificacion: boolean,
         public habilitado: boolean,
-        public proyecto_id: string,
+        public proyectoId: string,
         public empleado: EmpleadoEntityPublic[],
     ) {}
 }

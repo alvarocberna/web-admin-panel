@@ -4,6 +4,8 @@
 
 Todos los nombres de components, dtos, entities, services y métodos están en ingles, pero incluyen ciertas palabras en español pertenecientes a los nombres de las entidades de las bases de datos. Ejemplo: La base de datos tiene la entidad 'articulos' por lo que los métodos para llamar articulos se llamarán getArticulos o getArticulosById.
 
+Las propiedades de los DTOs y entities están en camelCase, conservando el vocabulario en español cuando deriva del dominio del backend (ej. `proyectoId`, `nombreProyecto`, `imgUrl`). Esto es consistente con los nombres de campo que expone la API — ver [Convenciones de código](../../../web-core/docs/architecture/layers.md#convenciones-de-código) en `web-core`.
+
 ## Componentes React
 
 ### Server Components (Pages)
@@ -37,11 +39,11 @@ Los DTOs son **clases abstractas** que definen la forma de los datos de request/
 
 ```ts
 export abstract class CreateEquipoDto {
-  proyecto_id!: string
+  proyectoId!: string
 }
 
 export abstract class UpdateEquipoDto {
-  proyecto_id?: string
+  proyectoId?: string
 }
 ```
 
@@ -53,13 +55,13 @@ Las entidades son **clases con constructor** que representan los modelos del dom
 export class EmpleadoEntity {
   constructor(
     public id: string,
-    public nombre_primero: string,
-    public apellido_paterno: string,
+    public nombrePrimero: string,
+    public apellidoPaterno: string,
     public profesion: string,
     public orden: number,
     public activo: boolean,
-    public img_url: string,
-    public equipo_id: string,
+    public imgUrl: string,
+    public equipoId: string,
   ) {}
 }
 ```

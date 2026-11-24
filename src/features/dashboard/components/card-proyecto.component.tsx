@@ -8,8 +8,8 @@ interface CardProyectoProps {
 
 export async function CardProyecto({ promise }: CardProyectoProps) {
     const usuario = await promise
-    const proyecto = usuario?.proyecto_id
-        ? await ProyectoService.getProyecto(usuario.proyecto_id)
+    const proyecto = usuario?.proyectoId
+        ? await ProyectoService.getProyecto(usuario.proyectoId)
         : null
 
     return (
@@ -17,7 +17,7 @@ export async function CardProyecto({ promise }: CardProyectoProps) {
             <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mb-2">Proyecto</p>
             <div className="card px-6 py-5 w-full">
                 <p className="text-lg font-semibold text-zinc-900 mb-1">
-                    {proyecto?.nombre_proyecto ?? '—'}
+                    {proyecto?.nombreProyecto ?? '—'}
                 </p>
                 <p className="text-sm text-zinc-500">
                     Estado:{' '}

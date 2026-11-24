@@ -16,10 +16,10 @@ export function EmpleadoModalPublic({ empleado, isOpen, onClose }: EmpleadoModal
     if (!isOpen) return null;
 
     const nombreCompleto = [
-        empleado.nombre_primero,
-        empleado.nombre_segundo,
-        empleado.apellido_paterno,
-        empleado.apellido_materno,
+        empleado.nombrePrimero,
+        empleado.nombreSegundo,
+        empleado.apellidoPaterno,
+        empleado.apellidoMaterno,
     ].filter(Boolean).join(' ');
 
     return createPortal(
@@ -42,11 +42,11 @@ export function EmpleadoModalPublic({ empleado, isOpen, onClose }: EmpleadoModal
                             <p className="text-sm font-semibold text-texto mt-1">{empleado.profesion}</p>
                         )}
                         {/* Imagen circular — solo mobile */}
-                        {empleado.img_url && (
+                        {empleado.imgUrl && (
                             <div className="relative sm:hidden w-40 h-40 mx-auto mt-3 mb-3 rounded-full">
                                 <Image
-                                    src={empleado.img_url}
-                                    alt={empleado.img_alt ?? 'image'}
+                                    src={empleado.imgUrl}
+                                    alt={empleado.imgAlt ?? 'image'}
                                     className='rounded-full'
                                     fill
                                     style={{ objectFit: 'cover'}}
@@ -62,11 +62,11 @@ export function EmpleadoModalPublic({ empleado, isOpen, onClose }: EmpleadoModal
                     </div>
 
                     {/* Imagen - solo desktop */}
-                    {empleado.img_url && (
+                    {empleado.imgUrl && (
                         <div className="relative shrink-0 overflow-hidden hidden sm:block w-[40%] rounded-tr-2xl">
                             <Image
-                                src={empleado.img_url}
-                                alt={empleado.img_alt ?? 'image'}
+                                src={empleado.imgUrl}
+                                alt={empleado.imgAlt ?? 'image'}
                                 fill
                                 style={{ objectFit: 'cover', objectPosition: 'top' }}
                             />
@@ -82,44 +82,44 @@ export function EmpleadoModalPublic({ empleado, isOpen, onClose }: EmpleadoModal
                     </button>
                 </div>
 
-                {/* Secciones sec_servicio */}
-                {empleado.sec_empleado?.length > 0 && (
+                {/* Secciones secServicio */}
+                {empleado.secEmpleado?.length > 0 && (
                     <div className="px-8 pb-8 flex flex-col gap-6">
                         <hr className="border-gris-claro" />
-                        {[...empleado.sec_empleado]
-                            .sort((a, b) => a.nro_seccion - b.nro_seccion)
+                        {[...empleado.secEmpleado]
+                            .sort((a, b) => a.nroSeccion - b.nroSeccion)
                             .map((sec) => {
-                                const imagePosition = sec.image_position;
+                                const imagePosition = sec.imagePosition;
                                 const flex = imagePosition === 'left' ? 'flex flex-row-reverse' : 'flex';
                                 const flexDirection = imagePosition === 'all' ? 'flex-col' : 'flex-row';
                                 const textW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[60%]' : 'w-full';
                                 const imgW = (imagePosition === 'left' || imagePosition === 'right') ? 'w-[40%]' : 'w-full';
-                                const imgHidden = (imagePosition === 'none' || !sec.image_url) ? 'hidden' : '';
+                                const imgHidden = (imagePosition === 'none' || !sec.imageUrl) ? 'hidden' : '';
                                 return (
                                     <div key={sec.id} className={`${flex} ${flexDirection} gap-4`}>
                                         <div className={`w-full sm:${textW}  flex flex-col gap-1`}>
-                                            {sec.titulo_sec && (
-                                                <h3 className="text-md font-semibold text-texto">{sec.titulo_sec}</h3>
+                                            {sec.tituloSec && (
+                                                <h3 className="text-md font-semibold text-texto">{sec.tituloSec}</h3>
                                             )}
-                                            {sec.image_url && (
+                                            {sec.imageUrl && (
                                                 <div className={`w-full min-h-40 ${imgHidden} relative sm:hidden`}>
                                                     <Image
-                                                        src={sec.image_url || ''}
-                                                        alt={sec.image_alt || ''}
+                                                        src={sec.imageUrl || ''}
+                                                        alt={sec.imageAlt || ''}
                                                         fill
                                                         style={{ objectFit: 'cover', borderRadius: '8px' }}
                                                     />
                                                 </div>
                                             )}
-                                            {sec.contenido_sec && (
-                                                <p className="text-sm text-gris-oscuro">{sec.contenido_sec}</p>
+                                            {sec.contenidoSec && (
+                                                <p className="text-sm text-gris-oscuro">{sec.contenidoSec}</p>
                                             )}
                                         </div>
-                                        {sec.image_url && (
+                                        {sec.imageUrl && (
                                             <div className={`${imgW} min-h-40 ${imgHidden} relative hidden sm:block`}>
                                                 <Image
-                                                    src={sec.image_url || ''}
-                                                    alt={sec.image_alt || ''}
+                                                    src={sec.imageUrl || ''}
+                                                    alt={sec.imageAlt || ''}
                                                     fill
                                                     style={{ objectFit: 'cover', borderRadius: '8px' }}
                                                 />

@@ -8,12 +8,12 @@ interface Props {
 
 export async function UsuariosContent({ usuarioPromise }: Props) {
     const usuario = await usuarioPromise
-    const usuarios = await UsuarioService.getUsuariosAdmin(usuario.proyecto_id)
+    const usuarios = await UsuarioService.getUsuariosAdmin(usuario.proyectoId)
 
     return (
         <UsuarioList
             usuarios={usuarios}
-            proyectoId={usuario.proyecto_id}
+            proyectoId={usuario.proyectoId}
         />
     )
 }

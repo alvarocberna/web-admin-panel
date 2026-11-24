@@ -13,7 +13,7 @@ interface SecArticuloProps<T extends FieldValues = FieldValues> {
 
 export function SecArticulo<T extends FieldValues = FieldValues>({ field, index, register, currentImageUrl }: SecArticuloProps<T>) {
   //definimos los estilos de la Sec en base a la posición de la imagen
-  const imagePosition = field.image_position || 'left';
+  const imagePosition = field.imagePosition || 'left';
   const flex = imagePosition === 'left' ? 'flex flex-row-reverse' : 'flex';
   const textW = (imagePosition === 'left' || imagePosition === 'right') ? '[60%]' : 'full';
   const imgW = (imagePosition === 'left' || imagePosition === 'right') ? '[40%]' : 'full';
@@ -25,14 +25,14 @@ export function SecArticulo<T extends FieldValues = FieldValues>({ field, index,
             <div className={`w-${textW} ${textHidden} px-2`} >
                 <InputArt
                     label={`Título Sub Sección ${index + 1}`}
-                    name={`sec_articulo.${index}.titulo_sec` as any}
+                    name={`secArticulo.${index}.tituloSec` as any}
                     type="text"
                     register={register}
                     rules={{ required: false, minLength: {value: 1, message: 'Mínomo 1 caracter'}, maxLength: {value: 200, message: 'Máximo 200 caracteres'} }}
                 />
                 <TextAreaArt
                     label={`Contenido Sub Sección ${index + 1}`}
-                    name={`sec_articulo.${index}.contenido_sec` as any}
+                    name={`secArticulo.${index}.contenidoSec` as any}
                     register={register}
                     rules={{ required: false, minLength: {value: 1, message: 'Mínimo 1 caracter'}, maxLength: {value: 5000, message: 'Máximo 5000 caracteres'} }}
                 />
@@ -40,7 +40,7 @@ export function SecArticulo<T extends FieldValues = FieldValues>({ field, index,
             <div className={`w-${imgW} ${imgHidden} px-2`}>
                 <InputFile
                     label={``}
-                    name={`sec_articulo.${index}.image_file` as any}
+                    name={`secArticulo.${index}.imageFile` as any}
                     register={register}
                     rules={{ required: false }}
                     accept="image/*"
@@ -49,19 +49,19 @@ export function SecArticulo<T extends FieldValues = FieldValues>({ field, index,
 
                 <InputArt
                     label={`Texto alternativo de la imagen (Alt)`}
-                    name={`sec_articulo.${index}.image_alt` as any}
+                    name={`secArticulo.${index}.imageAlt` as any}
                     type="text"
                     register={register}
                     rules={{ required: false,  maxLength: {value: 100, message: 'Máximo 100 caracteres'} }}
                 />
             </div>
             <input type="hidden"
-                {...register(`sec_articulo.${index}.image_position` as any)}
+                {...register(`secArticulo.${index}.imagePosition` as any)}
                 value={imagePosition}
             />
             <input type="hidden"
-                {...register(`sec_articulo.${index}.id_sec` as any)}
-                value={field.id_sec}
+                {...register(`secArticulo.${index}.idSec` as any)}
+                value={field.idSec}
             />
     </div>
   )

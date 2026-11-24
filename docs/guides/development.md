@@ -53,7 +53,7 @@ export default function MiSeccionPage() {
 ```ts
 // En el archivo de servicio correspondiente
 static async miNuevoMetodo(id: string): Promise<MiEntidad> {
-  return apiFetch<MiEntidad>(`mi-dominio/ver/${id}`)
+  return apiFetch<MiEntidad>(`mi-dominio/view/${id}`)
 }
 ```
 
@@ -61,7 +61,7 @@ Para peticiones con body:
 
 ```ts
 static async crear(data: MiDto): Promise<MiEntidad> {
-  return apiFetch<MiEntidad>('mi-dominio/crear', 'POST', data)
+  return apiFetch<MiEntidad>('mi-dominio/create', 'POST', data)
 }
 ```
 
@@ -72,9 +72,11 @@ static async crearConImagen(data: MiFormInput): Promise<MiEntidad> {
   const formData = new FormData()
   formData.append('nombre', data.nombre)
   if (data.imagen?.[0]) formData.append('imagen', data.imagen[0])
-  return apiFetchFormData<MiEntidad>('mi-dominio/crear', formData, 'POST')
+  return apiFetchFormData<MiEntidad>('mi-dominio/create', formData, 'POST')
 }
 ```
+
+> Convención de rutas: los segmentos de verbo van en inglés (`create`, `all`, `view`, `update`, `delete`); el segmento de dominio (`mi-dominio`, `articulo`, `empleado`, ...) se mantiene en español si deriva de una entidad del backend.
 
 ## Control de roles en la UI
 

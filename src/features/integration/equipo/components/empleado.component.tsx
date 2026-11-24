@@ -24,11 +24,11 @@ export function EmpleadoPublic({dataEmpleado}: EmpleadoPublicProps) {
         <ContenedorPagePublic>
             <div className="text-texto">
                 {/* Cabecera */}
-                {dataEmpleado.img_url && (
+                {dataEmpleado.imgUrl && (
                     <div className="relative w-40 h-40 rounded-full overflow-hidden mb-6">
                         <Image
-                            src={dataEmpleado.img_url}
-                            alt={dataEmpleado.img_alt ?? 'image'}
+                            src={dataEmpleado.imgUrl}
+                            alt={dataEmpleado.imgAlt ?? 'image'}
                             fill={true}
                             unoptimized
                             className="object-cover object-top"
@@ -36,10 +36,10 @@ export function EmpleadoPublic({dataEmpleado}: EmpleadoPublicProps) {
                     </div>
                 )}
                 <h2 className="text-3xl font-semibold mb-1">
-                    {dataEmpleado.nombre_primero}
-                    {dataEmpleado.nombre_segundo ? ` ${dataEmpleado.nombre_segundo}` : ''}{' '}
-                    {dataEmpleado.apellido_paterno}
-                    {dataEmpleado.apellido_materno ? ` ${dataEmpleado.apellido_materno}` : ''}
+                    {dataEmpleado.nombrePrimero}
+                    {dataEmpleado.nombreSegundo ? ` ${dataEmpleado.nombreSegundo}` : ''}{' '}
+                    {dataEmpleado.apellidoPaterno}
+                    {dataEmpleado.apellidoMaterno ? ` ${dataEmpleado.apellidoMaterno}` : ''}
                 </h2>
                 {dataEmpleado.profesion && (
                     <p className="text-lg font-medium text-gris-oscuro mb-1">{dataEmpleado.profesion}</p>
@@ -52,10 +52,10 @@ export function EmpleadoPublic({dataEmpleado}: EmpleadoPublicProps) {
                 )}
 
                 {/* Secciones */}
-                {dataEmpleado.sec_empleado?.length > 0 && (
+                {dataEmpleado.secEmpleado?.length > 0 && (
                     <div>
-                        {[...dataEmpleado.sec_empleado]
-                            .sort((a, b) => a.nro_seccion - b.nro_seccion)
+                        {[...dataEmpleado.secEmpleado]
+                            .sort((a, b) => a.nroSeccion - b.nroSeccion)
                             .map((sec) => (
                                 <SecEmpleadoPublic key={sec.id} data={sec} />
                             ))}

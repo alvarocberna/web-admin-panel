@@ -22,27 +22,27 @@ const ALL_SOLID_ICONS: IconDefinition[] = Object.values(solidIcons).filter(
 );
 
 interface SecServicioForm {
-    id_sec?: string;
-    titulo_sec: string;
-    contenido_sec: string;
-    image_file?: FileList;
-    image_url?: string | null;
-    image_alt?: string;
-    image_position?: string;
+    idSec?: string;
+    tituloSec: string;
+    contenidoSec: string;
+    imageFile?: FileList;
+    imageUrl?: string | null;
+    imageAlt?: string;
+    imagePosition?: string;
 }
 
 interface ServicioFormFields {
-    nombre_servicio: string;
+    nombreServicio: string;
     descripcion: string;
     valor: number;
-    nombre_promocion: string;
-    porcentaje_descuento: number;
+    nombrePromocion: string;
+    porcentajeDescuento: number;
     destacado: string;
     activo: boolean;
     icono: string;
-    img_alt: string;
-    image_file?: FileList;
-    sec_servicio: SecServicioForm[];
+    imgAlt: string;
+    imageFile?: FileList;
+    secServicio: SecServicioForm[];
 }
 
 interface Props {
@@ -66,40 +66,40 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
         formState: { errors, isSubmitting },
     } = useForm<ServicioFormFields>({
         defaultValues: editingServicio ? {
-            nombre_servicio: editingServicio.nombre_servicio,
+            nombreServicio: editingServicio.nombreServicio,
             descripcion: editingServicio.descripcion ?? '',
             valor: editingServicio.valor ?? 0,
-            nombre_promocion: editingServicio.nombre_promocion ?? '',
-            porcentaje_descuento: editingServicio.porcentaje_descuento ?? 0,
+            nombrePromocion: editingServicio.nombrePromocion ?? '',
+            porcentajeDescuento: editingServicio.porcentajeDescuento ?? 0,
             destacado: editingServicio.destacado ? 'true' : 'false',
             activo: editingServicio.activo,
             icono: editingServicio.icono ?? '',
-            img_alt: editingServicio.img_alt ?? '',
-            sec_servicio: editingServicio.sec_servicio?.map(sec => ({
-                id_sec: sec.id,
-                titulo_sec: sec.titulo_sec ?? '',
-                contenido_sec: sec.contenido_sec ?? '',
-                image_url: sec.image_url ?? null,
-                image_alt: sec.image_alt ?? '',
-                image_position: sec.image_position ?? 'none',
+            imgAlt: editingServicio.imgAlt ?? '',
+            secServicio: editingServicio.secServicio?.map(sec => ({
+                idSec: sec.id,
+                tituloSec: sec.tituloSec ?? '',
+                contenidoSec: sec.contenidoSec ?? '',
+                imageUrl: sec.imageUrl ?? null,
+                imageAlt: sec.imageAlt ?? '',
+                imagePosition: sec.imagePosition ?? 'none',
             })) ?? [],
         } : {
-            nombre_servicio: '',
+            nombreServicio: '',
             descripcion: '',
             valor: 0,
-            nombre_promocion: '',
-            porcentaje_descuento: 0,
+            nombrePromocion: '',
+            porcentajeDescuento: 0,
             destacado: 'false',
             activo: true,
             icono: '',
-            img_alt: '',
-            sec_servicio: [],
+            imgAlt: '',
+            secServicio: [],
         },
     });
 
     const { fields: secFields, append: appendSec, remove: removeSec } = useFieldArray({
         control,
-        name: 'sec_servicio',
+        name: 'secServicio',
     });
 
     const activo = watch('activo');
@@ -109,19 +109,19 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
     const onSubmit = async (data: ServicioFormFields) => {
         try {
             const payload = {
-                nombre_servicio: data.nombre_servicio,
+                nombreServicio: data.nombreServicio,
                 descripcion: data.descripcion || null,
                 valor: data.valor || null,
-                nombre_promocion: data.nombre_promocion || null,
-                porcentaje_descuento: data.porcentaje_descuento || null,
+                nombrePromocion: data.nombrePromocion || null,
+                porcentajeDescuento: data.porcentajeDescuento || null,
                 destacado: data.destacado === 'true',
                 icono: data.icono || null,
                 orden: null,
                 activo: data.activo,
-                img_url: editingServicio?.img_url ?? null,
-                img_alt: data.img_alt || null,
-                image_file: data.image_file,
-                sec_servicio: data.sec_servicio,
+                imgUrl: editingServicio?.imgUrl ?? null,
+                imgAlt: data.imgAlt || null,
+                imageFile: data.imageFile,
+                secServicio: data.secServicio,
             };
 
             if (editingServicio) {
@@ -159,7 +159,7 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
                         <div className="sm:col-span-2">
                             <Input
                                 label="Nombre del servicio"
-                                name="nombre_servicio"
+                                name="nombreServicio"
                                 register={register}
                                 rules={{
                                     required: 'El nombre del servicio es requerido',
@@ -167,8 +167,8 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
                                     maxLength: { value: 200, message: 'Máximo 200 caracteres' },
                                 }}
                             />
-                            {errors.nombre_servicio && (
-                                <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_servicio.message}</p>
+                            {errors.nombreServicio && (
+                                <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombreServicio.message}</p>
                             )}
                         </div>
                         <div>
@@ -183,7 +183,7 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
                         <div>
                             <Input
                                 label="Nombre de promoción"
-                                name="nombre_promocion"
+                                name="nombrePromocion"
                                 register={register}
                                 rules={{ required: false, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
                             />
@@ -191,7 +191,7 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
                         <div>
                             <Input
                                 label="Porcentaje de descuento"
-                                name="porcentaje_descuento"
+                                name="porcentajeDescuento"
                                 type="number"
                                 register={register}
                                 rules={{ required: false }}
@@ -200,15 +200,15 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
                         <div className="sm:col-span-2">
                             <InputFile
                                 label="Imagen del servicio"
-                                name="image_file"
+                                name="imageFile"
                                 register={register}
-                                currentImageUrl={editingServicio?.img_url}
+                                currentImageUrl={editingServicio?.imgUrl}
                             />
                         </div>
                         <div className="sm:col-span-2">
                             <Input
                                 label="Texto alternativo de la imagen (alt)"
-                                name="img_alt"
+                                name="imgAlt"
                                 register={register}
                                 rules={{ required: false, maxLength: { value: 100, message: 'Máximo 100 caracteres' } }}
                             />
@@ -344,34 +344,34 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
                                     <p className="text-xs font-semibold text-zinc-500 mb-2">Sección {index + 1}</p>
                                     <Input
                                         label="Título"
-                                        name={`sec_servicio.${index}.titulo_sec` as any}
+                                        name={`secServicio.${index}.tituloSec` as any}
                                         register={register}
                                         rules={{ required: false, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }}
                                     />
                                     <TextAreaArt
                                         label="Contenido"
-                                        name={`sec_servicio.${index}.contenido_sec` as any}
+                                        name={`secServicio.${index}.contenidoSec` as any}
                                         register={register}
                                         rules={{ required: false, maxLength: { value: 5000, message: 'Máximo 5000 caracteres' } }}
                                     />
-                                    {field.image_position !== 'none' && (
+                                    {field.imagePosition !== 'none' && (
                                         <InputFile
                                             label="Imagen"
-                                            name={`sec_servicio.${index}.image_file` as any}
+                                            name={`secServicio.${index}.imageFile` as any}
                                             register={register}
-                                            currentImageUrl={field.image_url}
+                                            currentImageUrl={field.imageUrl}
                                         />
                                     )}
-                                    {field.image_position !== 'none' && (
+                                    {field.imagePosition !== 'none' && (
                                         <Input
                                             label="Texto alternativo de la imagen (alt)"
-                                            name={`sec_servicio.${index}.image_alt` as any}
+                                            name={`secServicio.${index}.imageAlt` as any}
                                             register={register}
                                             rules={{ required: false, maxLength: { value: 100, message: 'Máximo 100 caracteres' } }}
                                         />
                                     )}
-                                    <input type="hidden" {...register(`sec_servicio.${index}.image_position` as any)} />
-                                    <input type="hidden" {...register(`sec_servicio.${index}.id_sec` as any)} />
+                                    <input type="hidden" {...register(`secServicio.${index}.imagePosition` as any)} />
+                                    <input type="hidden" {...register(`secServicio.${index}.idSec` as any)} />
                                 </div>
                             ))}
                         </div>
@@ -415,7 +415,7 @@ export function ServicioForm({ editingServicio, onSaved, onClose }: Props) {
                                             type="button"
                                             onClick={() => {
                                                 setAddSec(true);
-                                                appendSec({ id_sec: '', titulo_sec: '', contenido_sec: '', image_file: undefined, image_alt: '', image_position: position });
+                                                appendSec({ idSec: '', tituloSec: '', contenidoSec: '', imageFile: undefined, imageAlt: '', imagePosition: position });
                                             }}
                                             className="flex-1 flex flex-col items-center gap-1.5 group"
                                             title={label}

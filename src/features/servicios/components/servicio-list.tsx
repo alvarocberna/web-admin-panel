@@ -58,7 +58,7 @@ function SortableCard({ srv, onEdit, onDelete }: CardProps) {
                     </button>
                     <div className="flex-1 min-w-0">
                         {/* nombre servicio */}
-                        <p className="text-sm font-semibold text-zinc-900 truncate">{srv.nombre_servicio}</p>
+                        <p className="text-sm font-semibold text-zinc-900 truncate">{srv.nombreServicio}</p>
                         {/* valor servicio */}
                         {srv.valor && (
                             <p className="text-xs text-zinc-500 truncate">{srv.valor}</p>

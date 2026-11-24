@@ -13,14 +13,14 @@ import { ProyectoService, EquipoService, ServiciosService, ArticulosService, Tes
 import { ProyectoEntity } from '@/features';
 
 interface CrearForm {
-    nombre_proyecto: string;
+    nombreProyecto: string;
     descripcion: string;
     cliente: string;
     activo: boolean;
-    equipo_habilitado: boolean;
-    servicios_habilitado: boolean;
-    articulos_habilitado: boolean;
-    testimonios_habilitado: boolean;
+    equipoHabilitado: boolean;
+    serviciosHabilitado: boolean;
+    articulosHabilitado: boolean;
+    testimoniosHabilitado: boolean;
     nombre: string;
     apellido: string;
     email: string;
@@ -38,10 +38,10 @@ export function ProyectoForm({ onClose, onCreado }: Props) {
     const { register, handleSubmit, formState: { errors } } = useForm<CrearForm>({
         defaultValues: {
             activo: true,
-            equipo_habilitado: true,
-            servicios_habilitado: true,
-            articulos_habilitado: true,
-            testimonios_habilitado: true,
+            equipoHabilitado: true,
+            serviciosHabilitado: true,
+            articulosHabilitado: true,
+            testimoniosHabilitado: true,
             rol: 'ADMIN',
         },
     });
@@ -50,14 +50,14 @@ export function ProyectoForm({ onClose, onCreado }: Props) {
         setLoading(true);
         try {
             const proyecto = await ProyectoService.createProyecto({
-                nombre_proyecto: stripTags(data.nombre_proyecto),
+                nombreProyecto: stripTags(data.nombreProyecto),
                 descripcion: stripTags(data.descripcion),
                 cliente: stripTags(data.cliente),
                 activo: data.activo,
-                equipo_habilitado: data.equipo_habilitado,
-                servicios_habilitado: data.servicios_habilitado,
-                articulos_habilitado: data.articulos_habilitado,
-                testimonios_habilitado: data.servicios_habilitado,
+                equipoHabilitado: data.equipoHabilitado,
+                serviciosHabilitado: data.serviciosHabilitado,
+                articulosHabilitado: data.articulosHabilitado,
+                testimoniosHabilitado: data.serviciosHabilitado,
                 nombre: data.nombre,
                 apellido: data.apellido,
                 email: data.email,
@@ -92,8 +92,8 @@ export function ProyectoForm({ onClose, onCreado }: Props) {
                         <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mb-3">Proyecto</p>
                         <div className="flex flex-col gap-3">
                             <div>
-                                <Input label="Nombre del proyecto" name="nombre_proyecto" register={register} rules={{ required: 'El nombre es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
-                                {errors.nombre_proyecto && <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_proyecto.message}</p>}
+                                <Input label="Nombre del proyecto" name="nombreProyecto" register={register} rules={{ required: 'El nombre es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
+                                {errors.nombreProyecto && <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombreProyecto.message}</p>}
                             </div>
                             <div>
                                 <Input label="Descripción" name="descripcion" register={register} rules={{ required: 'La descripción es requerida', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 500, message: 'Máximo 500 caracteres' } }} />
@@ -115,10 +115,10 @@ export function ProyectoForm({ onClose, onCreado }: Props) {
                         <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mb-3">Secciones habilitadas</p>
                         <div className="card px-4 py-3 flex flex-col gap-2.5">
                             {([
-                                { name: 'equipo_habilitado' as const, label: 'Equipo' },
-                                { name: 'servicios_habilitado' as const, label: 'Servicios' },
-                                { name: 'articulos_habilitado' as const, label: 'Artículos' },
-                                { name: 'testimonios_habilitado' as const, label: 'Testimonios' },
+                                { name: 'equipoHabilitado' as const, label: 'Equipo' },
+                                { name: 'serviciosHabilitado' as const, label: 'Servicios' },
+                                { name: 'articulosHabilitado' as const, label: 'Artículos' },
+                                { name: 'testimoniosHabilitado' as const, label: 'Testimonios' },
                             ]).map(sec => (
                                 <label key={sec.name} className="flex items-center gap-2.5 cursor-pointer">
                                     <input type="checkbox" {...register(sec.name)} className="w-4 h-4 rounded border-zinc-300 accent-zinc-900" />

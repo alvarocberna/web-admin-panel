@@ -28,7 +28,7 @@ export function ArticuloFormCreate(){
         formState: { errors, isSubmitting } //objeto que contiene el estado del form
     } = useForm<CreateArticuloForm>({ //le dice a ts que estructura tendrá el form, osea, handleSubmit sabe que campos recibir y validar
         defaultValues: { //podemos definir un default value a cualquier campo, pero no es necesario
-            sec_articulo: [] //sin un defaultValue, sec_articulo sería undefined y .map fallaría
+            secArticulo: [] //sin un defaultValue, secArticulo sería undefined y .map fallaría
         }
     })
     //destructuring de useFieldArray
@@ -38,7 +38,7 @@ export function ArticuloFormCreate(){
         remove  //fn que elimina elementos por índice
     } = useFieldArray({ //inicializamos useFieldArray 
         control, //conecta el array con el form principal
-        name: "sec_articulo" //corresponde al campo sec_articulo de CreateArticuloForm
+        name: "secArticulo" //corresponde al campo secArticulo de CreateArticuloForm
     });
     //fn onSubmit
     const onSubmit: SubmitHandler<CreateArticuloForm> = async (data) => {
@@ -76,14 +76,14 @@ export function ArticuloFormCreate(){
                 {errors.subtitulo && <span className="text-red-600 text-xs mt-1 block">{errors.subtitulo.message}</span>}
                 <InputFile
                     label="Imagen de portada"
-                    name="image_file"
+                    name="imageFile"
                     register={register}
                     rules={{ required: false }}
                     accept="image/*"
                 />
                 <InputArt
                     label="Texto alternativo de la imagen (Alt)"
-                    name="image_alt"
+                    name="imageAlt"
                     type="text"
                     register={register}
                     rules={{ required: false, maxLength: {value: 100, message: 'Máximo 100 caracteres'} }}
@@ -148,7 +148,7 @@ export function ArticuloFormCreate(){
                                 type="button"
                                 onClick={() => {
                                     setAddSec(true);
-                                    append({ titulo_sec: "", contenido_sec: "", image_file: undefined, image_alt: "", image_position: position });
+                                    append({ tituloSec: "", contenidoSec: "", imageFile: undefined, imageAlt: "", imagePosition: position });
                                 }}
                                 className="flex-1 flex flex-col items-center gap-1.5 group"
                                 title={label}

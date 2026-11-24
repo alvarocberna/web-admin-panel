@@ -74,7 +74,7 @@ export function ArticuloList({ articulos, rol }: Props) {
     };
 
     const renderCard = (articulo: ArticuloEntity, showAcciones: boolean) => {
-        const fecha = new Date(articulo.fecha_publicacion);
+        const fecha = new Date(articulo.fechaPublicacion);
         const anno = fecha.getFullYear();
         const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
         const dia = fecha.getDate().toString().padStart(2, '0');

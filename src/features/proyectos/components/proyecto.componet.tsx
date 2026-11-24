@@ -141,7 +141,7 @@ export function Proyecto({ proyecto, onBack }: Props) {
                     <FontAwesomeIcon icon={faArrowLeft} style={{ width: '13px', height: '13px' }} />
                 </button>
                 <div>
-                    <h2 className="text-xl font-semibold text-zinc-900">{proyecto.nombre_proyecto}</h2>
+                    <h2 className="text-xl font-semibold text-zinc-900">{proyecto.nombreProyecto}</h2>
                     {proyecto.cliente && <p className="text-sm text-zinc-500">{proyecto.cliente}</p>}
                 </div>
             </div>
@@ -152,7 +152,7 @@ export function Proyecto({ proyecto, onBack }: Props) {
                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div>
                         <dt className="text-xs text-zinc-400 uppercase tracking-wide mb-0.5">Nombre</dt>
-                        <dd className="text-zinc-900 font-medium">{proyecto.nombre_proyecto}</dd>
+                        <dd className="text-zinc-900 font-medium">{proyecto.nombreProyecto}</dd>
                     </div>
                     <div>
                         <dt className="text-xs text-zinc-400 uppercase tracking-wide mb-0.5">Cliente</dt>
@@ -169,7 +169,7 @@ export function Proyecto({ proyecto, onBack }: Props) {
                     <div>
                         <dt className="text-xs text-zinc-400 uppercase tracking-wide mb-0.5">Fecha creación</dt>
                         <dd className="text-zinc-900">
-                            {proyecto.fecha_inicio ? new Date(proyecto.fecha_inicio).toLocaleDateString('es-CL') : '—'}
+                            {proyecto.fechaInicio ? new Date(proyecto.fechaInicio).toLocaleDateString('es-CL') : '—'}
                         </dd>
                     </div>
                     {proyecto.descripcion && (

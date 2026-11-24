@@ -16,8 +16,8 @@ export abstract class CreateUsuarioDto {
     abstract email: string;
     abstract password: string;
     abstract rol: string;
-    abstract img_url: string | null;
-    abstract img_alt: string | null;
+    abstract imgUrl: string | null;
+    abstract imgAlt: string | null;
 }
 
 export abstract class UpdateUsuarioDto {
@@ -25,6 +25,6 @@ export abstract class UpdateUsuarioDto {
     abstract apellido?: string;
     abstract email?: string;
     abstract rol?: string;
-    abstract img_url?: string;
-    abstract img_alt?: string;
+    abstract imgUrl?: string;
+    abstract imgAlt?: string;
 }

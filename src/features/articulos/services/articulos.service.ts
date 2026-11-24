@@ -6,18 +6,18 @@ import { UsuarioService, ArticuloEntity, ArticulosEntity, CreateArticulosDto, Up
 
 export class ArticulosService{
 
-    public static async createArticulos(data: CreateArticulosDto, proyecto_id?: string): Promise<ArticulosEntity> {
-        const url = proyecto_id ? `articulos/crear?proyecto_id=${proyecto_id}` : 'articulos/crear';
+    public static async createArticulos(data: CreateArticulosDto, proyectoId?: string): Promise<ArticulosEntity> {
+        const url = proyectoId ? `articulos/create?proyectoId=${proyectoId}` : 'articulos/create';
         return await apiFetch<ArticulosEntity>(url, 'POST', data);
     }
 
-    public static async getArticulos(proyecto_id?: string): Promise<ArticulosEntity | null> {
-        const url = proyecto_id ? `articulos/ver-todo?proyecto_id=${proyecto_id}` : 'articulos/ver-todo';
+    public static async getArticulos(proyectoId?: string): Promise<ArticulosEntity | null> {
+        const url = proyectoId ? `articulos/all?proyectoId=${proyectoId}` : 'articulos/all';
         return await apiFetch<ArticulosEntity>(url, 'GET');
     }
 
-    public static async updateArticulos(data: UpdateArticulosDto, proyecto_id?: string): Promise<ArticulosEntity> {
-        const url = proyecto_id ? `articulos/editar?proyecto_id=${proyecto_id}` : 'articulos/editar';
+    public static async updateArticulos(data: UpdateArticulosDto, proyectoId?: string): Promise<ArticulosEntity> {
+        const url = proyectoId ? `articulos/update?proyectoId=${proyectoId}` : 'articulos/update';
         return await apiFetch<ArticulosEntity>(url, 'PATCH', data);
     }
 
@@ -26,24 +26,24 @@ export class ArticulosService{
         const formData = new FormData();
 
         // 1. Agregar imagen principal si existe
-        if (data.image_file && data.image_file.length > 0) {
-            const file = data.image_file[0];
+        if (data.imageFile && data.imageFile.length > 0) {
+            const file = data.imageFile[0];
             if (!file.type.startsWith('image/')) throw new Error('El archivo principal debe ser una imagen.');
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen principal no puede superar 5MB.');
-            formData.append('image_file', file);
+            formData.append('imageFile', file);
         }
 
         // 2. Agregar imágenes de secciones
         // Mantener el orden/índices: si una sección no tiene imagen, añadir un placeholder vacío
-        data.sec_articulo.forEach((sec, idx) => {
-            if (sec.image_file && sec.image_file.length > 0) {
-                const file = sec.image_file[0];
+        data.secArticulo.forEach((sec, idx) => {
+            if (sec.imageFile && sec.imageFile.length > 0) {
+                const file = sec.imageFile[0];
                 if (!file.type.startsWith('image/')) throw new Error(`La imagen de la sección ${idx + 1} debe ser una imagen.`);
                 if (file.size > 5 * 1024 * 1024) throw new Error(`La imagen de la sección ${idx + 1} no puede superar 5MB.`);
-                formData.append('sec_images', file);
+                formData.append('secImages', file);
             } else {
                 // Agrega un archivo vacío como placeholder para preservar la posición
-                formData.append('sec_images', new File([], `empty-${idx}`));
+                formData.append('secImages', new File([], `empty-${idx}`));
             }
         });
 
@@ -55,58 +55,58 @@ export class ArticulosService{
             titulo: data.titulo,
             subtitulo: data.subtitulo,
             autor: user.nombre + ' ' + user.apellido,
-            fecha_publicacion: new Date(),
-            fecha_actualizacion: new Date(),
+            fechaPublicacion: new Date(),
+            fechaActualizacion: new Date(),
             status: status,
             activo: true,
             slug: slug,
-            image_url: null,
-            image_alt: data.image_alt || '',
-            image_position: null,
-            sec_articulo: data.sec_articulo.map((dataSec, index) => ({
-                nro_seccion: index,
-                titulo_sec: dataSec.titulo_sec,
-                contenido_sec: dataSec.contenido_sec,
-                image_url: null,
-                image_alt: dataSec.image_alt || null,
-                image_position: dataSec.image_position || null,
+            imageUrl: null,
+            imageAlt: data.imageAlt || '',
+            imagePosition: null,
+            secArticulo: data.secArticulo.map((dataSec, index) => ({
+                nroSeccion: index,
+                tituloSec: dataSec.tituloSec,
+                contenidoSec: dataSec.contenidoSec,
+                imageUrl: null,
+                imageAlt: dataSec.imageAlt || null,
+                imagePosition: dataSec.imagePosition || null,
             }))
         };
         // 4. ✅ IMPORTANTE: Enviar TODO en un solo campo 'data' como JSON
         formData.append('data', JSON.stringify(articuloData));
 
         // 5. Realizar la petición
-        return await apiFetchFormData<any>('articulos/articulo/crear', formData, 'POST');
+        return await apiFetchFormData<any>('articulos/articulo/create', formData, 'POST');
     }
 
-    public static async getArticuloById(id_articulo: string): Promise<ArticuloEntity>{
-        return await apiFetch<ArticuloEntity>(`articulos/articulo/ver/${id_articulo}`, 'GET')
+    public static async getArticuloById(articuloId: string): Promise<ArticuloEntity>{
+        return await apiFetch<ArticuloEntity>(`articulos/articulo/view/${articuloId}`, 'GET')
     }
 
-    public static async updateArticulo(id_articulo: string, data: UpdateArticuloForm): Promise<void>{
+    public static async updateArticulo(articuloId: string, data: UpdateArticuloForm): Promise<void>{
         const user = await UsuarioService.getUsuario();
         const formData = new FormData();
 
         // 1. Agregar imagen principal si existe
-        const hasNewMainFile = data.image_file && data.image_file.length > 0;
+        const hasNewMainFile = data.imageFile && data.imageFile.length > 0;
         if (hasNewMainFile) {
-            const file = data.image_file![0];
+            const file = data.imageFile![0];
             if (!file.type.startsWith('image/')) throw new Error('El archivo principal debe ser una imagen.');
             if (file.size > 5 * 1024 * 1024) throw new Error('La imagen principal no puede superar 5MB.');
-            formData.append('image_file', file);
+            formData.append('imageFile', file);
         }
 
         // 2. Agregar imágenes de secciones
         // Mantener el orden/índices: si una sección no tiene imagen, añadir un placeholder vacío
-        data.sec_articulo.forEach((sec, idx) => {
-            if (sec.image_file && sec.image_file.length > 0) {
-                const file = sec.image_file[0];
+        data.secArticulo.forEach((sec, idx) => {
+            if (sec.imageFile && sec.imageFile.length > 0) {
+                const file = sec.imageFile[0];
                 if (!file.type.startsWith('image/')) throw new Error(`La imagen de la sección ${idx + 1} debe ser una imagen.`);
                 if (file.size > 5 * 1024 * 1024) throw new Error(`La imagen de la sección ${idx + 1} no puede superar 5MB.`);
-                formData.append('sec_images', file);
+                formData.append('secImages', file);
             } else {
                 // Agrega un archivo vacío como placeholder para preservar la posición
-                formData.append('sec_images', new File([], `empty-${idx}`));
+                formData.append('secImages', new File([], `empty-${idx}`));
             }
         });
 
@@ -118,24 +118,24 @@ export class ArticulosService{
             titulo: data.titulo,
             subtitulo: data.subtitulo || '',
             autor: user.nombre + ' ' + user.apellido,
-            fecha_publicacion: new Date(),
-            fecha_actualizacion: new Date(),
+            fechaPublicacion: new Date(),
+            fechaActualizacion: new Date(),
             status: status,
             activo: data.activo ?? true,
             slug: slug,
-            image_url: hasNewMainFile ? null : (data.image_url ?? null),
-            image_alt: data.image_alt || '',
-            image_position: null,
-            sec_articulo: data.sec_articulo.map((dataSec, index) => {
-                const hasNewSecFile = dataSec.image_file && dataSec.image_file.length > 0;
+            imageUrl: hasNewMainFile ? null : (data.imageUrl ?? null),
+            imageAlt: data.imageAlt || '',
+            imagePosition: null,
+            secArticulo: data.secArticulo.map((dataSec, index) => {
+                const hasNewSecFile = dataSec.imageFile && dataSec.imageFile.length > 0;
                 return {
-                    id: dataSec.id_sec,
-                    nro_seccion: index,
-                    titulo_sec: dataSec.titulo_sec,
-                    contenido_sec: dataSec.contenido_sec,
-                    image_url: hasNewSecFile ? null : (dataSec.image_url ?? null),
-                    image_alt: dataSec.image_alt || null,
-                    image_position: dataSec.image_position || null,
+                    id: dataSec.idSec,
+                    nroSeccion: index,
+                    tituloSec: dataSec.tituloSec,
+                    contenidoSec: dataSec.contenidoSec,
+                    imageUrl: hasNewSecFile ? null : (dataSec.imageUrl ?? null),
+                    imageAlt: dataSec.imageAlt || null,
+                    imagePosition: dataSec.imagePosition || null,
                 };
             })
         };
@@ -143,16 +143,16 @@ export class ArticulosService{
         // 4. ✅ IMPORTANTE: Enviar TODO en un solo campo 'data' como JSON
         formData.append('data', JSON.stringify(articuloData));
         // 5. Realizar la petición
-        return await apiFetchFormData<any>(`articulos/articulo/editar/${id_articulo}`, formData, 'PUT');
+        return await apiFetchFormData<any>(`articulos/articulo/update/${articuloId}`, formData, 'PUT');
     }
 
     //elimina un articulo por id
-    public static async deleteArticulo(id_articulo: string): Promise<void>{
-        return await apiFetch<any>(`articulos/articulo/eliminar/${id_articulo}`, 'DELETE')
+    public static async deleteArticulo(articuloId: string): Promise<void>{
+        return await apiFetch<any>(`articulos/articulo/delete/${articuloId}`, 'DELETE')
     }
 
     //modifica el status de un articulo a 'approved'
-    public static async approveArticulo(id_articulo: string): Promise<void>{
-        return await apiFetch<void>(`articulos/articulo/editar-status/${id_articulo}`, 'PATCH', { status: 'approved' });
+    public static async approveArticulo(articuloId: string): Promise<void>{
+        return await apiFetch<void>(`articulos/articulo/update-status/${articuloId}`, 'PATCH', { status: 'approved' });
     }
 } 

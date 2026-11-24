@@ -4,11 +4,11 @@ export class ActividadEntity{
     constructor(
         public id: string,
         public accion: string,
-        public titulo_articulo: string,
+        public tituloArticulo: string,
         public responsable: string,
         public fecha: string,
-        public proyecto_id: string,
-        public articulo_id: string,
+        public proyectoId: string,
+        public articuloId: string,
         public articulo: ArticuloEntity
     ){}
 }

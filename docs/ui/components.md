@@ -188,7 +188,7 @@ apiFetch<T>(
 ): Promise<T | undefined>
 ```
 
-- `endpoint` — ruta sin la barra inicial (ej: `'equipo/ver-todo'`)
+- `endpoint` — ruta sin la barra inicial (ej: `'equipo/all'`)
 - `method` — default `'GET'`
 - `data` — body de la petición (se serializa como JSON)
 - `credentials` — default `'include'`

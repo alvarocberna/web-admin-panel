@@ -32,7 +32,7 @@ export async function ActividadContent({ promise }: Props) {
                             <p className="text-sm text-zinc-700 leading-snug">
                                 Artículo{' '}
                                 <span className="font-medium text-zinc-900">
-                                    &ldquo;{actividad.titulo_articulo}&rdquo;
+                                    &ldquo;{actividad.tituloArticulo}&rdquo;
                                 </span>{' '}
                                 {actividad.accion} por{' '}
                                 <span className="font-medium text-zinc-800">

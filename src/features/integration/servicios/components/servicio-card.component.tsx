@@ -62,8 +62,8 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                         onMouseLeave={() => setOpacity(70)}
                     >
                         <Image
-                            src={servicio.img_url ?? ''}
-                            alt={servicio.img_alt ?? '...'}
+                            src={servicio.imgUrl ?? ''}
+                            alt={servicio.imgAlt ?? '...'}
                             fill={true}
                             style={{ position: 'absolute', borderRadius: '12px' }}
                         />
@@ -73,7 +73,7 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                         />
                         <div className="w-full h-full flex flex-col items-center justify-center" style={{ position: 'absolute' }}>
                             <p className="text-texto-invertido text-xl text-center">
-                                {servicio.nombre_servicio}
+                                {servicio.nombreServicio}
                             </p>
                         </div>
                     </div>
@@ -87,10 +87,10 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                         className="card h-full flex flex-col hover-btn overflow-hidden cursor-pointer"
                         onClick={onCardClick}
                     >
-                        {servicio.img_url && (
+                        {servicio.imgUrl && (
                             <img
-                                src={servicio.img_url}
-                                alt={servicio.img_alt ?? 'image'}
+                                src={servicio.imgUrl}
+                                alt={servicio.imgAlt ?? 'image'}
                                 style={{ borderRadius: '12px 12px 0px 0px' }}
                                 className="w-full h-48 object-cover"
                             />
@@ -98,7 +98,7 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                         <div className="px-4 py-3">
                             <div className="flex items-start justify-between mb-2">
                                 <p className="text-md font-semibold text-texto">
-                                    {servicio.nombre_servicio}
+                                    {servicio.nombreServicio}
                                 </p>
                                 {servicio.destacado && (
                                     <span className="ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium bg-destacado text-destacado-texto">
@@ -109,10 +109,10 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                             {servicio.valor && (
                                 <p className="text-sm font-semibold text-texto mt-auto">{servicio.valor}</p>
                             )}
-                            {servicio.nombre_promocion && (
+                            {servicio.nombrePromocion && (
                                 <p className="text-sm font-semibold text-texto">
-                                    {servicio.nombre_promocion}
-                                    {servicio.porcentaje_descuento ? ` — ${servicio.porcentaje_descuento}% off` : ''}
+                                    {servicio.nombrePromocion}
+                                    {servicio.porcentajeDescuento ? ` — ${servicio.porcentajeDescuento}% off` : ''}
                                 </p>
                             )}
                             {servicio.descripcion && (
@@ -143,7 +143,7 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                         )}
                         <div className="flex items-start justify-between mb-1">
                             <p className="text-md font-semibold text-texto">
-                                {servicio.nombre_servicio}
+                                {servicio.nombreServicio}
                             </p>
                             {servicio.destacado && (
                                 <span className="ml-2 flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium bg-destacado text-destacado-texto">
@@ -157,10 +157,10 @@ export function ServicioCardPublic({ servicio, comportamiento = INTEGRATION_CONF
                         {servicio.valor && (
                             <p className="text-sm font-semibold text-texto mt-auto">{servicio.valor}</p>
                         )}
-                        {servicio.nombre_promocion && (
+                        {servicio.nombrePromocion && (
                             <p className="text-sm text-gris-oscuro">
-                                {servicio.nombre_promocion}
-                                {servicio.porcentaje_descuento ? ` — ${servicio.porcentaje_descuento}% off` : ''}
+                                {servicio.nombrePromocion}
+                                {servicio.porcentajeDescuento ? ` — ${servicio.porcentajeDescuento}% off` : ''}
                             </p>
                         )}
                     </div>

@@ -10,7 +10,7 @@ interface TestimonioCardProps {
 }
 
 export function TestimonioCardPublic({ testimonio }: TestimonioCardProps) {
-    const fecha = new Date(testimonio.fecha_creacion);
+    const fecha = new Date(testimonio.fechaCreacion);
 
     return (
         // <div className=" px-2 mb-4" style={{border: '1px solid red'}}>

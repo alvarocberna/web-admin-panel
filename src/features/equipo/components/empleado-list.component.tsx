@@ -56,7 +56,7 @@ function SortableCard({ emp, onEdit, onDelete }: CardProps) {
                     </button>
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-zinc-900 truncate">
-                            {emp.nombre_primero} {emp.apellido_paterno}
+                            {emp.nombrePrimero} {emp.apellidoPaterno}
                         </p>
                         <p className="text-xs text-zinc-500 truncate">{emp.profesion}</p>
                         {emp.especialidad && (

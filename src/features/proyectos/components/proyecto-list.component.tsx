@@ -12,7 +12,7 @@ import { Input } from '@/shared';
 import { ProyectoService, ProyectoEntity, ProyectoForm } from '@/features';
 
 interface EditForm {
-    nombre_proyecto: string;
+    nombreProyecto: string;
     descripcion: string;
     cliente: string;
     activo: boolean;
@@ -51,7 +51,7 @@ export function ProyectoList({ onSelectProyecto }: Props) {
         e.stopPropagation();
         setEditingProyecto(proyecto);
         reset({
-            nombre_proyecto: proyecto.nombre_proyecto,
+            nombreProyecto: proyecto.nombreProyecto,
             descripcion: proyecto.descripcion,
             cliente: proyecto.cliente,
             activo: proyecto.activo,
@@ -137,7 +137,7 @@ export function ProyectoList({ onSelectProyecto }: Props) {
                                 >
                                     <td className="px-5 py-3.5 font-medium text-zinc-900">
                                         <div className="flex items-center gap-2">
-                                            {p.nombre_proyecto}
+                                            {p.nombreProyecto}
                                             <FontAwesomeIcon
                                                 icon={faChevronRight}
                                                 className="text-zinc-300"
@@ -151,7 +151,7 @@ export function ProyectoList({ onSelectProyecto }: Props) {
                                         </span>
                                     </td>
                                     <td className="px-5 py-3.5 text-zinc-500">
-                                        {p.fecha_inicio ? new Date(p.fecha_inicio).toLocaleDateString('es-CL') : '—'}
+                                        {p.fechaInicio ? new Date(p.fechaInicio).toLocaleDateString('es-CL') : '—'}
                                     </td>
                                     <td className="px-5 py-3.5">
                                         <div className="flex items-center justify-end gap-2" onClick={e => e.stopPropagation()}>
@@ -200,8 +200,8 @@ export function ProyectoList({ onSelectProyecto }: Props) {
                         </div>
                         <form onSubmit={handleSubmit(onSubmitEdit)} noValidate className="px-6 py-5 flex flex-col gap-3">
                             <div>
-                                <Input label="Nombre del proyecto" name="nombre_proyecto" register={register} rules={{ required: 'El nombre es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
-                                {errors.nombre_proyecto && <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombre_proyecto.message}</p>}
+                                <Input label="Nombre del proyecto" name="nombreProyecto" register={register} rules={{ required: 'El nombre es requerido', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 200, message: 'Máximo 200 caracteres' } }} />
+                                {errors.nombreProyecto && <p className="text-xs text-red-500 mt-1 ml-1">{errors.nombreProyecto.message}</p>}
                             </div>
                             <div>
                                 <Input label="Descripción" name="descripcion" register={register} rules={{ required: 'La descripción es requerida', minLength: { value: 1, message: 'Mínimo 1 carácter' }, maxLength: { value: 500, message: 'Máximo 500 caracteres' } }} />
@@ -234,7 +234,7 @@ export function ProyectoList({ onSelectProyecto }: Props) {
                         <h3 className="text-base font-semibold text-zinc-900 mb-1">Eliminar proyecto</h3>
                         <p className="text-sm text-zinc-500 mb-6">
                             Esta acción no se puede deshacer. ¿Seguro que deseas eliminar{' '}
-                            <span className="font-medium text-zinc-700">{proyectoToDelete?.nombre_proyecto}</span>?
+                            <span className="font-medium text-zinc-700">{proyectoToDelete?.nombreProyecto}</span>?
                         </p>
                         <div className="flex justify-end gap-2">
                             <button onClick={() => setDeleteModalOpen(false)} className="btn btn-outline">Cancelar</button>

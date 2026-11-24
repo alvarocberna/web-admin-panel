@@ -2,13 +2,13 @@
 export class SecArticuloEntityPublic {
     constructor(
         public id: string,
-        public nro_seccion: number,
-        public titulo_sec: string,
-        public contenido_sec: string,
-        public image_url: string | null,
-        public image_alt: string | null,
-        public image_position: string | null,
-        public articulo_id: string,
-        public proyecto_id: string,
+        public nroSeccion: number,
+        public tituloSec: string,
+        public contenidoSec: string,
+        public imageUrl: string | null,
+        public imageAlt: string | null,
+        public imagePosition: string | null,
+        public articuloId: string,
+        public proyectoId: string,
     ){}
 }
